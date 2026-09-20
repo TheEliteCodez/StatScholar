@@ -1,4 +1,11 @@
+# StatScholar - TI-84 Python Statistics Tutor
 # Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
 """Quiz 2 calculations, reusable rows, menu access and numeric paging."""
 import contextlib
 import io

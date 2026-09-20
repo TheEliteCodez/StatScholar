@@ -1,4 +1,11 @@
+# StatScholar - TI-84 Python Statistics Tutor
 # Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
 # Printed Practice Test 1 numbering; independent of legacy PT IDs.
 import STCORE as c
 TITLES=('Whole class: statistic or parameter', 'Building stories: discrete', 'Sample 100 of 800 teachers', 'Compare test scores / z axes', 'Gym age: usual range', 'Men / women pulse lists', 'Same mean and mode, different spread', 'Unusual z and empirical rule', 'Relative frequency / large numbers', 'Select a woman', 'At least one covid case', 'Wood OR defective rackets', 'Marbles / replacement ambiguity', 'Five flips distribution', 'School sample: binomial eligible', 'Certain and impossible events', 'Engineers: random versus SRS', 'Regroup frequency / histogram shape', 'Defective coils / two methods', 'Die twice: both twos', 'Sports poll sample proportion', 'Airline table / conditional / draws', 'Homework hours z-score', 'Twin birth weights / several z values', 'Exercise study / significance', 'Lottery ticket expected value', 'Reusable containers dotplot', 'Computer literacy X/P table', 'Circuit boards: improvement claim', 'Cracked eggs / usual and tails')

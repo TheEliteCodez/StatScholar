@@ -1,4 +1,11 @@
+# StatScholar - TI-84 Python Statistics Tutor
 # Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
 """Regression acceptance checks for source-audit findings A01-A07.
 Run from project root: python -B -m unittest discover -s tests -p test_audit_checks.py
 """

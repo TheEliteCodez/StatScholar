@@ -184,3 +184,17 @@ compatibility or independently verify every printed worked answer.
 
 The public repository includes source, tests and this README. Local planning,
 audit documents and saved test-result logs are intentionally excluded.
+
+## License
+
+Copyright (c) 2026 Gregory King. Licensed under the custom
+[StatScholar Free Use / No Sale License](LICENSE), version 1.0.
+
+Personal, educational and internal business use are allowed. You may modify
+and share it for free while retaining its notices and terms. Selling the
+software, modified versions, or paid products, bundles, subscriptions or hosted
+services incorporating its code is prohibited without Gregory King's written
+permission. Internal use and ordinary numerical results remain allowed.
+
+These are custom source-available terms, not MIT or GPL. The complete license
+is also included as comments in `STAT1.py`.

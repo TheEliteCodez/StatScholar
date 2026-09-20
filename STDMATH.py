@@ -1,4 +1,11 @@
+# StatScholar - TI-84 Python Statistics Tutor
 # Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
 # STDMATH - loaded only when needed.
 import STCORE
 RAW_LIMIT = 100  # Desktop tested; physical Evo limit pending.

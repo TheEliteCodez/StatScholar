@@ -1,4 +1,11 @@
+# StatScholar - TI-84 Python Statistics Tutor
 # Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
 # STGPROB - compact guide records; only the selected record is decoded.
 import STCORE
 
