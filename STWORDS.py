@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Question wording narrows context before selecting an engine.
 import STCORE as c
 

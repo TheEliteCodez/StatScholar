@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STCOUNT - solver code; references load separately.
 import STCORE
 import math

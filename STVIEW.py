@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Display/menu code loads only for the active screen.
 import STCORE as c
 

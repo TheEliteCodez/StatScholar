@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # On-demand course records.
 
 def get_record(qid):

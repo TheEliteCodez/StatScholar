@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 """Expansion arithmetic, navigation, and lifecycle acceptance checks."""
 import contextlib
 import io

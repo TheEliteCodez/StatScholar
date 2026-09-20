@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STGCNT - compact guide records; only the selected record is decoded.
 import STCORE
 

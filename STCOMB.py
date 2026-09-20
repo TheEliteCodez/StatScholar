@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Small combinatorics shared by dice, binomial and counting.
 
 def factorial(n):

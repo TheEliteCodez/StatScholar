@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Quiz 3 reference text loads only when selected.
 import STCORE as c
 

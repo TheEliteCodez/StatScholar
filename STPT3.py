@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Practice source records; no solver constants.
 
 def get_record(qid):

@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 import contextlib
 from fractions import Fraction
 import io

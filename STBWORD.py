@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Wording-led binomial UI; imports only small arithmetic dependencies.
 import STCORE as c
 

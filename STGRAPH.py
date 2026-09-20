@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STGRAPH - loaded only when needed.
 import STCORE
 from STDMATH import *

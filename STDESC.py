@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STDESC - compact legacy descriptive solvers.
 import STCORE
 

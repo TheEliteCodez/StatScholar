@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 """Regression acceptance checks for source-audit findings A01-A07.
 Run from project root: python -B -m unittest discover -s tests -p test_audit_checks.py
 """

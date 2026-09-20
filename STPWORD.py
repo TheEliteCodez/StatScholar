@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Context-sensitive AND, OR and GIVEN helper.
 import STCORE as c
 

@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Two-dice events only; other experiments load separately.
 import STCORE
 

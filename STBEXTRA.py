@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STBEXTRA - loaded on demand.
 import STCORE
 import math

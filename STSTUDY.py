@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STSTUDY - on-demand reference module.
 import STCORE
 

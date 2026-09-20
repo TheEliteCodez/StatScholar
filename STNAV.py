@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Guide/homework navigation loads only when selected.
 import STCORE
 

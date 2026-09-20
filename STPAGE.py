@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Small numeric text pager; no study definitions loaded.
 import STCORE
 

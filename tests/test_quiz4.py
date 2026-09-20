@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 import unittest
 from fractions import Fraction
 from unittest.mock import patch

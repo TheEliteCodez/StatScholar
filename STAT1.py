@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STAT1 - home menu and question lookup; topics load only on selection.
 import STCORE
 

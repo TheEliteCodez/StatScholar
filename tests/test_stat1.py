@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 """Desktop verification of the modular calculator runtime."""
 import ast
 import builtins

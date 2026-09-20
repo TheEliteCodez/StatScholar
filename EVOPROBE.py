@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Optional on-calculator compatibility probe. Run separately from STAT1.
 # No files are written. Press ENTER between sections; record the results.
 import sys

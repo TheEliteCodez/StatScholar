@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STBINOM - solver code; references load separately.
 import STCORE
 from STBMATH import *

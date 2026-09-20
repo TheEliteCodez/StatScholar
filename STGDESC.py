@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STGDESC - compact guide records; only the selected record is decoded.
 import STCORE
 

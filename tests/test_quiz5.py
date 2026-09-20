@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 import unittest
 import contextlib
 import io

@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STPROB - solver code; references load separately.
 import STCORE
 

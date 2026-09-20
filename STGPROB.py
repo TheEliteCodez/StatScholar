@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # STGPROB - compact guide records; only the selected record is decoded.
 import STCORE
 

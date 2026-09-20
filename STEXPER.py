@@ -1,4 +1,4 @@
-# Author: TheEliteCodez
+# Author: Gregory King
 # Cards, roulette, spinner and die/coin, loaded separately.
 import STCORE
 
