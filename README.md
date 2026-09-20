@@ -12,14 +12,6 @@ The current source includes descriptive statistics, probability, dice, binomial
 and without-replacement sampling, definitions, worked quizzes and all 30
 questions from Practice Test 1.
 
-**Physical calculator validation is still in progress.** Previous device runs
-reported MemoryError and keyboard/navigation problems. Lazy loading and
-navigation repairs have desktop regression coverage, but desktop tests do not
-establish that every physical Evo workflow works.
-
-On September 20, 2026, the desktop regression suite passed **148 tests**.
-The menu review identified further improvements listed below; they remain
-pending rather than completed features.
 
 ## Install and run
 
@@ -133,22 +125,6 @@ text and general solver links. Those links currently ask for new inputs and
 do not automatically select the question's event. Printed question numbers
 are separate from older `PT` lookup identifiers. Search supports `pretest 24`.
 
-## Known limitations and next work
-
-- Physical key mappings, repeated navigation and peak heap usage need device
-  verification. Desktop key simulations are not hardware evidence.
-- Graph tools mostly supply values, axis labels and drawing instructions,
-  rather than rendered boxplots, histograms or normal density curves.
-- Normal/Z does not calculate general normal areas or inverse percentiles.
-  Find x from z requires a supplied z-score.
-- Frequency statistics, mode conventions, letter shortcuts, Back destinations,
-  retained formatting and question-specific solver links need improvement.
-- Empirical-rule cutoffs currently depend on whether mean/SD were previously
-  entered. More direct question-language navigation is planned.
-- Quiz/practice answers are examples; opening a solver is a separate workflow
-  and does not automatically supply the example values.
-- All seven home branches have been reviewed. Question Words pages 2-4 still
-  need dedicated review. Proposed menu fixes are not yet implemented.
 
 ## Source layout
 
@@ -168,22 +144,6 @@ are separate from older `PT` lookup identifiers. Search supports `pretest 24`.
 All runtime source files are below 64 KiB. File size does not measure live
 heap: imports and objects need additional memory. Topic modules load on demand
 and are released through the shared call mechanism.
-
-## Desktop verification
-
-Run from the repository root:
-
-```sh
-python -B -m unittest discover -s tests
-```
-
-The latest run passed **148 tests** in approximately 15 seconds. Coverage
-includes arithmetic, selected end-to-end menu flows, input simulation,
-question routes, paging and module cleanup. It does not establish full device
-compatibility or independently verify every printed worked answer.
-
-The public repository includes source, tests and this README. Local planning,
-audit documents and saved test-result logs are intentionally excluded.
 
 ## License
 
