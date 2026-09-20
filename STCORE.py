@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STCORE.py - shared input, display and exact arithmetic
 # Shared by STAT1 and the on-demand topic/reference modules.
 

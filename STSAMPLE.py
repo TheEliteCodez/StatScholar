@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Sampling without replacement; no general counting or binomial imports.
 import STCORE as c
 from STCOMB import ncr

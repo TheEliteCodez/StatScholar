@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Multiple observations with one mean/SD; loaded only for this report.
 import STCORE as c
 

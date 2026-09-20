@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 """Desktop test adapter for the modular runtime; never transfer this file."""
 import importlib
 MODULE_NAMES = ('STBINFO','STSAMPLE','STPRE','STPRE1','STPRE2','STPRE3','STFINITE','STZLIST','STPAGE','STEXPER','STMDICE','STQUIZ5','STVENN','STQUIZ4','STQUIZ3','STQUIZ','STAT1','STCORE','STDESC','STPROB','STDICE','STBINOM','STCOUNT',

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Cards, roulette, spinner and die/coin, loaded separately.
 import STCORE
 

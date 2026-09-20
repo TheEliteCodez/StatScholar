@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STFIND - on-demand reference module.
 import STCORE
 

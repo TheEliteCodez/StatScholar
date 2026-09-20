@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STGRAPH - loaded only when needed.
 import STCORE
 from STDMATH import *

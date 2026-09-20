@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STDESC - compact legacy descriptive solvers.
 import STCORE
 

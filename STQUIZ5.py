@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Quiz 5 text and direct solver links; loaded only when selected.
 import STCORE as c
 

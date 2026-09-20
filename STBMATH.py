@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STBMATH - loaded on demand.
 import STCORE
 import math

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 import contextlib
 from fractions import Fraction
 import io

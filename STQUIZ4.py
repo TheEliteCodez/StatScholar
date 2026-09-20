@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Quiz 4 guide and direct solver entry points.
 import STCORE as c
 

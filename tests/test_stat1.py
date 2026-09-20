@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 """Desktop verification of the modular calculator runtime."""
 import ast
 import builtins

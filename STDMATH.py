@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STDMATH - loaded only when needed.
 import STCORE
 RAW_LIMIT = 100  # Desktop tested; physical Evo limit pending.

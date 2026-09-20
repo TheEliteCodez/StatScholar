@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STREF - on-demand reference module.
 import STCORE
 

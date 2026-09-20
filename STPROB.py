@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STPROB - solver code; references load separately.
 import STCORE
 

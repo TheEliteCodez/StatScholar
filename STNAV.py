@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Guide/homework navigation loads only when selected.
 import STCORE
 

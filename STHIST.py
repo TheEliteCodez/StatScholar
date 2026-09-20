@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STHIST - loaded only when needed.
 import STCORE
 from STDMATH import *

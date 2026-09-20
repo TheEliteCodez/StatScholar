@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Finite-population model check, separate from binomial arithmetic.
 import STCORE as c
 

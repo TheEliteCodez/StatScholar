@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Small combinatorics shared by dice, binomial and counting.
 
 def factorial(n):

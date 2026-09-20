@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Quiz 3 reference text loads only when selected.
 import STCORE as c
 

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # On-demand course records.
 
 def get_record(qid):

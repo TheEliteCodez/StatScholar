@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Practice source records; no solver constants.
 
 def get_record(qid):

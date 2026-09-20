@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Compact binomial follow-up pages; loaded only after an event is calculated.
 import STCORE as c
 

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STGNEW - expansion guide text, loaded on request.
 import STCORE
 

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Quiz 2 examples and small table tools, loaded only on selection.
 import STCORE as c
 

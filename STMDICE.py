@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Multiple-dice arithmetic and menus, loaded on demand.
 import STCORE
 from STCOMB import ncr

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STDATA - loaded only when needed.
 import STCORE
 from STDMATH import *

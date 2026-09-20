@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STGCNT - compact guide records; only the selected record is decoded.
 import STCORE
 

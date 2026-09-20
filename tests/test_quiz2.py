@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 """Quiz 2 calculations, reusable rows, menu access and numeric paging."""
 import contextlib
 import io

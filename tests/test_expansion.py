@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 """Expansion arithmetic, navigation, and lifecycle acceptance checks."""
 import contextlib
 import io

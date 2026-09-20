@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Binomial reference and parameter screens, loaded after event UI.
 import STCORE as c
 from STBMATH import usual_counts, binomial_exact_event, binomial_exact_ratio, binomial_shape

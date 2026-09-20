@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STBEXTRA - loaded on demand.
 import STCORE
 import math

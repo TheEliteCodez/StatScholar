@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Small numeric text pager; no study definitions loaded.
 import STCORE
 

@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Counts, Venn regions and repeated selections; loaded on demand.
 import STCORE as c
 

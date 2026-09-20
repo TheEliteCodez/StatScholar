@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STSTUDY - on-demand reference module.
 import STCORE
 

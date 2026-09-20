@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # STNORM - loaded only when needed.
 import STCORE
 from STCORE import radd, rmul, rdiv

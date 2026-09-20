@@ -1,3 +1,4 @@
+# Author: TheEliteCodez
 # Two-dice events only; other experiments load separately.
 import STCORE
 
