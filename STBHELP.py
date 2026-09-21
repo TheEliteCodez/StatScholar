@@ -36,16 +36,18 @@ def parameter_results(kind,n,p):
         c.results('BINOMIAL > DEFINE',[('n',n),('p',p),('X','COUNT OF TARGET OUTCOMES')],['SUCCESS=OUTCOME COUNTED, NOT NECESSARILY GOOD', 'FIXED n; TWO OUTCOMES; SAME p; INDEPENDENT'])
     else:
         mu,sd,lo,hi,low,high,first=usual_counts(n,p)
-        c.results('BINOMIAL > MEAN / USUAL',[('MEAN',mean),('SD',sd),('VARIANCE',variance),('MIN USUAL',lo),('MAX USUAL',hi),('MIN USUAL COUNT',str(low)),('MAX USUAL COUNT',str(high)),('FIRST UNUSUALLY HIGH',str(first) if first is not None else 'NONE')],['mu=np; SD=SQRT(np(1-p))', 'USUAL=mu +/- 2 SD', 'INTEGER LIMITS ROUND INWARD'])
+        cache={}
+        c.call('STBINFO','show_answer',n,p,None,None,'BINOMIAL > MEAN / USUAL',None,(1,20),cache)
         raw=input('CHECK COUNT (ENTER=SKIP): ').strip()
         if raw:
-            position=c.range_relation(c.as_ratio(raw),mean,variance)
-            c.results('BINOMIAL > UNUSUAL',[('UNUSUAL','YES' if position else 'NO'),('CLASSIFICATION','UNUSUALLY LOW' if position<0 else 'UNUSUALLY HIGH' if position>0 else 'NOT UNUSUAL')],['COMPARE USING UNROUNDED BOUNDARIES'])
+            c.call('STBINFO','show_answer',n,p,('=',c.as_ratio(raw),0),None,'BINOMIAL > COUNT CHECK',None,(1,20),cache)
         if kind=='usual':
             c.results('BINOMIAL > EXACT TAILS',[('P(INSIDE)',binomial_exact_event(n,p,('[]',low,high))),('P(BELOW)',binomial_exact_event(n,p,('<',low,0))),('P(ABOVE)',binomial_exact_event(n,p,('>',high,0)))],['TAIL PROBABILITY IS NOT POINT PROBABILITY'])
 
 
-def event_unusual(answer,event):
-    raw=input('PROBABILITY CUTOFF (ENTER=.05): ').strip()
-    threshold=c.as_ratio(raw or '.05')
+def event_unusual(answer,event,threshold=(1,20)):
+    raw=input('PROBABILITY CUTOFF (ENTER='+c.exact_text(threshold)+'): ').strip()
+    threshold=c.as_ratio(raw) if raw else threshold
     c.results('BINOMIAL > EVENT UNUSUAL',[('EVENT',event),('P(EVENT)',answer),('CUTOFF',threshold),('UNUSUAL','YES' if c.compare_exact(answer,threshold)<=0 else 'NO')],['COMPARE THE WHOLE REQUESTED EVENT TO THE PROBABILITY CUTOFF.','FEW: LOWER TAIL; MANY: UPPER TAIL.','AN EXACT POINT PROBABILITY IS NOT A TAIL TEST.','THIS IS NOT THE MEAN +/- 2 SD RULE.','EVIDENCE UNDER THE MODEL; NOT PROOF THE CLAIM IS FALSE.'])
+
+    return threshold

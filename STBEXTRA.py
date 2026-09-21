@@ -61,7 +61,11 @@ def shape_session():
 def binomial_conditions():
     conditions = [('IS THE NUMBER OF TRIALS FIXED?', 'FIXED NUMBER OF TRIALS NEEDED'), ('IS EACH RESULT SUCCESS OR NOT?', 'NEED TWO RESULT CATEGORIES'), ('IS THE CHANCE THE SAME EACH TIME?', 'SUCCESS CHANCE MUST STAY SAME'), ('ARE TRIALS INDEPENDENT OR APPROX SO?', 'DEPENDENT TRIALS NOT BINOMIAL')]
     for prompt, reason in conditions:
-        if not STCORE.yesno(prompt):
+        answer=STCORE.menu(prompt,[('1','YES'),('2','NO'),('3','UNSURE')],('Y','N'))
+        if answer in ('0','3'): return None
+        if answer in ('2','N'):
             STCORE.results('B01', [('BINOMIAL', 'NO')], [reason, 'SMALL BOX, NO REPLACEMENT: R07'])
-            return
+            return False
     STCORE.results('B01', [('BINOMIAL', 'YES')], ['X=NUMBER OF SUCCESSES', 'n=TRIALS; p=CHANCE EACH', 'REPLACED + SHUFFLED: INDEPENDENT', 'LARGE POP, SMALL SAMPLE:', 'MAY BE APPROX INDEPENDENT', 'FINITE N,n CHECK: BINOMIAL PAGE2 OPTION7'])
+
+    return True

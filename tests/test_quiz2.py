@@ -21,7 +21,7 @@ import STCORE as c
 class Quiz2(unittest.TestCase):
     def test_percent_home_and_changed_numbers(self):
         for total,percent,answer in [('75','45%','33.7500'),('120','.25','30.0000')]:
-            out,_=flow(STAT1.main,['4','7',total,percent,'0','0'])
+            out,_=flow(STAT1.main,(['4','7',total,percent,'0','0'])+['0'])
             self.assertIn('ANSWER='+answer,out)
 
     def test_hurricane_table_and_events(self):
@@ -60,7 +60,7 @@ class Quiz2(unittest.TestCase):
     def test_frequency_home_reuses_rows_and_numeric_table_pages(self):
         inputs=['4','2','5','1','109','2','72','3','71','4','18','5','3',
                 '1','4','1','1','2','0','4','3','1','0','0','0']
-        out,prompts=flow(STAT1.main,inputs)
+        out,prompts=flow(STAT1.main,inputs+['0'])
         self.assertEqual(prompts.count('NUMBER OF ROWS: '),1)
         self.assertIn('PAGE 2/',out)
         self.assertIn('PROPORTION=0.3370',out)

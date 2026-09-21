@@ -17,14 +17,15 @@ def experiment_session(kind): return STCORE.call('STEXPER','experiment_session',
 def experiment_indices(outcomes,kind,query): return STCORE.call('STEXPER','experiment_indices',outcomes,kind,query)
 
 def pair_matches(pair,event):
-    kind,op,value=event
+    kind,op,value=event[:3]
+    upper=event[3] if len(event)>3 else 0
     a,b=pair
     if kind=='sumodd': return (a+b)%2==1
     if kind=='sumeven': return (a+b)%2==0
     if kind=='anyeven': return a%2==0 or b%2==0
-    if kind=='sum': return STCORE.event_match(a+b,op,value)
-    if kind=='first': return STCORE.event_match(a,op,value)
-    if kind=='second': return STCORE.event_match(b,op,value)
+    if kind=='sum': return STCORE.event_match(a+b,op,value,upper)
+    if kind=='first': return STCORE.event_match(a,op,value,upper)
+    if kind=='second': return STCORE.event_match(b,op,value,upper)
     if kind=='doubles': return a==b
     if kind=='even': return a%2==0 and b%2==0
     if kind=='odd': return a%2==1 and b%2==1
@@ -52,21 +53,32 @@ def read_pair_event():
     op='='
     value=0
     if key in ('1','2','3'):
-        op=STCORE.choice_pages('DICE > WORDS',((('EXACTLY','='),('AT MOST','<='),('AT LEAST','>='),('LESS THAN','<'),('MORE THAN','>')),))
+        op=STCORE.choice_pages('DICE > WORDS',((('EXACTLY','='),('AT MOST','<='),('AT LEAST','>='),('LESS THAN','<'),('MORE THAN','>'),('BETWEEN','[]')),))
         if op is None: return None
+        if op=='[]':
+            event=STCORE.call('STBWORD','read_event',op)
+            return (kind,)+event if event else None
         value=STCORE.read_int('VALUE: ')
     elif key=='7': value=STCORE.read_size('FACE (1..6): ',6)
     return kind,op,value
 
 
-def dice_session():
+def dice_session(word=None):
     n=STCORE.read_int('HOW MANY FAIR 6-SIDED DICE: ')
+    pending={'and':'2','or':'3'}.get(word) if n==2 else None
+    if word and word not in ('and','or'): STCORE.call('STMDICE','word_event',n,word)
     if n!=2:
         solver_multi_dice(n)
         return
     while True:
-        key=STCORE.menu('TWO DICE > QUESTION',[('1','ONE EVENT / SUM / FIRST'),('2','A AND B / BOTH'),('3','A OR B'),('4','SAMPLE SPACE'),('5','FACE COUNTS / MORE EVENTS')])
+        key=pending or STCORE.menu('TWO DICE > QUESTION',[('1','ONE EVENT / SUM / FIRST'),('2','A AND B / BOTH'),('3','A OR B'),('4','SAMPLE SPACE'),('5','FACE COUNTS / MORE EVENTS'),('6','CHANGE DICE COUNT')])
+        pending=None
         if key=='0': return
+        if key=='6':
+            n=STCORE.read_int('NUMBER OF DICE: ')
+            if n!=2: solver_multi_dice(n)
+            n=2
+            continue
         if key=='4':
             STCORE.call('STPAGE','text_pages','TWO DICE > 36 OUTCOMES','FIRST,SECOND: '+', '.join('('+str(a)+','+str(b)+')' for a in range(1,7) for b in range(1,7)))
             continue

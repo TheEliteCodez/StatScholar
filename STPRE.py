@@ -22,9 +22,41 @@ ROUTES={
 'study':('STSTUDY','study_menu'),'raffle':('STCOUNT','raffle_session'),
 'dotplot':('STGRAPH','dotplot_session'),'distribution':('STCOUNT','distribution_session')}
 
+ROUTES.update({
+'usual':('STNORM','normal_session',None,None,'5'),
+'zscore':('STNORM','normal_session',None,None,'1'),
+'observations':('STNORM','normal_session',None,None,'8'),
+'one':('STBWORD','wording_session','one'),
+'full':('STBWORD','wording_session','full'),
+'atmost':('STBWORD','wording_session','<='),
+'grouped':('STHIST','histogram_session',None,True),
+'population':('STSTUDY','population_classifier'),
+'design':('STSTUDY','experiment_classifier'),
+'significance':('STSTUDY','significance_menu')})
+LABELS={'basic':'CALCULATE PROPORTION','parameter':'PARAMETER OR STATISTIC',
+'measurement':'IDENTIFY DATA TYPE','sampling':'IDENTIFY SAMPLING METHOD',
+'relative':'COMPARE TWO Z-SCORES','normal':'Z / USUAL / AXES',
+'compare':'COMPARE LISTS / ALL PARTS','empirical':'EMPIRICAL RULE PERCENT',
+'lln':'LAW OF LARGE NUMBERS','binomial':'BINOMIAL / SAME-DATA PARTS',
+'venn':'VENN / OR / ONLY / GIVEN','table':'TABLE / CONDITIONAL / DRAWS',
+'selection':'ALL SELECTED / REPLACEMENT','finite':'FINITE SAMPLE / 5% CHECK',
+'conditions':'IS THIS BINOMIAL?','valid':'CERTAIN / IMPOSSIBLE',
+'histogram':'HISTOGRAM DRAWING VALUES','dice':'DICE EVENTS / OUTCOMES',
+'study':'STUDY QUESTIONS','raffle':'LOTTERY EXPECTED VALUE',
+'dotplot':'DOTPLOT COUNTS','distribution':'X/P TABLE / ALL PARTS',
+'usual':'MIN / MAX USUAL; CHECK x','zscore':'CALCULATE Z-SCORE',
+'observations':'CHECK SEVERAL OBSERVATIONS','one':'AT LEAST ONE',
+'full':'FULL DISTRIBUTION','atmost':'AT MOST / LOWER TAIL',
+'grouped':'GROUP FREQUENCIES','population':'POPULATION / SAMPLE',
+'design':'OBSERVATIONAL / EXPERIMENT','significance':'SIGNIFICANCE / IMPORTANCE'}
+TARGETS={5:'usual',11:'one',14:'full',18:'grouped',23:'zscore',24:'observations',25:'population,design,significance',29:'atmost',30:'atmost,usual_binomial'}
+ROUTES['usual_binomial']=('STBWORD','wording_session','usual')
+LABELS['usual_binomial']='BINOMIAL USUAL / TAILS'
+
 
 def get_record(number):
-    return c.call('STPRE'+str((number-1)//10+1),'get_record',number)
+    title,body,route=c.call('STPRE'+str((number-1)//10+1),'get_record',number)
+    return title,body,TARGETS.get(number,route)
 
 
 def pretest_menu(first=None):
@@ -36,9 +68,12 @@ def pretest_menu(first=None):
         while True:
             title,body,route=get_record(number)
             routes=route.split(',')
-            action=c.menu('PRETEST Q'+key,[('1','WORKED ANSWER / CAVEATS')]+[(str(i+2),'OPEN '+name.upper()) for i,name in enumerate(routes)])
+            action=c.menu('PRETEST Q'+str(number),[('1','WORKED EXAMPLE')]+[(str(i+2),LABELS[name]) for i,name in enumerate(routes)]+[('90','PREVIOUS QUESTION'),('91','NEXT QUESTION')])
+            c._menu_pages['PRACTICE TEST 1 / Q1-30']=(number-1)//5
             if action=='0': break
-            if action=='1': c.call('STPAGE','text_pages','PRETEST Q'+key,body)
+            if action in ('90','91'):
+                number=max(1,min(30,number+(-1 if action=='90' else 1)));key=str(number);continue
+            if action=='1': c.call('STPAGE','text_pages','PRETEST Q'+str(number),body)
             else:
                 target=ROUTES[routes[int(action)-2]]
                 body=None
@@ -51,6 +86,7 @@ def search(query):
         return []
     if query.startswith('pretest') and query[7:].isdigit():
         query='pretest '+query[7:]
+    query=query.replace('defective boards','circuit boards').replace('defective cameras','defective').replace('birthweights','birth weights')
     words=query.split()
     if words and words[-1].isdigit() and ('pretest' in words or 'practice' in words):
         number=int(words[-1])

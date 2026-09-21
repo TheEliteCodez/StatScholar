@@ -54,7 +54,7 @@ class BinomialFollowup(unittest.TestCase):
         text=output.getvalue()
         self.assertEqual(entry.call_count,3)
         self.assertEqual(text.count('ANSWER=0.3151'),2)
-        self.assertIn('8-14/',text)
+        self.assertIn('1-7/7',text)
         self.assertIn('MEAN=0.5000',text)
         self.assertIn('MAX USUAL=1.8784',text)
 
@@ -63,9 +63,9 @@ class BinomialFollowup(unittest.TestCase):
             views=[]
             with patch.object(c,'HAS_KEYS',False),patch.object(c,'view',side_effect=lambda title,lines:views.append(list(lines))),patch('builtins.input',side_effect=['10','.05']+event_input+['0']),contextlib.redirect_stdout(io.StringIO()):
                 wording.wording_session(op)
-            lines=views[0]
-            self.assertTrue(lines[0].startswith('ANSWER='))
-            self.assertEqual(lines[7],'MEAN / SD / USUAL LIMITS')
+            self.assertTrue(views[0][0].startswith('ANSWER='))
+            self.assertEqual(views[1][0],'MEAN / SD / USUAL LIMITS')
+            lines=[line for page in views for line in page]
             self.assertIn('LOWER FENCE=-1.5',lines)
             self.assertIn('REQUESTED EVENT / PROBABILITY',lines)
 

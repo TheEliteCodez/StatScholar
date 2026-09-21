@@ -15,7 +15,7 @@ questions from Practice Test 1.
 
 ## Install and run
 
-1. Transfer all **58 `ST*.py` files** to the calculator's Python environment
+1. Transfer all **59 `ST*.py` files** to the calculator's Python environment
    using its supported transfer workflow. Preserve their filenames and make
    the modules available together.
 2. Restart the Python environment after replacing modules.
@@ -46,9 +46,9 @@ python -B STAT1.py
 - Result menus offer decimal places, reduced fractions, percentages and
   calculation steps where supported.
 
-Some actions still use letter IDs. On the physical numeric scan path, empty
-Enter opens `CHOICE / ID` text entry. Numeric replacements are planned.
-Back destinations and page retention are not yet consistent across all branches.
+Menu actions have numeric choices, including actions formerly labeled with
+letters. Returning from a solver preserves the parent menu page. Right/Left
+remain next/previous controls; legacy letter choices still work in text input.
 
 ## Home menu
 
@@ -77,8 +77,9 @@ formatting, an unusual-event check and statistics.
 
 Two-SD unusual counts, IQR outliers and low event probability are distinct
 criteria. Model quartiles are discrete binomial quantiles, not raw-data
-median-of-halves quartiles. Follow-up event checks currently use .05 even if
-the separate unusual-event tool uses another threshold; reconciliation is pending.
+median-of-halves quartiles. The chosen event threshold and answer format carry
+across parts of the same session. Probability appears first; model quartiles
+are calculated only when their page is opened.
 
 Example: accept a shipment if at most one of 23 tablets is defective, with
 5% defects. Choose **2 -> 2 At most**, enter `23`, `5%`, and `1`.
@@ -87,42 +88,58 @@ approximation based on treating draws as independent.
 
 ### Defective items drawn from a box
 
-Choose **Home 2 -> next page -> 6 Without replacement**. Enter total items N,
+Choose **Home 3 -> 14 Defective items / box**, then choose without replacement,
+with replacement, or a supplied probability table. For without replacement, enter total items N,
 defective/target items K, and number selected n. The session supports event
 probabilities, a distribution, mean/variance/SD and further parts with those inputs.
 
 For 8 cameras, 5 defective, and 2 drawn without replacement, P(X=0,1,2) is
-respectively **3/28, 15/28, 5/14**, with mean **1.25**. A direct box/defect
-choice under Probability is planned.
+respectively **3/28, 15/28, 5/14**, with mean **1.25**.
 
 ### Five-number summary and more
 
 Choose **Home 4 -> 1 Raw list of numbers**. The initial report includes n, sum,
 mean, sample variance/SD, min, Q1, median, Q3, max, mode, range, IQR and midrange.
+It also includes fences, whiskers, outliers and usual limits.
 The retained-data menu adds:
 
 - **2 Z-score a value** and **3 Usual / unusual**.
 - **4 Outliers** for fences, actual outliers and whisker endpoints.
 - **5 Graph this data** for plotting information.
 - **6 Compare another list** and **7 Change data**.
+- **8 Sample / population**, **9 Edit one value**, and **10 Check all values**.
 
 Quartiles use medians of sorted halves, omitting the center observation for
 odd n. The raw entry limit is 100 observations in source; this is not a claim
 that every 100-value workflow fits the physical calculator's heap.
 
-Value + Frequency currently reports mean, median and mode rather than the
-complete raw-list summary. Full frequency/raw parity, population variance/SD
-and individual-entry editing are pending.
+Value + Frequency provides the full summary without expanding repeated
+observations in memory. Its retained-data menu includes editing a row,
+sample/population variance and SD, z-scores, usual checks, and frequency events.
+Both input forms use the same mode convention: no repeated value, no peak,
+or more than two modes gives DNE.
+
+### Dice and experiments
+
+**Home 3 -> 4** opens dice, coins, cards and other experiments. Guided
+event menus cover sums, faces, AND/OR and complements; typed expressions
+remain available for more complex events. Multiple-dice sums support strict
+and inclusive bounds, including Between. Fair coin counts reuse the binomial
+workflow with p = 1/2. Graph actions provide drawing values and instructions.
 
 ### Study and practice
 
 **Home 6 -> 3 -> 2** opens simple random, random, systematic, convenience,
 stratified, cluster and bias definitions. Long definitions use numbered pages.
-Measurement levels, errors, significance and outliers are also available.
+Measurement levels, errors, significance, empirical rule and outliers are
+also available. Sampling identification separates the selection procedure from
+possible bias. Applicable definitions offer a matching calculation action.
 
 Home **7** uses printed Practice Test 1 numbering. Each question has worked
-text and general solver links. Those links currently ask for new inputs and
-do not automatically select the question's event. Printed question numbers
+text and question-specific solver actions, including At least one, At most,
+full binomial distributions and several z-scores. Solvers ask for your inputs;
+they do not silently insert example numbers. Previous/Next question actions
+and the retained question-list page make returning to nearby questions easier. Printed question numbers
 are separate from older `PT` lookup identifiers. Search supports `pretest 24`.
 
 

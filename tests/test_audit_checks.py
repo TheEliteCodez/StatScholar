@@ -139,15 +139,15 @@ class AuditRegressions(unittest.TestCase):
         fixtures={
           'F05':(['2','1','1','3','1','1'],'MEAN=2.0000'),
           'F06':(['2','1','1','3','1','1'],'MEDIAN=2.0000'),
-          'ROULETTE':(['2','36','=00','3','1','BACK'],'1/38'),
-          'C05':(['6','3 OR H','1','BACK'],'0.5833'),
+          'ROULETTE':(['2','36','6','=00','3','1','0'],'1/38'),
+          'C05':(['6','6','3 OR H','1','0'],'0.5833'),
           'CATEGORY':(['2','YES','1','NO','3','1','1','0'],'0.2500'),
           'CONCEPT':([], 'EXPECTED'),
           'P13':(['1/4','1'],'YES'),
-          'CARDS':(['4S','1','BACK'],'0.0192'),
+          'CARDS':(['6','4S','1','0'],'0.0192'),
           'P14':(['2','2','A','B','C','D','1','2','3','4','1','1','1','0'],'0.1000'),
           'P12':(['2','2','A','B','C','D','1','2','3','4','1','1','1','0'],'0.1000'),
-          'SPINNER':(['2','1','1','2','3','EVEN','1','BACK'],'0.7500'),
+          'SPINNER':(['2','1','1','2','3','6','EVEN','1','0'],'0.7500'),
           'P10':(['.6','.63','.43','1'],'0.6825'),
           'P11':(['.57','.69','.46','1'],'INDEPENDENT=NO'),
           'R05':(['3','.1','.2','.2','1'],'0.5000'),
@@ -198,7 +198,7 @@ class AuditRegressions(unittest.TestCase):
           'C03':(['5','2'],'10/1'),'C04':(['5','2'],'20/1')}
         for gid,(inputs,expected) in fixtures.items():
             with self.subTest(gid=gid):
-                out,_=capture(s.main,[gid]+inputs+['3','2','4','4','2','1']+([''] if gid in ('S10','S11') else [])+['0'])
+                out,_=capture(s.main,[gid]+inputs+['3','2','4','4','2','1']+([''] if gid in ('S10','S11','G03') else [])+['0'])
                 self.assertIn(expected,str(out))
                 self.assertIn('%',str(out))
 
@@ -255,9 +255,9 @@ class AuditRegressions(unittest.TestCase):
             from test_support import MODULE_NAMES
             for name in MODULE_NAMES:
                 (Path(folder)/(name+'.py')).write_bytes(Path(__file__).resolve().parent.parent.joinpath(name+'.py').read_bytes())
-            cases=[(['Q001','1','4','3','1','6','2','9','6','12','5','d','u','b','1','0','0'],['MEAN=9.2143']),
-                   (['Q038','1','8','25%','b','1','1','1','2','b','1','0','0','0'],['X~Binomial(8,0.25)','P=0.3115']),
-                   (['B13','121','.8','4','d','d','d','d','b','1','88','b','1','0','0'],['USUAL INTEGERS=88..105','UNUSUAL=NO'])]
+            cases=[(['Q001','1','4','3','1','6','2','9','6','12','5','d','u','b','0','0'],['MEAN=9.2143']),
+                   (['Q038','1','8','25%','b','1','1','2','b','0','0','0'],['X~Binomial(8,0.25)','P=0.3115']),
+                   (['B13','121','.8','4','d','d','d','d','b','88','b','0','0'],['USUAL INTEGERS=88..105','UNUSUAL=NO'])]
             for inputs,expected in cases:
                 run=subprocess.run([sys.executable,'-B',str(runtime)],input='\n'.join(inputs)+'\n',
                                    text=True,capture_output=True,cwd=folder,timeout=10)
@@ -280,7 +280,7 @@ class AuditRegressions(unittest.TestCase):
             # TI launches by importing. Simulate only its key API, not hardware.
             code="import sys,types; ti=types.ModuleType('ti_system'); ti.wait_key=lambda:(_ for _ in ()).throw(AssertionError('Do not use legacy wait_key')); sys.modules['ti_system']=ti; import STAT1"
             run=subprocess.run([sys.executable,'-B','-c',code],
-                               input='Q032\n1\nY\nY\nY\nY\n0\n1\n0\n0\n',
+                               input='Q032\n1\nY\nY\nY\nY\n0\n0\n0\n',
                                text=True,capture_output=True,cwd=folder,timeout=10)
             self.assertEqual(run.returncode,0,run.stderr)
             self.assertIn('BINOMIAL=YES',run.stdout)
@@ -295,7 +295,7 @@ class AuditRegressions(unittest.TestCase):
             for field in guide:
                 self.assertEqual(s.get_guide(gid,field),guide[field],(gid,field))
         self.assertEqual(hashlib.sha256(json.dumps(guides,sort_keys=True).encode()).hexdigest(),
-                         '8d5695bbd5954a95fe872fcec0dbcd5c442727daae7bab3ad520c8511d89563d')
+                         'c4fde8797669e6c18ec8640d3bc029da2f283a7ca583778b8ba450a1a4cf97d2')
         self.assertEqual(len(s.STARTERS),43)
 
     def test_lazy_startup_and_repeated_topic_release(self):
@@ -316,11 +316,11 @@ with contextlib.redirect_stdout(io.StringIO()):
 builtins.__import__=original_import
 assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
 checks=[
- ('STDESC',['F05','2','1','1','3','1','b','1','0']),
- ('STPROB',['P01','1','3','b','1','0']),
- ('STEXPER',['3','4','5','2','36','ODD','b','1','BACK','0']),
- ('STBEXTRA',['Q032','1','Y','Y','Y','Y','b','1','0','0']),
- ('STSAMPLE',['R07','8','5','2','b','1','0','0']),
+ ('STDESC',['F05','2','1','1','3','1','b','0']),
+ ('STPROB',['P01','1','3','b','0']),
+ ('STEXPER',['3','4','5','2','36','6','ODD','b','0','0','0','0']),
+ ('STBEXTRA',['Q032','1','Y','Y','Y','Y','b','0','0']),
+ ('STSAMPLE',['R07','8','5','2','b','0','0']),
  ('STGDESC',['S01','2','b','0','0']),
  ('STGPROB',['Q003','3','2','b','0','0','0']),
  ('STGBIN',['Q032','3','2','b','0','0','0']),
@@ -439,8 +439,8 @@ print('LAZY_STARTUP_AND_RELEASE=PASS')
         # Bound checking occurs before any row/sector storage is constructed.
         fixtures=[(s.frequency_session,['26','1','2','1','1']),
                   (s.category_session,['61','1','ONLY','1','0']),
-                  (lambda:s.experiment_session('coin'),['31','1','BACK']),
-                  (lambda:s.experiment_session('spinner'),['61','1','1','1','BACK']),
+                  (lambda:s.experiment_session('coin'),['31','1','0']),
+                  (lambda:s.experiment_session('spinner'),['61','1','1','1','0']),
                   (s.two_way_session,['11','1','11','1','ROW','COLUMN','1','0']),
                   (s.distribution_session,['26','1','0','1','0'])]
         for fun,answers in fixtures:capture(fun,answers)

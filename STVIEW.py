@@ -45,28 +45,46 @@ def view(title, lines):
                 top += 1
             elif k=='enter': return
         elif k in ('b', 'esc'):
-            return
+            return 'exit'
 
 def menu(title, items, shortcuts=(), other_shortcuts=(), page_size=5):
-    page = 0
+    items=list(items)
+    for shortcut in shortcuts if len(shortcuts)<=3 else ():
+        if shortcut in ('C','S') and not any(k==shortcut for k,label in items):
+            items.append((shortcut, 'CHANGE DATA' if shortcut=='C' else 'SELECT MANY'))
+    number=max([int(k) for k,label in items if k.isdigit()]+[0])+1
+    aliases={}
+    shown_items=[]
+    for key,label in items:
+        shown=key
+        if not key.isdigit() and key not in ('N','P'):
+            shown=str(number); number+=1; aliases[shown]=key
+        shown_items.append((shown,label))
+    page=min(c._menu_pages.get(title,0),(len(items)-1)//page_size)
     while True:
         c.heading(title)
-        for key, label in items[page * page_size:(page + 1) * page_size]:
+        for key, label in shown_items[page * page_size:(page + 1) * page_size]:
             shown={'N':'RIGHT','P':'LEFT'}.get(key,key) if c.HAS_KEYS else {'N':'ENTER','P':'-'}.get(key,key)
             print(shown + ' ' + label)
         print((('0 EXIT  ENTER: TYPE ID' if c.HAS_KEYS else '0 EXIT / TYPE GUIDE OR Q ID') if title in ('STAT1', 'STAT1 QUICK SOLVE') else ('LEFT / 0 BACK' if c.HAS_KEYS and page==0 else '0 BACK')) + (((' RIGHT NEXT' if page==0 else ' RIGHT NEXT LEFT PREV') if c.HAS_KEYS else ' ENTER NEXT - PREV') if len(items) > page_size else ''))
         key = c.read_choice()
         if key == '0':
+            c._menu_pages.pop(title,None)
             return key
         if key in ('N','P') and any(key==item[0] for item in items):
             return key
         if key == 'N' and len(items) > page_size:
             page = (page + 1) % ((len(items) + page_size - 1) // page_size)
         elif key == 'P':
-            if page==0: return '0'
+            if page==0:
+                c._menu_pages.pop(title,None)
+                return '0'
             page-=1
-        elif any((key == item[0] for item in items)):
-            return key
+        elif key in aliases or any((key == item[0] for item in items)):
+            if len(c._menu_pages)>32: c._menu_pages.clear()
+            selected=aliases.get(key,key)
+            c._menu_pages[title]=next(i//page_size for i,item in enumerate(items) if item[0]==selected)
+            return selected
         elif key in shortcuts or key in other_shortcuts or (title == 'STAT1' and key.startswith('PT') and key[2:].isdigit() and (1 <= int(key[2:]) <= 24)):
             return key
 
@@ -76,7 +94,7 @@ def results(title, answers, steps=None, default_places=4):
         lines = []
         for label, value in answers:
             lines.append(label + '=' + c.answer_text(value, style, places))
-        if c.view(title, lines)=='back': return
+        if c.view(title, lines) in ('back','exit'): return
         key = c.menu('ANSWER FORMAT', [('1', 'DONE / NEXT PART'), ('2', 'DECIMAL PLACES'), ('3', 'REDUCED FRACTIONS'), ('4', 'PERCENT PLACES'), ('5', 'SHOW METHOD')])
         if key in ('0', '1'):
             return
@@ -101,7 +119,9 @@ def paged_results(title, count, row_at, steps=None):
         for i in range(start, end):
             label, value = row_at(i)
             lines.append(label + '=' + c.answer_text(value, style, places))
-        if c.view(title, ['ROWS ' + str(start + 1) + '..' + str(end) + '/' + str(count)] + lines)=='back':
+        navigation=c.view(title, ['ROWS ' + str(start + 1) + '..' + str(end) + '/' + str(count)] + lines)
+        if navigation=='exit': return
+        if navigation=='back':
             if start==0: return
             start=max(0,start-c.VIEW_LINES)
             continue
@@ -124,7 +144,7 @@ def paged_results(title, count, row_at, steps=None):
             places = max(0, c.read_int('DECIMAL PLACES: '))
 
 def choice_pages(title, pages):
-    page = 0
+    page = min(c._menu_pages.get(title,0),len(pages)-1)
     while True:
         c.heading(title)
         for i, (label, token) in enumerate(pages[page]):
@@ -132,11 +152,16 @@ def choice_pages(title, pages):
         print(('LEFT BACK / RIGHT NEXT' if page==0 else 'LEFT PREV / RIGHT NEXT') if c.HAS_KEYS else '0 BACK ENTER NEXT - PREVIOUS')
         key = c.read_choice()
         if key == '0':
+            c._menu_pages.pop(title,None)
             return None
         if key == 'N':
             page = (page + 1) % len(pages)
         elif key == 'P':
-            if page==0: return None
+            if page==0:
+                c._menu_pages.pop(title,None)
+                return None
             page-=1
         elif key.isdigit() and 1 <= int(key) <= len(pages[page]):
+            if len(c._menu_pages)>32: c._menu_pages.clear()
+            c._menu_pages[title]=page
             return pages[page][int(key) - 1][1]

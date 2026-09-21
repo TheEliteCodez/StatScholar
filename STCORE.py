@@ -85,7 +85,7 @@ def read_int(prompt):
     while True:
         try:
             return int(input(prompt))
-        except:
+        except ValueError:
             print("ENTER WHOLE NUMBER")
 
 
@@ -311,6 +311,9 @@ def answer_text(value, style="D", places=4):
     return fixed(value, places)
 
 
+_menu_pages = {}
+
+
 def menu(title, items, shortcuts=(), other_shortcuts=(), page_size=5):
     return call('STVIEW','menu',title,items,shortcuts,other_shortcuts,page_size)
 
@@ -355,7 +358,7 @@ def event_input(binomial=False):
 # A topic and its dependencies live only for the active task.
 import sys
 import gc
-TOPIC_MODULES = ('STBINFO','STSAMPLE','STPRE','STPRE1','STPRE2','STPRE3','STFINITE','STZLIST','STVIEW','STNAV','STINDEX','STPAGE','STEXPER','STMDICE','STQUIZ5','STVENN','STQUIZ4','STQUIZ3','STQUIZ','STDESC','STPROB','STDICE','STBINOM','STCOUNT',
+TOPIC_MODULES = ('STDEFS','STBINFO','STSAMPLE','STPRE','STPRE1','STPRE2','STPRE3','STFINITE','STZLIST','STVIEW','STNAV','STINDEX','STPAGE','STEXPER','STMDICE','STQUIZ5','STVENN','STQUIZ4','STQUIZ3','STQUIZ','STDESC','STPROB','STDICE','STBINOM','STCOUNT',
                  'STGDESC','STGPROB','STGDICE','STGBIN','STGCNT','STREF','STDMATH','STDATA','STGRAPH',
                  'STNORM','STHIST','STSTUDY','STFIND','STQUEST','STGNEW','STCOMB','STBMATH','STBEXTRA','STBWORD','STBHELP','STWORDS','STPWORD','STPTIDX','STPT1','STPT2','STPT3','STPT4','STQ1','STQ2','STQ3','STQ4','STQ5')
 _call_depth = 0

@@ -27,15 +27,18 @@ def choose_probability(context):
         elif word=='all': c.call('STVENN','selection_session')
         elif word=='venn': c.call('STVENN','venn_session')
         elif word=='dice': context['experiment_tasks']()
-        elif word=='money': c.call('STCOUNT','payoff_tasks')
+        elif word=='money':
+            if 'money_tasks' in context: context['money_tasks']()
+            else: c.call('STCOUNT','money_session')
 
 
 def probability_words(word):
-    c.view('WORDS > '+word.upper(),[{'given':'GIVEN: RESTRICT DENOMINATOR TO THE GIVEN GROUP.','and':'AND/BOTH: INTERSECTION. DO NOT AUTOMATICALLY MULTIPLY.','or':'OR: UNION. SUBTRACT OVERLAP.'}[word]])
-    key=c.menu('PROB > WHAT IS GIVEN?',[('1','COUNTS IN ROWS AND COLUMNS'),('2','P(A), P(B), P(BOTH)'),('3','CHANCES, NO COUNT TABLE'),('4','DICE EVENTS'),('5','TOTAL, GROUP A, B AND BOTH')])
+    key=c.menu('PROB > WHAT IS GIVEN?',[('1','COUNTS IN ROWS AND COLUMNS'),('2','P(A), P(B), P(BOTH)'),('3','CHANCES, NO COUNT TABLE'),('4','DICE EVENTS'),('5','TOTAL, GROUP A, B AND BOTH'),('6','EXPLAIN WORDING')])
+    if key=='6':
+        c.view('WORDS',[{'given':'GIVEN: USE GIVEN GROUP AS DENOMINATOR','and':'AND: BOTH CONDITIONS','or':'OR: EITHER; COUNT OVERLAP ONCE'}[word]]);return
     if key=='1': c.call('STPROB','two_way_session')
     elif key=='2': c.call('STPROB','supplied_session')
-    elif key=='4': c.call('STDICE','dice_session')
+    elif key=='4': c.call('STDICE','dice_session',word if word in ('and','or') else None)
     elif key=='5': c.call('STVENN','venn_session')
     elif key=='3':
         if word=='given': c.call('STPROB','solver_conditional')
@@ -51,6 +54,5 @@ def complement_words(context):
     if key=='1': c.call('STPROB','solver_complement')
     elif key=='2': c.call('STPROB','two_way_session')
     elif key=='3':
-        c.view('NONE IN n TRIALS',['NONE MEANS EXACTLY ZERO.', 'ENTER 0 AT THE CUTOFF PROMPT.'])
-        c.call('STBWORD','wording_session','=')
+        c.call('STBWORD','wording_session','none')
     elif key=='4': context['experiment_tasks']()

@@ -27,7 +27,7 @@ class Quiz3(unittest.TestCase):
         self.assertEqual(normal.usual_classification((1,1),(0,1),(1,4),True),'UNUSUALLY HIGH')
 
     def test_normal_rule_menu_and_reuse(self):
-        out,prompts=flow(app.main,['5','1','7','2','5','42','3','1','36','1','7','1','5','1','36','1','0','0'])
+        out,prompts=flow(app.main,(['5','1','7','2','5','42','3','1','36','1','7','1','5','1','36','1','0','0'])+['0'])
         self.assertIn('UNUSUALLY LOW',out)
         self.assertIn('NOT UNUSUAL',out)
         self.assertEqual(prompts.count('MEAN: '),1)
@@ -36,13 +36,13 @@ class Quiz3(unittest.TestCase):
         urban=['24','23.5','25','27','39','22.5','28','24']
         rural=['18','20','24','24','20','21','22','20']
         # Four original summary result screens, then the new compare option.
-        out,prompts=flow(app.main,['4','6','8']+urban+['8']+rural+['1']*4+['6','1','1','1']+['1']*4+['0','0'])
+        out,prompts=flow(app.main,(['4','6','8']+urban+['8']+rural+['1']*4+['6','1','1','1']+['0','0'])+['0'])
         for value in ['15.9781','37.2719','16.9247','25.3253','39=UNUSUALLY HIGH','UNUSUAL OBSERVATIONS=NONE']:
             self.assertIn(value,out)
         self.assertEqual(prompts.count('NUMBER OF VALUES (1..100): '),2)
 
     def test_plant_axes_no_reentry(self):
-        out,prompts=flow(app.main,['5','7','24.6','21','9','6.4','4.7','1.2','1','1','1','1','0','0'])
+        out,prompts=flow(app.main,(['5','7','24.6','21','9','6.4','4.7','1.2','1','1','1','1','0','0'])+['0'])
         for text in ['z A=0.4000','z B=1.4167','HIGHER RELATIVE=B','z=-3 x=-6.0000','z=3 x=8.3000']:
             self.assertIn(text,out)
         self.assertEqual(prompts.count('x: '),2)

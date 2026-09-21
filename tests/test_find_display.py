@@ -33,7 +33,7 @@ class FindDisplay(unittest.TestCase):
         self.assertIn('0.7000',output)
         for word,module,method in [('median','STDATA','raw_session'),
                                    ('sampling','STSTUDY','sampling_menu')]:
-            with patch.object(c,'view'),patch.object(c,'call') as dispatch:
+            with patch.object(c,'view'),patch.object(c,'menu',return_value='1'),patch.object(c,'call') as dispatch:
                 words.word_route(word)
             dispatch.assert_called_once_with(module,method)
 

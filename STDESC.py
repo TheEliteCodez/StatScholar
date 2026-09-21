@@ -61,7 +61,14 @@ def solver_outlier():
     q3 = STCORE.read_exact('Q3: ')
     iqr = STCORE.radd(q3, (-q1[0], q1[1]))
     distance = STCORE.rmul(iqr, (3, 2))
-    STCORE.results('G03 OUTLIER FENCES', [('IQR', iqr), ('LOW', STCORE.radd(q1, (-distance[0], distance[1]))), ('HIGH', STCORE.radd(q3, distance))], ['Q1-1.5*IQR; Q3+1.5*IQR'])
+    STCORE.results('G03 OUTLIER FENCES', [('IQR', iqr), ('LOWER FENCE', STCORE.radd(q1, (-distance[0], distance[1]))), ('UPPER FENCE', STCORE.radd(q3, distance))], ['Q1-1.5*IQR; Q3+1.5*IQR'])
+    while True:
+        raw=input('CHECK VALUE (ENTER=DONE): ').strip()
+        if not raw: return
+        x=STCORE.as_ratio(raw)
+        low=STCORE.radd(q1,(-distance[0],distance[1]));high=STCORE.radd(q3,distance)
+        STCORE.results('IQR OUTLIER CHECK',[('x',x),('OUTLIER','YES' if STCORE.compare_exact(x,low)<0 or STCORE.compare_exact(x,high)>0 else 'NO')],['VALUES ON FENCES ARE NOT OUTLIERS'])
+
 
 def frequency_stats(rows):
     counts = {}
@@ -84,7 +91,7 @@ def frequency_stats(rows):
     median = STCORE.rdiv(STCORE.rsum(mid), (2, 1))
     peak = max(counts.values())
     modes = [x for x in ordered if counts[x] == peak]
-    if len(modes) == len(ordered) and len(ordered) > 1 or len(modes) > 2:
+    if peak==1 or len(modes) == len(ordered) and len(ordered) > 1 or len(modes) > 2:
         mode = 'DNE'
     else:
         mode = ','.join((STCORE.exact_text(x) for x in modes))

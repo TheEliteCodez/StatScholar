@@ -26,13 +26,16 @@ def words_menu(context):
 def word_route(word,context=None):
     context=context or {}
     if word in ('=','<=','>=','<','>','[]','one'):
-        c.view('WORDS > MEANING',[{'=':'EXACTLY: X=r','<=':'AT MOST: X<=r; INCLUDE r','>=':'AT LEAST: X>=r; INCLUDE r','<':'FEWER THAN: X<r; EXCLUDE r','>':'MORE THAN: X>r; EXCLUDE r','[]':'BETWEEN: CHECK ENDPOINTS','one':'AT LEAST ONE: X>=1'}[word]])
-        key=c.menu('WHAT ELSE IS GIVEN?',[('1','n TRIALS + ONE p'),('2','X / P(X) TABLE'),('3','WITHOUT REPLACEMENT'),('4','DICE / COIN / CARDS'),('5','SIMPLE EVENT COUNTS')])
+        key=c.menu('WHAT ELSE IS GIVEN?',[('1','TRIAL COUNT + CHANCE EACH'),('2','X / P(X) TABLE'),('3','WITHOUT REPLACEMENT'),('4','DICE / COIN / CARDS'),('5','MATCHING COUNTS / TOTAL'),('6','EXPLAIN WORDING')])
+        if key=='6':
+            c.view('WORDING',[{'=':'EXACTLY: X=r','<=':'AT MOST: X<=r','>=':'AT LEAST: X>=r','<':'LESS: X<r','>':'MORE: X>r','[]':'BETWEEN: CHOOSE ENDPOINTS','one':'AT LEAST ONE: X>=1'}[word]]);return
         if key=='1': c.call('STBWORD','wording_session',word)
         elif key=='2': c.call('STCOUNT','distribution_session',None,False,None,word)
         elif key=='3': c.call('STSAMPLE','sample_word_session',word)
-        elif key=='4': context['experiment_tasks']()
-        elif key=='5': c.call('STPROB','solver_basic_prob')
+        elif key=='4': context['experiment_tasks'](word)
+        elif key=='5':
+            c.view('COUNT MATCHING OUTCOMES',['COUNT ONLY OUTCOMES SATISFYING '+word,'FOR BETWEEN, APPLY BOTH ENDPOINTS FIRST.','USE TABLE / DICE IF YOU NEED HELP COUNTING.'])
+            c.call('STPROB','solver_basic_prob')
     elif word=='not': c.call('STPWORD','complement_words',context)
     elif word in ('given','and','or'):
         c.call('STPWORD','probability_words',word)
@@ -49,13 +52,16 @@ def word_route(word,context=None):
         elif key=='2': c.call('STDATA','frequency_data_session')
         elif key=='3': c.call('STCOUNT','distribution_session')
         elif key=='4': c.call('STBWORD','wording_session','stats')
-        elif key=='5': c.call('STCOUNT','payoff_tasks')
+        elif key=='5': c.call('STCOUNT','money_session')
     elif word in ('q1','median'):
-        c.view('WORDS > '+word.upper(),['Q1 IS THE LOWEST 25% CUTOFF' if word=='q1' else 'MEDIAN: HALF AT OR BELOW', 'ENTER THE OBSERVATIONS ONCE'])
-        c.call('STDATA','raw_session')
+        key=c.menu('WHAT DATA ARE GIVEN?',[('1','RAW LIST'),('2','VALUE + FREQUENCY')])
+        if key!='0': c.call('STDATA','raw_session' if key=='1' else 'frequency_data_session')
     elif word in ('parameter','population','sampling','experiment'):
         c.call('STSTUDY',{'parameter':'parameter_classifier','population':'population_classifier','sampling':'sampling_menu','experiment':'experiment_classifier'}[word])
-    elif word in ('box','dot','hist','normal','money'):
+    elif word=='money':
+        if 'money_tasks' in context: context['money_tasks']()
+        else: c.call('STCOUNT','money_session')
+    elif word in ('box','dot','hist','normal'):
         routes={'box':('STGRAPH','boxplot_session'),'dot':('STGRAPH','dotplot_session'),'hist':('STHIST','histogram_session'),'normal':('STNORM','normal_session'),'money':('STCOUNT','payoff_tasks')}
         c.call(*routes[word])
     elif word in ('venn','all','dice','quiz4','quiz5','pretest'):

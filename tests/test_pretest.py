@@ -50,14 +50,14 @@ class Pretest(unittest.TestCase):
             self.assertIn('APPROXIMATE HEIGHTS' if rounded else 'mu=1.7400',out)
 
     def test_birth_weight_report_reuses_mean_sd_and_observations(self):
-        out,prompts=flow(app.main,['5','1','8','2350','650','4','2353','2000','1200','3660','1','1','0','2','1','0','0','0','0'])
+        out,prompts=flow(app.main,(['5','1','8','2350','650','4','2353','2000','1200','3660','1','1','0','2','1','0','0','0','0'])+['0'])
         for text in ['MIN USUAL=1050.0000','MAX USUAL=3650.0000','z=2.0154 UNUSUALLY HIGH','z=-1.7692 NOT UNUSUAL','z=-3 x=400.0000','z=3 x=4300.0000']:
             self.assertIn(text,out)
         self.assertEqual(prompts.count('MEAN: '),1)
         self.assertEqual(prompts.count('OBSERVATION x: '),4)
 
     def test_finite_population_model_check(self):
-        out,prompts=flow(app.main,['2','N','7','871','80','N','1','0','0'])
+        out,prompts=flow(app.main,['2','N','7','871','80','N','1','0','0','0'])
         self.assertIn('NOT JUSTIFIED BY 5% RULE',out)
         self.assertNotIn('TRIALS n: ',prompts)
         for n,expected in [('5','YES'),('6','NO')]:

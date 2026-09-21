@@ -27,7 +27,7 @@ import builtins,contextlib,io,sys
 import STAT1,STCORE
 STCORE.view=lambda *args:None
 for repeat in range(3):
- pending=iter(['3','4','1','2','1','7','3','1','2','0','0','0'])
+ pending=iter(['3','4','1','2','1','7','3','1','2','0','0','0','0','0'])
  seen=set()
  def read(prompt=''):
   assert not {'STEXPER','STMDICE','STSTUDY','STCOUNT','STCOMB'}.intersection(sys.modules)
@@ -55,11 +55,11 @@ for repeat in range(3):
         self.assertEqual(dice.dice_event_count(5,'5'),4651)
 
     def test_dice_home_matching_pairs(self):
-        out,_=flow(app.main,['3','4','1','2','1','7','3','1','2','1','0','0','0'])
+        out,_=flow(app.main,(['3','4','1','2','1','7','3','1','2','1','0','0','0'])+['0', '0'])
         self.assertIn('11/36',out)
         self.assertIn('(3,3)',out)
         self.assertIn('ENTER/1 NEXT',out)
-        out,_=flow(app.main,['3','4','1','2','1','10','1','2','1','0','0','0'])
+        out,_=flow(app.main,(['3','4','1','2','1','10','1','2','1','0','0','0'])+['0', '0'])
         self.assertIn('PAGE 2/',out)
         self.assertIn('3/4',out)
 
@@ -72,7 +72,7 @@ for repeat in range(3):
         with self.assertRaises(ValueError):venn.regions(100,40,30,50)
 
     def test_venn_home_reuses_counts(self):
-        out,prompts=flow(app.main,['3','10','450','184','238','123','1','5','1','2','0','3','1','5','3','1','0','0','0'])
+        out,prompts=flow(app.main,(['3','10','450','184','238','123','1','5','1','2','0','3','1','5','3','1','0','0','0'])+['0'])
         for text in ['A ONLY=61','NEITHER=151','A OR B=299','184+238-123=299','0.1356','0.6685','0.1471','0.1479']:
             self.assertIn(text,out)
         self.assertEqual(prompts.count('TOTAL PEOPLE / ITEMS: '),1)

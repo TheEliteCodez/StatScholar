@@ -58,9 +58,15 @@ def solver_multi_dice(n=None):
     if n < 1:
         raise ValueError('USE AT LEAST ONE DIE')
     while True:
-        event = STCORE.menu('C07 EVENT', [('1', 'TOTAL OUTCOMES'), ('2', 'SUM ='), ('3', 'SUM <='), ('4', 'SUM >='), ('5', 'AT LEAST ONE FACE'), ('6', 'EXACTLY r OF A FACE'), ('7', 'NO DICE OF A FACE'), ('8', 'ALL EVEN'), ('9', 'ALL ODD'), ('A', 'AT LEAST ONE EVEN'), ('B', 'ALL SAME'), ('C', 'ALL = ONE FACE')])
+        event = STCORE.menu('C07 EVENT', [('1', 'TOTAL OUTCOMES'), ('2', 'SUM ='), ('3', 'SUM <='), ('4', 'SUM >='), ('5', 'AT LEAST ONE FACE'), ('6', 'EXACTLY r OF A FACE'), ('7', 'NO DICE OF A FACE'), ('8', 'ALL EVEN'), ('9', 'ALL ODD'), ('A', 'AT LEAST ONE EVEN'), ('B', 'ALL SAME'), ('C', 'ALL = ONE FACE'),('13','SUM LESS / MORE / BETWEEN'),('14','CHANGE DICE COUNT')])
         if event == '0':
             return
+        if event=='14':
+            n=STCORE.read_int('NUMBER OF DICE: ');continue
+        if event=='13':
+            word=STCORE.choice_pages('SUM WORDING',((('LESS THAN','<'),('MORE THAN','>'),('BETWEEN','[]')),))
+            if word: word_event(n,word,True)
+            continue
         value = 0
         steps = ['FAIR INDEPENDENT DICE', 'n=' + str(n), 'TOTAL=6^n=' + str(6 ** n)]
         if event in ('2', '3', '4'):
@@ -80,3 +86,20 @@ def solver_multi_dice(n=None):
         good = dice_event_count(n, event, value)
         answers = [('TOTAL OUTCOMES', str(6 ** n))] if event == '1' else [('P', STCORE.ratio(good, 6 ** n)), ('SUCCESSFUL', str(good))]
         STCORE.results('C07', answers, steps)
+
+
+def word_event(n,word,sum_only=False):
+    key='2' if sum_only else '1' if word=='one' else STCORE.menu('DICE: WHAT IS COUNTED?',[('1','DICE SHOWING ONE FACE'),('2','SUM OF ALL DICE')])
+    if key=='0': return
+    if key=='1':
+        face=STCORE.read_size('TARGET FACE: ',6)
+        event=STCORE.call('STBWORD','read_event',word)
+        if event is None: return
+        answer=STCORE.call('STBMATH','binomial_exact_event',n,(1,6),event)
+        STCORE.results('DICE SHOWING '+str(face),[('P',answer)],['COUNT TARGET FACES IN '+str(n)+' DICE'])
+    else:
+        event=STCORE.call('STBWORD','read_event',word)
+        if event is None: return
+        low,high=STCORE.call('STBWORD','event_bounds',6*n,event)
+        good=max(0,dice_sum_at_most(n,high)-dice_sum_at_most(n,low-1))
+        STCORE.results('DICE SUM',[('P',STCORE.ratio(good,6**n)),('SUCCESSFUL',good)],['COUNT ORDERED DICE OUTCOMES'])

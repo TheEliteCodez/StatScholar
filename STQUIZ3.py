@@ -26,3 +26,6 @@ def quiz_menu():
         else:
             title,body=EXAMPLES[int(key)-1]
             c.call('STSTUDY','definition_pages',title,body)
+            if key in ('2','3','4') and c.menu('SOLVE WITH YOUR NUMBERS',[('1','OPEN MATCHING SOLVER')])=='1':
+                route={'2':('STDATA','compare_session'),'3':('STNORM','relative_session'),'4':('STNORM','normal_session',None,None,'5')}[key]
+                c.call(*route)

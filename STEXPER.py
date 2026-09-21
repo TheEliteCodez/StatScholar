@@ -9,7 +9,7 @@
 # Cards, roulette, spinner and die/coin, loaded separately.
 import STCORE
 
-def experiment_session(kind):
+def experiment_inputs(kind):
     STCORE.heading('P01 / C05 EXPERIMENT')
     if kind == 'roulette':
         zeros = STCORE.read_size('ZERO SPACES (0,00 -> 2): ', STCORE.MAX_OUTCOMES-1, 0)
@@ -35,16 +35,40 @@ def experiment_session(kind):
             weights.append(STCORE.read_exact('SECTOR WEIGHT (EQUAL: 1): '))
     if kind != 'spinner':
         weights = [(1, 1)] * len(outcomes)
+    return outcomes,weights
+
+
+def experiment_session(kind,word=None):
+    outcomes,weights=experiment_inputs(kind)
     while True:
-        print('EVENT: 4S, ODD, <3, S OR D')
-        print('DIE/COIN: 3 OR H; 6 AND T')
-        print('LIST=SPACE; BACK=NEW QUESTION')
-        query = input('EVENT: ').strip().upper()
-        if query == 'BACK':
-            return
-        if query == 'LIST':
-            STCORE.view('C05 SAMPLE SPACE', ['TOTAL=' + str(len(outcomes))] + [x[0] for x in outcomes])
-            continue
+        key=STCORE.menu('EXPERIMENT > NEXT',[('1','CHOOSE EVENT'),('2','A AND B'),('3','A OR B'),('4','NOT / COMPLEMENT'),('5','SAMPLE SPACE'),('6','TYPE EVENT EXPRESSION'),('7','CHANGE EXPERIMENT DATA'),('8','COUNT IN REPEATED DRAWS')]) if not word else '8' if word=='one' else '1'
+        if key=='0': return
+        if key=='7':
+            outcomes,weights=experiment_inputs(kind);continue
+        if key=='5':
+            STCORE.view('SAMPLE SPACE',['TOTAL='+str(len(outcomes))]+[x[0] for x in outcomes]);continue
+        if key=='6':
+            query=input('EVENT (BACK=RETURN): ').strip().upper()
+            if query=='BACK': continue
+        else:
+            query=guided_event(kind,None if key=='8' else word)
+            if query is None: word=None;continue
+            if key in ('2','3'):
+                second=guided_event(kind)
+                if second is None: continue
+                query+=' AND ' if key=='2' else ' OR '
+                query+=second
+            if key=='4': query='NOT '+query
+        if key=='8':
+            chosen=experiment_indices(outcomes,kind,query)
+            n=STCORE.read_int('NUMBER OF DRAWS / TRIALS: ')
+            replacement='1' if kind!='cards' else STCORE.menu('CARD DRAWS',[('1','WITH REPLACEMENT'),('2','WITHOUT REPLACEMENT')])
+            if replacement=='1':
+                chance=STCORE.rdiv(STCORE.rsum(weights[i] for i in chosen),STCORE.rsum(weights))
+                STCORE.call('STBWORD','wording_session',word,n,chance)
+            elif replacement=='2': STCORE.call('STSAMPLE','sample_tasks',52,len(chosen),n,word)
+            word=None;continue
+        word=None
         chosen = experiment_indices(outcomes, kind, query)
         total = STCORE.rsum(weights)
         good = STCORE.rsum([weights[i] for i in chosen])
@@ -87,3 +111,26 @@ def experiment_indices(outcomes, kind, query):
         return [i for i, x in enumerate(outcomes) if STCORE.compare_exact(x[1], a) == 0]
     except ValueError:
         return [i for i, x in enumerate(outcomes) if x[0] == query]
+
+
+def guided_event(kind,word=None):
+    key=STCORE.menu('DESCRIBE EVENT',[('1','NUMBER / RANK'),('2','ODD'),('3','EVEN'),('4','SUIT / COLOR / COIN SIDE')])
+    if key=='0': return None
+    if key in ('2','3'): return 'ODD' if key=='2' else 'EVEN'
+    if key=='4':
+        entries=[('1','HEARTS'),('2','DIAMONDS'),('3','CLUBS'),('4','SPADES'),('5','RED'),('6','BLACK')] if kind=='cards' else [('1','HEADS'),('2','TAILS')] if kind=='coin' else []
+        if not entries:
+            STCORE.view('NUMBERED OUTCOMES',['USE NUMBER, ODD OR EVEN']);return None
+        chosen=STCORE.menu('WHICH GROUP?',entries)
+        return None if chosen=='0' else entries[int(chosen)-1][1]
+    if word is None:
+        word=STCORE.choice_pages('NUMBER WORDING',((('EXACTLY','='),('AT MOST','<='),('AT LEAST','>='),('LESS THAN','<'),('MORE THAN','>'),('BETWEEN','[]')),))
+    if word is None: return None
+    if kind=='roulette' and word=='=':
+        return input('NUMBER (0 OR 00 ALLOWED): ').strip()
+    event=STCORE.call('STBWORD','read_event',word)
+    if event is None: return None
+    op,a,b=event
+    if op in ('[]','()','[)','(]'):
+        return ('>=' if op[0]=='[' else '>')+STCORE.exact_text(a)+' AND '+('<=' if op[-1]==']' else '<')+STCORE.exact_text(b)
+    return op+STCORE.exact_text(a)

@@ -70,7 +70,7 @@ class Course(unittest.TestCase):
 
     def test_context_narrowing_and_no_blind_binomial(self):
         out,_=flow(app.main,['1','3','1','39','.63','23','3','0','0','0'])
-        self.assertIn('AT LEAST: X>=r',out)
+        self.assertIn('P(X >= 23)',out)
         self.assertIn('1-binomcdf(39,0.63,22)',out)
         out,_=flow(app.main,['1','N','1','2','3','0','.904','1','.047','2','.049','1','0','0','0'])
         self.assertIn('P=0.0960',out)
@@ -87,7 +87,7 @@ class Course(unittest.TestCase):
     def test_q1_and_median_word_routes(self):
         men=[120,77,89,97,124,68,72,96];women=[115,86,49,56,78,76,78,95]
         for key,values,expected in [('6',men,'Q1=74.5000'),('7',women,'MEDIAN=78.0000')]:
-            out,_=flow(app.main,['1','N',key,'8']+[str(x) for x in values]+['1','0','0','0'])
+            out,_=flow(app.main,['1','N',key,'1','8']+[str(x) for x in values]+['1','0','0','0'])
             self.assertIn(expected,out)
         a=data.descriptive(raw(men));b=data.descriptive(raw(women))
         self.assertEqual(a['SAMPLE VARIANCE s^2'],(3489,8))
@@ -97,9 +97,9 @@ class Course(unittest.TestCase):
     def test_dice_course_events_and_ui(self):
         cases=[(('sum','=',6),None,'AND',(5,36)),(('first','=',2),None,'AND',(1,6)),(('even','=',0),None,'AND',(1,4)),(('doubles','=',0),('even','=',0),'AND',(1,12)),(('doubles','=',0),('even','=',0),'OR',(1,3)),(('first','=',2),('second','=',2),'AND',(1,36))]
         for a,b,join,want in cases:self.assertEqual(dice.pair_probability(a,b,join),want)
-        out,_=flow(app.main,['3','4','1','2','3','4','5','1','0','0'])
+        out,_=flow(app.main,(['3','4','1','2','3','4','5','1','0','0'])+['0', '0'])
         self.assertIn('FRACTION=1/3',out)
-        out,_=flow(app.main,['3','4','1','5','5','3','5','1','0','0'])
+        out,_=flow(app.main,(['3','4','1','5','5','3','5','1','0','0'])+['0', '0'])
         self.assertIn('P=0.5981',out);self.assertIn('P(NOT FACE)=5/6',out)
         # Changed numbers, first and second positions stay distinct.
         self.assertEqual(dice.pair_probability(('first','=',4),('sum','<=',6)),(1,18))
@@ -139,7 +139,7 @@ class Course(unittest.TestCase):
 import sys,builtins,contextlib,io
 import STAT1,STCORE
 STCORE.view=lambda *args:None
-cases=[(['2','3','39','.63','23','0','0'],'TRIALS n: '),(['3','4','1','2','3','4','5','1','0','0'],'HOW MANY FAIR 6-SIDED DICE: ')]
+cases=[(['2','3','39','.63','23','0','0'],'TRIALS n: '),(['3','4','1','2','3','4','5','1','0','0','0','0'],'HOW MANY FAIR 6-SIDED DICE: ')]
 for repeat in range(5):
  for answers,entry in cases:
   pending=iter(answers)

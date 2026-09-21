@@ -17,6 +17,8 @@ import STPAGE
 
 
 class Navigation(unittest.TestCase):
+    def setUp(self): c._menu_pages.clear()
+
     def test_evo_prefers_polling_when_both_apis_exist(self):
         code="""
 import builtins,sys,types

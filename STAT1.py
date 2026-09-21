@@ -141,9 +141,11 @@ def question_lookup(*args):
     return STCORE.call('STNAV','open_navigation','question_lookup',globals(),*args)
 
 def data_tasks():
-    key=STCORE.menu('DATA / STATISTICS',[('1','RAW LIST OF NUMBERS'),('2','VALUE + FREQUENCY'),('3','X + P(X)'),('4','ROW / COLUMN TABLE'),('5','CATEGORY COUNTS'),('6','COMPARE TWO DATA SETS'),('7','PERCENT OF TOTAL')],page_size=7)
-    routes={'1':('STDATA','raw_session'),'2':('STDATA','frequency_data_session'),'3':('STCOUNT','distribution_session'),'4':('STPROB','two_way_session'),'5':('STPROB','category_session'),'6':('STDATA','compare_session'),'7':('STQUIZ','percent_session')}
-    if key in routes: STCORE.call(*routes[key])
+    while True:
+        key=STCORE.menu('DATA / STATISTICS',[('1','RAW LIST OF NUMBERS'),('2','VALUE + FREQUENCY'),('3','X + P(X)'),('4','ROW / COLUMN TABLE'),('5','CATEGORY COUNTS'),('6','COMPARE TWO DATA SETS'),('7','PERCENT OF TOTAL')],page_size=7)
+        if key=='0': return
+        routes={'1':('STDATA','raw_session'),'2':('STDATA','frequency_data_session'),'3':('STCOUNT','distribution_session'),'4':('STPROB','two_way_session'),'5':('STPROB','category_session'),'6':('STDATA','compare_session'),'7':('STQUIZ','percent_session')}
+        if key in routes: STCORE.call(*routes[key])
 
 
 def table_tasks():
@@ -151,53 +153,63 @@ def table_tasks():
 
 
 def graph_tasks():
-    key=STCORE.menu('GRAPHS / NORMAL',[('1','NORMAL CURVE / Z'),('2','BOXPLOT'),('3','DOTPLOT'),('4','HISTOGRAM'),('5','SHAPE / NORMALITY'),('6','OUTLIERS'),('7','COMPARE RELATIVE POSITION')])
-    if key=='5': show_identified('G02')
-    elif key=='6':
-        choice=STCORE.menu('GRAPH > OUTLIERS',[('1','FROM RAW DATA'),('2','GIVEN Q1 AND Q3')])
-        if choice=='1': STCORE.call('STGRAPH','raw_outliers')
-        elif choice=='2': STCORE.call('STDESC','solver_outlier')
-    elif key!='0': STCORE.call(*{'1':('STNORM','normal_session'),'2':('STGRAPH','boxplot_session'),'3':('STGRAPH','dotplot_session'),'4':('STHIST','histogram_session'),'7':('STNORM','relative_session')}[key])
+    while True:
+        key=STCORE.menu('GRAPHS / NORMAL',[('1','Z / USUAL / EMPIRICAL RULE'),('2','BOXPLOT'),('3','DOTPLOT'),('4','HISTOGRAM'),('5','INTERPRET SHAPE / NORMALITY'),('6','OUTLIERS'),('7','COMPARE RELATIVE POSITION')])
+        if key=='0': return
+        if key=='5': STCORE.call('STGRAPH','shape_guide')
+        elif key=='6':
+            choice=STCORE.menu('GRAPH > OUTLIERS',[('1','FROM RAW DATA'),('2','GIVEN Q1 AND Q3')])
+            if choice=='1': STCORE.call('STGRAPH','raw_outliers')
+            elif choice=='2': STCORE.call('STDESC','solver_outlier')
+        elif key!='0': STCORE.call(*{'1':('STNORM','normal_session'),'2':('STGRAPH','boxplot_session'),'3':('STGRAPH','dotplot_session'),'4':('STHIST','histogram_session'),'7':('STNORM','relative_session')}[key])
 
 
-def experiment_tasks():
-    key=STCORE.menu('PROB > RANDOM EXPERIMENT',[('1','ONE / MULTIPLE DICE'),('2','DIE + COIN'),('3','COIN FLIPS'),('4','52 CARDS'),('5','ROULETTE'),('6','SPINNER')],page_size=6)
-    if key=='1': STCORE.call('STDICE','dice_session')
-    elif key=='3': STCORE.call('STBINOM','binomial_session',None,(1,2))
-    elif key!='0': STCORE.call('STEXPER','experiment_session',{'2':'coin','4':'cards','5':'roulette','6':'spinner'}[key])
+def experiment_tasks(word=None):
+    while True:
+        key=STCORE.menu('PROB > RANDOM EXPERIMENT',[('1','ONE / MULTIPLE DICE'),('2','DIE + COIN'),('3','COIN FLIPS'),('4','52 CARDS'),('5','ROULETTE'),('6','SPINNER')],page_size=6)
+        if key=='0': return
+        if key=='1': STCORE.call('STDICE','dice_session',word)
+        elif key=='3': STCORE.call('STBWORD','wording_session',word,None,(1,2))
+        elif key!='0': STCORE.call('STEXPER','experiment_session',{'2':'coin','4':'cards','5':'roulette','6':'spinner'}[key],word)
+        word=None
 
 
 def probability_tasks():
-    key=STCORE.menu('PROB: WHAT DOES IT ASK?',[
-        ('H','HELP ME CHOOSE A SOLVER'),
-        ('1','HOW MANY OUT OF THE TOTAL?'),
-        ('2','GIVEN P(A), P(B), P(BOTH)'),
-        ('3','AT LEAST ONE OCCURS'),
-        ('4','ROLL DICE / FLIP / DRAW CARD'),
-        ('5','TABLE OF x AND ITS CHANCE'),
-        ('6','AVERAGE WIN / LOSS / PAYOUT'),
-        ('7','IS THIS PROBABILITY VALID?'),
-        ('8','COUNTS IN ROWS AND COLUMNS'),
-        ('9','FILL IN A MISSING CHANCE'),
-        ('10','TOTAL, GROUP A, B AND BOTH'),
-        ('11','ALL SELECTED ARE IN A GROUP'),
-        ('12','QUIZ 4: DICE / SURVEY'),
-        ('13','QUIZ 5: TABLE / BINOMIAL')])
-    if key=='H':
-        STCORE.call('STPWORD','choose_probability',{'experiment_tasks':experiment_tasks,'find_tasks':find_tasks})
-        return
-    if key=='3': STCORE.call('STWORDS','word_route','one',{'experiment_tasks':experiment_tasks,'find_tasks':find_tasks})
-    elif key=='4': experiment_tasks()
-    elif key=='6': money_tasks()
-    elif key!='0':
-        routes={'1':('STPROB','solver_basic_prob'),'2':('STPROB','supplied_session'),'3':('STPROB','solver_at_least_one'),'5':('STCOUNT','distribution_session'),'7':('STPROB','valid_probability'),'8':('STPROB','two_way_session'),'9':('STCOUNT','missing_probability'),'10':('STVENN','venn_session'),'11':('STVENN','selection_session'),'12':('STQUIZ4','quiz_menu'),'13':('STQUIZ5','quiz_menu')}
-        STCORE.call(*routes[key])
+    while True:
+        key=STCORE.menu('PROB: WHAT DOES IT ASK?',[
+            ('H','HELP ME CHOOSE A SOLVER'),
+            ('1','HOW MANY OUT OF THE TOTAL?'),
+            ('2','GIVEN P(A), P(B), P(BOTH)'),
+            ('3','AT LEAST ONE OCCURS'),
+            ('4','ROLL DICE / FLIP / DRAW CARD'),
+            ('5','TABLE OF x AND ITS CHANCE'),
+            ('6','AVERAGE WIN / LOSS / PAYOUT'),
+            ('7','IS THIS PROBABILITY VALID?'),
+            ('8','COUNTS IN ROWS AND COLUMNS'),
+            ('9','FILL IN A MISSING CHANCE'),
+            ('10','TOTAL, GROUP A, B AND BOTH'),
+            ('11','ALL SELECTED ARE IN A GROUP'),
+            ('12','QUIZ 4: DICE / SURVEY'),
+            ('13','QUIZ 5: TABLE / BINOMIAL'),('14','DEFECTIVE ITEMS / BOX')])
+        if key=='0': return
+        if key=='H':
+            STCORE.call('STPWORD','choose_probability',{'experiment_tasks':experiment_tasks,'find_tasks':find_tasks,'money_tasks':money_tasks})
+            continue
+        if key=='3': STCORE.call('STWORDS','word_route','one',{'experiment_tasks':experiment_tasks,'find_tasks':find_tasks,'money_tasks':money_tasks})
+        elif key=='4': experiment_tasks()
+        elif key=='6': money_tasks()
+        elif key=='14': STCORE.call('STSAMPLE','box_session')
+        elif key!='0':
+            routes={'1':('STPROB','solver_basic_prob'),'2':('STPROB','supplied_session'),'3':('STPROB','solver_at_least_one'),'5':('STCOUNT','distribution_session'),'7':('STPROB','valid_probability'),'8':('STPROB','two_way_session'),'9':('STCOUNT','missing_probability'),'10':('STVENN','venn_session'),'11':('STVENN','selection_question'),'12':('STQUIZ4','quiz_menu'),'13':('STQUIZ5','quiz_menu')}
+            STCORE.call(*routes[key])
 
 
 def money_tasks():
-    key=STCORE.menu('PROB > EXPECTED / MONEY',[('1','X + P(X): EXPECTED VALUE'),('2','PRIZES / PAYOFFS'),('3','INSURER PROFIT'),('4','RAFFLE'),('5','COUNT / CHOOSE / ARRANGE')])
-    if key=='5': reference_call('wizard_counting')
-    elif key!='0': STCORE.call('STCOUNT',{'1':'distribution_session','2':'payoff_tasks','3':'insurance_session','4':'raffle_session'}[key])
+    while True:
+        key=STCORE.menu('PROB > EXPECTED / MONEY',[('1','X + P(X): EXPECTED VALUE'),('2','PRIZES / PAYOFFS'),('3','INSURER PROFIT'),('4','RAFFLE'),('5','COUNT / CHOOSE / ARRANGE')])
+        if key=='0': return
+        if key=='5': reference_call('wizard_counting')
+        elif key!='0': STCORE.call('STCOUNT',{'1':'distribution_session','2':'payoff_tasks','3':'insurance_session','4':'raffle_session'}[key])
 
 
 def trial_tasks():
@@ -205,7 +217,7 @@ def trial_tasks():
 
 
 def words_tasks():
-    STCORE.call('STWORDS','words_menu',{'experiment_tasks':experiment_tasks,'find_tasks':find_tasks})
+    STCORE.call('STWORDS','words_menu',{'experiment_tasks':experiment_tasks,'find_tasks':find_tasks,'money_tasks':money_tasks})
 
 
 def study_tasks():

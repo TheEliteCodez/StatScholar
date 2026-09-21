@@ -91,7 +91,7 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
     if rows is None:
         rows, approximate = read_distribution()
     while True:
-        key = '1' if first_word else STCORE.menu('R02-R06 TABLE TASK', [('1', 'EVENT PROBABILITY'), ('2', 'MEAN / VAR / SD'), ('3', 'X>=1 BY COMPLEMENT'), ('4', 'UNUSUAL EVENT'), ('5', 'CHECK / SHOW TABLE'), ('6', 'EXACT BINOMIAL MODEL'), ('7','CHANGE DATA'),('8','MARK TABLE AS ROUNDED'),('9','GRAPH THIS P(X) TABLE')])
+        key = '1' if first_word else STCORE.menu('R02-R06 TABLE TASK', [('1', 'EVENT PROBABILITY'), ('2', 'MEAN / VAR / SD'), ('3', 'X>=1 BY COMPLEMENT'), ('4', 'UNUSUAL EVENT'), ('5', 'CHECK / SHOW TABLE'), ('6', 'EXACT BINOMIAL MODEL'), ('7','CHANGE DATA'),('8','MARK TABLE AS ROUNDED'),('9','BAR HEIGHTS / DRAWING STEPS')])
         if key == '0':
             return
         if key == '9':
@@ -232,3 +232,10 @@ def read_sample_distribution():
 def rounded_distribution_session():
     rows,approximate=read_distribution(True)
     distribution_session(rows,approximate)
+
+
+def money_session():
+    while True:
+        key=STCORE.menu('EXPECTED VALUE / MONEY',[('1','X / P TABLE'),('2','PRIZES / PAYOFFS'),('3','INSURANCE'),('4','RAFFLE')])
+        if key=='0': return
+        {'1':distribution_session,'2':payoff_tasks,'3':insurance_session,'4':raffle_session}[key]()

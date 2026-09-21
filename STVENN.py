@@ -20,23 +20,26 @@ def all_probability(total,good,n,replaced):
     return answer
 
 
-def selection_session(total=None,good=None):
+def selection_session(total=None,good=None,model=None):
     if total is None:
         total=c.read_int('POPULATION TOTAL: ')
         good=c.read_int('NUMBER IN TARGET GROUP: ')
     while True:
         n=c.read_int('HOW MANY SELECTED: ')
-        c.results('ALL SELECTED IN GROUP',[
-            ('WITHOUT REPLACEMENT',all_probability(total,good,n,False)),
-            ('WITH REPLACEMENT',all_probability(total,good,n,True)),
-            ('SAMPLE FRACTION',c.ratio(n,total)),
-            ('WITHIN 5% GUIDELINE','YES' if 20*n<=total else 'NO')],
+        answers=[]
+        if model in (None,'2','3'): answers.append(('WITHOUT REPLACEMENT',all_probability(total,good,n,False) if n<=total else 'NOT APPLICABLE: n>N'))
+        if model in (None,'1','3'): answers.append(('WITH REPLACEMENT',all_probability(total,good,n,True)))
+        answers += [('SAMPLE FRACTION',c.ratio(n,total)),('WITHIN 5% GUIDELINE','YES' if 20*n<=total else 'NO')]
+        c.results('ALL SELECTED IN GROUP',answers,
             ['WITHOUT: MULTIPLY (K-i)/(N-i), i=0..n-1',
              'WITH: (K/N)^n', 'N='+str(total)+' K='+str(good)+' n='+str(n),
              '5% CHECK: n/N <= .05',
              'IF WITHIN 5%, (K/N)^n APPROXIMATES THE WITHOUT-REPLACEMENT ANSWER.',
              'WITHOUT REPLACEMENT REMAINS DEPENDENT. EXACT ANSWER SHOWN ABOVE.'])
-        if c.menu('SAME POPULATION / GROUP',[('1','CHANGE NUMBER SELECTED')])=='0': return
+        key=c.menu('SAME POPULATION / GROUP',[('1','CHANGE NUMBER SELECTED'),('2','CHANGE POPULATION / GROUP')])
+        if key=='0': return
+        if key=='2':
+            total=c.read_int('POPULATION TOTAL: ');good=c.read_int('NUMBER IN TARGET GROUP: ')
 
 
 def regions(total,a,b,both):
@@ -52,8 +55,11 @@ def venn_session():
     both=c.read_int('COUNT BOTH A AND B: ')
     both,only_a,only_b,neither=regions(total,a,b,both)
     while True:
-        key=c.menu('VENN / SAME COUNTS',[('1','REGIONS / DRAW VENN'),('2','CONTINGENCY TABLE'),('3','OR / ONLY / GIVEN'),('4','ALL SELECTED FROM A'),('5','ALL SELECTED FROM B')])
+        key=c.menu('VENN / SAME COUNTS',[('1','REGIONS / DRAWING STEPS'),('2','CONTINGENCY TABLE'),('3','OR / ONLY / GIVEN'),('4','ALL SELECTED FROM A'),('5','ALL SELECTED FROM B'),('6','CHANGE COUNTS')])
         if key=='0': return
+        if key=='6':
+            total=c.read_int('TOTAL PEOPLE / ITEMS: ');a=c.read_int('A INCLUDING BOTH: ');b=c.read_int('B INCLUDING BOTH: ');both=c.read_int('BOTH: ')
+            both,only_a,only_b,neither=regions(total,a,b,both);continue
         if key=='1':
             c.results('VENN COUNTS',[('A ONLY',only_a),('BOTH',both),('B ONLY',only_b),('NEITHER',neither),('A OR B',a+b-both)],['TWO OVERLAPPING CIRCLES INSIDE TOTAL RECTANGLE','BOTH IN OVERLAP; NEITHER OUTSIDE CIRCLES','n(A OR B)=n(A)+n(B)-n(BOTH)',str(a)+'+'+str(b)+'-'+str(both)+'='+str(a+b-both)])
         elif key=='2':
@@ -61,3 +67,8 @@ def venn_session():
         elif key=='3':
             c.results('VENN PROBABILITIES',[('A OR B',c.ratio(a+b-both,total)),('A BUT NOT B',c.ratio(only_a,total)),('B BUT NOT A',c.ratio(only_b,total)),('BOTH',c.ratio(both,total)),('NEITHER',c.ratio(neither,total)),('B GIVEN A',c.ratio(both,a) if a else 'UNDEFINED'),('A GIVEN B',c.ratio(both,b) if b else 'UNDEFINED')],['OR: (A+B-BOTH)/TOTAL','GIVEN: BOTH / GIVEN GROUP'])
         else: selection_session(total,a if key=='4' else b)
+
+
+def selection_question():
+    key=c.menu('ALL SELECTED: REPLACEMENT?',[('1','WITH REPLACEMENT'),('2','WITHOUT REPLACEMENT'),('3','COMPARE BOTH METHODS')])
+    if key!='0': selection_session(model=key)

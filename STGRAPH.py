@@ -21,12 +21,12 @@ def boxplot_values(values):
     outside=[x for x in values if STCORE.compare_exact(x,low)<0 or STCORE.compare_exact(x,high)>0]
     return q1,med,q3,iqr,low,high,inside[0],inside[-1],outside
 
-def boxplot_data(values,title='GRAPH > BOXPLOT'):
+def boxplot_data(values,title='BOXPLOT VALUES / DRAWING'):
     q1,med,q3,iqr,low,high,wl,wh,out=boxplot_values(values)
     STCORE.results(title, [('MIN',values[0]),('Q1',q1),('MEDIAN',med),('Q3',q3),('MAX',values[-1]),('IQR',iqr),('LOWER FENCE',low),('UPPER FENCE',high),('LOW WHISKER',wl),('HIGH WHISKER',wh),('OUTLIERS',','.join(STCORE.exact_text(x) for x in out) or 'NONE')], ['BOX Q1 TO Q3; LINE AT MEDIAN', 'WHISKERS TO NON-OUTLIER ENDS', 'PLOT OUTLIERS SEPARATELY'])
 
 def boxplot_session():
-    key=STCORE.menu('GRAPH > BOXPLOT',[('1','FROM RAW DATA'),('2','FROM 5-NUMBER SUMMARY'),('3','SIDE-BY-SIDE BOXPLOTS')])
+    key=STCORE.menu('BOXPLOT VALUES / DRAWING',[('1','FROM RAW DATA'),('2','FROM 5-NUMBER SUMMARY'),('3','SIDE-BY-SIDE BOXPLOTS')])
     if key=='1': boxplot_data(read_raw())
     elif key=='3': STCORE.call('STDATA','compare_session',None,True)
     elif key=='2':
@@ -48,9 +48,18 @@ def dotplot_session(values=None):
     STCORE.paged_results('GRAPH > DOTPLOT COUNTS',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['VALUE=COUNT; INCLUDE ZERO GAPS', 'ONE DOT PER OBSERVATION', 'STACK REPEATS AT SAME VALUE', 'KEEP NUMERIC SPACING ON AXIS'])
 
 def graph_data(values):
-    key=STCORE.menu('DATA > GRAPH',[('1','BOXPLOT'),('2','DOTPLOT'),('3','HISTOGRAM')])
+    key=STCORE.menu('DATA > DRAWING VALUES',[('1','BOXPLOT'),('2','DOTPLOT'),('3','HISTOGRAM')])
     if key=='1': boxplot_data(values)
     elif key=='2': dotplot_session(values)
     elif key=='3': STCORE.call('STHIST','histogram_session',values)
 
 def raw_outliers(): boxplot_data(read_raw('GRAPH > OUTLIERS'))
+
+
+def shape_guide():
+    while True:
+        key=STCORE.menu('INTERPRET GRAPH SHAPE',[('1','NORMAL / SKEW GUIDANCE'),('2','HISTOGRAM DRAWING VALUES'),('3','BOXPLOT DRAWING VALUES')])
+        if key=='0': return
+        if key=='1': STCORE.view('SHAPE / NORMALITY',['RIGHT SKEW: LONG RIGHT TAIL','LEFT SKEW: LONG LEFT TAIL','NORMAL-LIKE: SYMMETRIC BELL','CHECK GAPS AND OUTLIERS','MEAN / SD ALONE DO NOT SHOW NORMALITY','USE TI STAT PLOT FOR A DRAWN GRAPH'])
+        elif key=='2': STCORE.call('STHIST','histogram_session')
+        else: boxplot_session()

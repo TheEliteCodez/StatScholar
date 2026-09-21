@@ -63,9 +63,14 @@ def category_session():
     total = sum(counts)
     selected = None
     while True:
-        key = STCORE.menu('SELECT CATEGORY', [(str(i + 1), x) for i, x in enumerate(labels)] + [('E', 'COMPARE EXPECTED P')])
+        key = STCORE.menu('SELECT CATEGORY', [(str(i + 1), x) for i, x in enumerate(labels)] + [('E', 'COMPARE EXPECTED P'),('C','EDIT CATEGORY COUNT'),('T','SHOW ALL PROPORTIONS')])
         if key == '0':
             return
+        if key=='T':
+            STCORE.paged_results('CATEGORY PROPORTIONS',len(labels),lambda i:(labels[i],STCORE.ratio(counts[i],total)));continue
+        if key=='C':
+            i=STCORE.read_size('CATEGORY NUMBER: ',len(labels))-1
+            labels[i]=input('CATEGORY NAME: ');counts[i]=STCORE.read_int('COUNT: ');total=sum(counts);continue
         if key == 'E':
             if selected is None:
                 STCORE.view('SELECT CATEGORY FIRST', ['CHOOSE THE CATEGORY TO COMPARE'])
@@ -103,12 +108,12 @@ def two_way_session():
             continue
         c = STCORE.menu('COLUMN', [(str(i + 1), x) for i, x in enumerate(cl)])
         if c == '0':
-            return
+            continue
         total, a, b, both = two_way_values(cells, int(r) - 1, int(c) - 1)
         answers = [('P(ROW)', STCORE.ratio(a, total)), ('P(COLUMN)', STCORE.ratio(b, total)), ('P(BOTH)', STCORE.ratio(both, total)), ('P(OR)', STCORE.ratio(a + b - both, total)), ('P(NOT ROW)', STCORE.ratio(total - a, total)), ('P(NOT COLUMN)', STCORE.ratio(total - b, total))]
         answers += [('ROW GIVEN COLUMN', STCORE.ratio(both, b) if b else 'UNDEFINED'), ('COLUMN GIVEN ROW', STCORE.ratio(both, a) if a else 'UNDEFINED')]
         answers += [('INDEPENDENT', 'YES' if both*total==a*b else 'NO'), ('TWO COLUMN REPLACED', STCORE.ratio(b*b,total*total)), ('TWO COLUMN NOT REPLACED', STCORE.ratio(b*(b-1),total*(total-1)) if total>1 else 'UNDEFINED'), ('TWO ROW REPLACED', STCORE.ratio(a*a,total*total)), ('TWO ROW NOT REPLACED', STCORE.ratio(a*(a-1),total*(total-1)) if total>1 else 'UNDEFINED')]
-        STCORE.results('P14/P12/P07', answers, ['TOTAL=' + str(total), 'ROW=' + str(a), 'COLUMN=' + str(b), 'BOTH=' + str(both), 'GIVEN: DIVIDE BY GIVEN', 'OTHERS: DIVIDE BY TOTAL'])
+        STCORE.results('P14/P12/P07', answers, ['TOTAL=' + str(total), 'ROW '+rl[int(r)-1]+'=' + str(a), 'COLUMN '+cl[int(c)-1]+'=' + str(b), 'BOTH=' + str(both), 'GIVEN: DIVIDE BY GIVEN', 'OTHERS: DIVIDE BY TOTAL'])
 
 def supplied_session():
     STCORE.heading('P04/P07/P10/P11')

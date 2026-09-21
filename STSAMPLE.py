@@ -67,7 +67,7 @@ def read_parameters():
 
 def sample_tasks(total,targets,draws,word=None):
     while True:
-        key='1' if word else c.menu('WITHOUT REPLACEMENT / SAME DATA',[('1','EVENT PROBABILITY'),('2','MEAN / VAR / SD'),('3','AT LEAST ONE'),('4','UNUSUAL EVENT'),('5','SHOW DISTRIBUTION'),('6','BINOMIAL CONDITIONS'),('7','CHANGE DATA'),('9','GRAPH THIS DISTRIBUTION')])
+        key='1' if word else c.menu('WITHOUT REPLACEMENT / SAME DATA',[('1','EVENT PROBABILITY'),('2','MEAN / VAR / SD'),('3','AT LEAST ONE'),('4','UNUSUAL EVENT'),('5','SHOW DISTRIBUTION'),('6','BINOMIAL CONDITIONS'),('7','CHANGE DATA'),('9','BAR HEIGHTS / DRAWING STEPS')])
         if key=='0': return
         if key=='7':
             total,targets,draws=read_parameters()
@@ -98,3 +98,13 @@ def hyper_distribution(npop, targets, draws):
     denom = ncr(npop, draws)
     return [((k, 1), c.ratio(ncr(targets, k) * ncr(npop-targets, draws-k), denom))
             for k in range(low, high+1)]
+
+
+def box_session():
+    key=c.menu('DEFECTIVE ITEMS / BOX',[('1','DRAW WITHOUT REPLACEMENT'),('2','REPLACE AFTER EACH DRAW'),('3','ALREADY GIVEN X / P TABLE')])
+    if key=='1': sample_session()
+    elif key=='2':
+        total=c.read_int('TOTAL IN BOX: ');targets=c.read_int('DEFECTIVE IN BOX: ')
+        draws=c.read_int('NUMBER DRAWN: ')
+        c.call('STBWORD','wording_session',None,draws,c.ratio(targets,total))
+    elif key=='3': c.call('STCOUNT','distribution_session')

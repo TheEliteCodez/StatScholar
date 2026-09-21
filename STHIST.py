@@ -33,7 +33,7 @@ def grouped_rows(rows,start,width,count,closed_last=False):
 def histogram_session(values=None,group_first=False,rows=None):
     saved_rows=rows if rows is not None else value_counts(values) if values is not None else None
     while True:
-        key='4' if group_first else STCORE.menu('GRAPH > HISTOGRAM',[('1','RAW DATA'),('2','VALUE + FREQUENCY'),('3','X + P(X)'),('4','GROUP INTO CLASSES'),('5','CHANGE DATA')])
+        key='4' if group_first else STCORE.menu('GRAPH > HISTOGRAM',[('1','USE CURRENT DATA' if saved_rows is not None else 'RAW DATA'),('2','ENTER VALUE + FREQUENCY'),('3','X + P(X)'),('4','GROUP INTO CLASSES'),('5','CHANGE DATA')])
         group_first=False
         if key=='0': return
         if key=='5':
@@ -45,8 +45,8 @@ def histogram_session(values=None,group_first=False,rows=None):
             rows,approx=STCOUNT.read_distribution()
             STCORE.paged_results('GRAPH > PROB HISTOGRAM',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(x)', 'LABEL x AXIS AND PROBABILITY', 'APPROX: ROUNDED P' if approx else 'USE EQUAL-WIDTH BARS'])
             continue
-        if saved_rows is not None: rows=saved_rows
-        elif key=='2': rows=read_frequency_rows()
+        if key=='2': rows=read_frequency_rows()
+        elif saved_rows is not None: rows=saved_rows
         elif key=='4' and values is None:
             source=STCORE.menu('GRAPH > GROUP SOURCE',[('1','RAW DATA'),('2','VALUE + FREQUENCY')])
             if source=='0': continue

@@ -31,6 +31,7 @@ def f(x): return Fraction(*x)
 
 
 def flow(fn, inputs):
+    c._menu_pages.clear()
     pending=iter(inputs); outputs=[]; prompts=[]
     def read(prompt=''):
         prompts.append(prompt)
@@ -50,7 +51,7 @@ class Expansion(unittest.TestCase):
         self.assertEqual(a['MODE'],'DNE')
         self.assertEqual(d.quartiles(raw([1,2,3,4,5])),((3,2),(3,1),(9,2)))
         self.assertEqual(d.descriptive(raw([1,1,2,2,3]))['MODE'],'1,2')
-        self.assertEqual(d.descriptive(raw([1,1,2,2,3,3,4]))['MODE'],'1,2,3')
+        self.assertEqual(d.descriptive(raw([1,1,2,2,3,3,4]))['MODE'],'DNE')
         self.assertEqual(d.descriptive(raw([2,2,2]))['SAMPLE SD Sx'],0)
         self.assertEqual(d.descriptive(raw([2]))['SAMPLE VARIANCE s^2'],'DNE')
 
@@ -142,12 +143,12 @@ class Expansion(unittest.TestCase):
             out,_=flow(ref.parameter_classifier,answers);self.assertIn(want,out)
         for answers,want in [(['Y','0'],'EXPERIMENT'),(['N','0'],'OBSERVATIONAL')]:
             out,_=flow(ref.experiment_classifier,answers);self.assertIn(want,out)
-        for index,name in enumerate(('CONVENIENCE','SYSTEMATIC','STRATIFIED','CLUSTER','SIMPLE RANDOM','RANDOM SAMPLE')):
-            out,_=flow(ref.sampling_menu,['1']+['N']*index+['Y','0'])
+        for key,name in zip(('6','1','2','3','7','8'),('CONVENIENCE','SYSTEMATIC','STRATIFIED','CLUSTER','SIMPLE RANDOM','RANDOM SAMPLE')):
+            out,_=flow(ref.sampling_menu,['1',key,'0','0','0'])
             self.assertIn(name,out)
         out,_=flow(ref.population_classifier,['0','3','0'])
         self.assertIn('NEED THE GROUP',out)
-        out,_=flow(ref.significance_menu,['3','.01','.05','1'])
+        out,_=flow(ref.significance_menu,['3','.01','.05','1','0'])
         self.assertIn('STATISTICALLY SIGNIFICANT=YES',out)
         self.assertIn('NEED EFFECT SIZE',out)
 
@@ -173,13 +174,13 @@ class Expansion(unittest.TestCase):
             self.assertEqual(guide['title'],app.GUIDES[gid][0])
             self.assertEqual(guide['solver'],gid)
         # Real data entry begins after the advertised menu choices.
-        out,prompts=flow(app.main,['4','1','3','1','2','3','1','0','0'])
+        out,prompts=flow(app.main,(['4','1','3','1','2','3','1','0','0'])+['0'])
         self.assertIn('MEAN=2.0000',out)
         self.assertEqual(prompts[:3],['> ','> ','NUMBER OF VALUES (1..100): '])
-        out,prompts=flow(app.main,['5','1','1','40','4','44','1','0','0'])
+        out,prompts=flow(app.main,['5','1','1','40','4','44','1','0','0','0'])
         self.assertEqual(prompts[:4],['> ','> ','> ','MEAN: '])
         self.assertIn('z=1.0000',out)
-        out,_=flow(app.main,['5','1','4','2','1','0','0','0'])
+        out,_=flow(app.main,(['5','1','4','2','1','0','0','0'])+['0'])
         self.assertIn('APPROX PERCENT=95.0000',out)
 
     def test_raw_session_reuses_list(self):
@@ -198,7 +199,7 @@ import sys,builtins,io,contextlib
 import STAT1,STCORE
 assert 'STQUEST' not in sys.modules
 assert 'STDMATH' not in sys.modules
-pending=iter(['5','1','1','40','4','44','1','0','0'])
+pending=iter(['5','1','1','40','4','44','1','0','0','0'])
 def read(prompt=''):
  if prompt=='MEAN: ':
   assert 'STNORM' in sys.modules
@@ -209,7 +210,7 @@ STCORE.view=lambda *args:None
 with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
 assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
 # Search metadata completes before entering the raw solver, even in FIND.
-pending=iter(['1','N','N','9','1','shortest 25%','1','2','1','3','1','0','0','0','0','0'])
+pending=iter(['1','N','N','9','1','shortest 25%','1','1','2','1','3','1','0','0','0','0','0'])
 def read(prompt=''):
  if prompt.startswith('NUMBER OF VALUES'):
   assert 'STFIND' in sys.modules
@@ -241,7 +242,7 @@ for repeat in range(5):
  def capture(title,lines):
   refs.extend(weakref.ref(sys.modules[n]) for n in STCORE.TOPIC_MODULES if n in sys.modules)
  STCORE.view=capture
- cases=[['4','1','3','1','2','3','1','0','0'],['5','1','4','2','1','0','0','0'],['1','N','N','9','1','shortest 25%','1','2','1','3','1','0','0','0','0','0']]
+ cases=[['4','1','3','1','2','3','1','0','0','0'],['5','1','4','2','1','0','0','0','0'],['1','N','N','9','1','shortest 25%','1','1','2','1','3','1','0','0','0','0','0']]
  for answers in cases:
   pending=iter(answers)
   import builtins

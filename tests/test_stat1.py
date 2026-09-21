@@ -45,7 +45,7 @@ class Arithmetic(unittest.TestCase):
         self.assertEqual(s.frequency_stats([(R(1),1),(R(3),1)])[3],(2,1))
         self.assertEqual(s.frequency_stats([(R(3),2),(R(1),1)])[3],(3,1))
         for rows,mode in [([(1,2),(2,2),(3,1)],'1,2'), ([(1,2),(2,2),(3,2),(4,1)],'DNE'),
-                          ([(1,1),(2,1)],'DNE'), ([(2,1)],'2'), ([(1,1),(1,2),(2,2),(99,0)],'1')]:
+                          ([(1,1),(2,1)],'DNE'), ([(2,1)],'DNE'), ([(1,1),(1,2),(2,2),(99,0)],'1')]:
             self.assertEqual(s.frequency_stats([(R(x),f) for x,f in rows])[4],mode)
 
     def test_counts_and_supplied_originals(self):
@@ -167,6 +167,7 @@ class Arithmetic(unittest.TestCase):
 
 class Workflow(unittest.TestCase):
     def run_flow(self,fun,answers):
+        s._menu_pages.clear()
         pending=iter(answers);outputs=[];prompts=[]
         def read(prompt=''):
             prompts.append(prompt)
@@ -178,7 +179,7 @@ class Workflow(unittest.TestCase):
         return outputs,prompts
 
     def test_frequency_home_and_format_reuse(self):
-        output,prompts=self.run_flow(s.main,['4','2','4','3','1','6','2','9','6','12','5','2','4','3','1','0','0'])
+        output,prompts=self.run_flow(s.main,(['4','2','4','3','1','6','2','9','6','12','5','2','4','3','1','0','0'])+['0'])
         text=str(output);self.assertIn('MEAN=9.2143',text);self.assertIn('MEAN=129/14',text)
         self.assertEqual(prompts.count('NUMBER OF ROWS: '),1)
         self.assertEqual(prompts[:3],['> ','> ','NUMBER OF ROWS: '])
@@ -209,13 +210,13 @@ class Workflow(unittest.TestCase):
         self.assertIn('P APPROX',str(output));self.assertIn('EXACT ANSWER UNAVAILABLE',str(output))
 
     def test_experiment_sessions(self):
-        output,_=self.run_flow(lambda:s.experiment_session('roulette'),['2','36','ODD','3','1','BACK'])
+        output,_=self.run_flow(lambda:s.experiment_session('roulette'),['2','36','6','ODD','3','1','0'])
         self.assertIn('9/19',str(output))
-        output,_=self.run_flow(lambda:s.experiment_session('coin'),['6','LIST','3 OR H','1','6 AND T','1','BACK'])
+        output,_=self.run_flow(lambda:s.experiment_session('coin'),['6','5','6','3 OR H','1','6','6 AND T','1','0'])
         self.assertIn('TOTAL=12',str(output));self.assertIn('P(EVENT)=0.5833',str(output));self.assertIn('P(EVENT)=0.0833',str(output))
-        output,_=self.run_flow(lambda:s.experiment_session('cards'),['<3','1','BACK'])
+        output,_=self.run_flow(lambda:s.experiment_session('cards'),['6','<3','1','0'])
         self.assertIn('0.1538',str(output))
-        output,_=self.run_flow(lambda:s.experiment_session('spinner'),['2','1','1','2','3','EVEN','1','BACK'])
+        output,_=self.run_flow(lambda:s.experiment_session('spinner'),['2','1','1','2','3','6','EVEN','1','0'])
         self.assertIn('P(EVENT)=0.7500',str(output))
 
     def test_money_sessions(self):
@@ -320,11 +321,11 @@ class Workflow(unittest.TestCase):
                (['3','6','3'],'insurance_session'),(['3','6','4'],'raffle_session'),(['3','4','1'],'dice_session')]
         for selections,job in cases:
             with patch.object(s,job) as called:
-                self.run_flow(s.main,selections+['0']);called.assert_called_once()
+                self.run_flow(s.main,selections+['0']*(1+(len(selections)-1 if selections[0] in ('3','4','5') else 0)));called.assert_called_once()
             self.assertLessEqual(len(selections),3)
         for key,kind in [('2','coin'),('5','roulette'),('4','cards'),('6','spinner')]:
             with patch.object(s,'experiment_session') as called:
-                self.run_flow(s.main,['3','4',key,'0']);called.assert_called_once_with(kind)
+                self.run_flow(s.main,(['3','4',key,'0'])+['0', '0']);called.assert_called_once_with(kind,None)
 
     def test_module_sizes_and_wrapping(self):
         from test_support import MODULE_NAMES

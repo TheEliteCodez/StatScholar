@@ -64,9 +64,15 @@ def frequency_event(rows,op,cutoff):
 def frequency_tools(rows=None):
     if rows is None: rows=c.call('STDMATH','read_frequency_rows')
     while True:
-        key=c.menu('FREQUENCY TABLE',[('1','RELATIVE / CUMULATIVE'),('2','EXACTLY'),('3','AT MOST'),('4','AT LEAST'),('5','LESS THAN'),('6','MORE THAN')])
+        key=c.menu('FREQUENCY TABLE',[('1','RELATIVE / CUMULATIVE'),('2','EXACTLY'),('3','AT MOST'),('4','AT LEAST'),('5','LESS THAN'),('6','MORE THAN'),('7','BETWEEN')])
         if key=='0': return
         if key=='1': c.call('STSTUDY','definition_pages','TABLE / IN VALUE ORDER','; '.join(frequency_lines(rows)))
+        elif key=='7':
+            event=c.call('STBWORD','read_event','[]')
+            if event:
+                total=sum(f for x,f in rows)
+                matching=sum(f for x,f in rows if c.event_match(x,*event))
+                c.results('FREQUENCY BETWEEN',[('PROPORTION',c.ratio(matching,total))],['MATCHING COUNTS / TOTAL'])
         else:
             op={'2':'=','3':'<=','4':'>=','5':'<','6':'>'}[key]
             cutoff=c.read_exact('CATEGORY / VALUE CUTOFF: ')

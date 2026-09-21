@@ -21,9 +21,9 @@ import STFIND as find
 class Quiz5(unittest.TestCase):
     def test_probability_guided_none_and_overlap(self):
         out,_=flow(app.main,['3','H','5','3','4','.5','0','0','0','0'])
-        self.assertIn('NONE MEANS EXACTLY ZERO',out)
+        self.assertIn('P(X = 0)',out)
         self.assertIn('ANSWER=0.0625',out)
-        out,_=flow(app.main,['3','H','3','5','100','40','30','10','3','1','0','0','0'])
+        out,_=flow(app.main,(['3','H','3','5','100','40','30','10','3','1','0','0','0'])+['0'])
         self.assertIn('A OR B=0.6000',out)
         self.assertIn('A BUT NOT B=0.3000',out)
 
@@ -72,7 +72,7 @@ class Quiz5(unittest.TestCase):
         self.assertIn('UNUSUAL=NO',out)
 
     def test_quiz_home_and_rounded_entry(self):
-        out,_=flow(app.main,['3','13','7','2','0','0.000','1','.999','2','0','0','0'])
+        out,_=flow(app.main,(['3','13','7','2','0','0.000','1','.999','2','0','0','0'])+['0'])
         self.assertIn('ROUNDED TABLE: APPROXIMATE P',out)
         self.assertNotIn('mu=',out)
         for term in ['quiz 5','credit cards','rounded table','girls','merta']:

@@ -40,22 +40,67 @@ def quartiles(values):
             median_span(values, (n+1)//2, n))
 
 def descriptive(values):
+    return weighted_stats(value_counts(values))
+
+
+def weighted_stats(rows):
     import math
-    n = len(values)
-    total = STCORE.rsum(values)
-    mean = STCORE.rdiv(total, (n,1))
-    q1, median, q3 = quartiles(values)
-    variance = STCORE.rdiv(STCORE.rsum(STCORE.rmul(sub(x,mean),sub(x,mean)) for x in values), (n-1,1)) if n>1 else None
-    counts = {}
-    for x in values: counts[x] = counts.get(x,0)+1
-    peak = max(counts.values())
-    modes = [x for x in counts if counts[x]==peak]
-    mode = 'DNE' if peak==1 or (len(modes)==len(counts) and len(counts)>1) else ','.join(STCORE.exact_text(x) for x in modes)
-    return {'n':n, 'SUM':total, 'MEAN':mean, 'SAMPLE SD Sx':math.sqrt(STCORE.number(variance)) if variance else 'DNE',
-            'SAMPLE VARIANCE s^2':variance if variance is not None else 'DNE', 'MIN':values[0],
-            'Q1':q1 if q1 is not None else 'DNE', 'MEDIAN':median, 'Q3':q3 if q3 is not None else 'DNE',
-            'MAX':values[-1], 'MODE':mode, 'RANGE':sub(values[-1],values[0]),
-            'IQR':sub(q3,q1) if q1 is not None else 'DNE', 'MIDRANGE':STCORE.rdiv(STCORE.radd(values[0],values[-1]),(2,1))}
+    counts={}
+    for x,f in rows:
+        x=STCORE.to_ratio(x)
+        if f>0: counts[x]=counts.get(x,0)+f
+    ordered=STCORE.exact_sorted(counts)
+    n=sum(counts.values())
+    if not n: raise ValueError('NO OBSERVATIONS')
+    def at(index):
+        running=0
+        for x in ordered:
+            running+=counts[x]
+            if index<running: return x
+    def middle(start,end):
+        length=end-start
+        if not length: return 'DNE'
+        m=start+length//2
+        return at(m) if length%2 else STCORE.rdiv(STCORE.radd(at(m-1),at(m)),(2,1))
+    total=STCORE.rsum(STCORE.rmul(x,(counts[x],1)) for x in ordered)
+    mean=STCORE.rdiv(total,(n,1))
+    ss=STCORE.rsum(STCORE.rmul(STCORE.rmul(sub(x,mean),sub(x,mean)),(counts[x],1)) for x in ordered)
+    var=STCORE.rdiv(ss,(n-1,1)) if n>1 else 'DNE'
+    pop=STCORE.rdiv(ss,(n,1))
+    q1,med,q3=middle(0,n//2),middle(0,n),middle((n+1)//2,n)
+    peak=max(counts.values())
+    modes=[x for x in ordered if counts[x]==peak]
+    mode='DNE' if peak==1 or len(modes)>2 or (len(modes)==len(ordered) and len(ordered)>1) else ','.join(STCORE.exact_text(x) for x in modes)
+    result={'n':n,'SUM':total,'MEAN':mean,'SAMPLE VARIANCE s^2':var,
+        'SAMPLE SD Sx':math.sqrt(STCORE.number(var)) if n>1 else 'DNE',
+        'POPULATION VARIANCE':pop,'POPULATION SD':math.sqrt(STCORE.number(pop)),
+        'MIN':ordered[0],'Q1':q1,'MEDIAN':med,'Q3':q3,'MAX':ordered[-1],
+        'MODE':mode,'RANGE':sub(ordered[-1],ordered[0]),'IQR':sub(q3,q1) if n>1 else 'DNE',
+        'MIDRANGE':STCORE.rdiv(STCORE.radd(ordered[0],ordered[-1]),(2,1))}
+    if n>1:
+        distance=STCORE.rmul(result['IQR'],(3,2))
+        lo,hi=sub(q1,distance),STCORE.radd(q3,distance)
+        inside=[x for x in ordered if STCORE.compare_exact(x,lo)>=0 and STCORE.compare_exact(x,hi)<=0]
+        result.update({'LOWER FENCE':lo,'UPPER FENCE':hi,'LOW WHISKER':inside[0],'HIGH WHISKER':inside[-1],
+            'OUTLIERS':','.join(STCORE.exact_text(x) for x in ordered if STCORE.compare_exact(x,lo)<0 or STCORE.compare_exact(x,hi)>0) or 'NONE'})
+    return result
+
+
+def edit_raw(values):
+    STCORE.paged_results('SORTED VALUES / EDIT INDEX',len(values),lambda i:(str(i+1),values[i]))
+    index=STCORE.read_size('SORTED INDEX TO CHANGE: ',len(values))-1
+    values[index]=STCORE.read_exact('NEW VALUE: ')
+    return STCORE.exact_sorted(values)
+
+
+def edit_frequency(rows):
+    STCORE.paged_results('FREQUENCY ROWS',len(rows),lambda i:(str(i+1),STCORE.exact_text(rows[i][0])+' COUNT='+str(rows[i][1])))
+    index=STCORE.read_size('ROW TO CHANGE: ',len(rows))-1
+    x=STCORE.read_exact('VALUE: ');f=STCORE.read_int('FREQUENCY: ')
+    if f<0: raise ValueError('FREQUENCY MUST BE NONNEGATIVE')
+    rows[index]=(x,f)
+    return rows
+
 
 def min_exact(a,b): return a if STCORE.compare_exact(a,b)<=0 else b
 
@@ -67,6 +112,7 @@ def value_counts(values):
     return [(x,counts[x]) for x in STCORE.exact_sorted(counts)]
 
 def read_frequency_rows():
+    print('EXACT VALUES, NOT CLASS LIMITS')
     rows=[]
     for i in range(STCORE.read_size('NUMBER OF ROWS: ',STCORE.MAX_ROWS)):
         x=STCORE.read_exact('VALUE: '); f=STCORE.read_int('FREQUENCY: ')
