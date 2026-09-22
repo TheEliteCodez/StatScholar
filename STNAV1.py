@@ -110,7 +110,7 @@ def launch_route(route):
         if STNAV.GUIDES[route][1]:
             run_solver(STNAV.GUIDES[route][1])
         else:
-            show_identified(route)
+            STCORE.call('STNAV','show_identified',route)
 
 
 def homework_tag(qid):

@@ -15,7 +15,7 @@ questions from Practice Test 1.
 
 ## Install and run
 
-1. Transfer all **140 `ST*.py` files** to the calculator's Python environment
+1. Transfer all **157 `ST*.py` files** to the calculator's Python environment
    using its supported transfer workflow. Preserve their filenames and make
    the modules available together.
 2. Restart the Python environment after replacing modules.
