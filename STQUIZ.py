@@ -68,7 +68,7 @@ def frequency_tools(rows=None):
         if key=='0': return
         if key=='1': c.call('STSTUDY','definition_pages','TABLE / IN VALUE ORDER','; '.join(frequency_lines(rows)))
         elif key=='7':
-            event=c.call('STBWORD','read_event','[]')
+            event=c.call('STBWE','read_event','[]')
             if event:
                 total=sum(f for x,f in rows)
                 matching=sum(f for x,f in rows if c.event_match(x,*event))

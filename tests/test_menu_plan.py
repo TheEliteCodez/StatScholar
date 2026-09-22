@@ -20,6 +20,8 @@ import STCORE as c
 import STVIEW as view
 import STDMATH as dm
 import STBINFO as info
+import STBINFO2 as info2
+import STBINFO3 as info3
 import STBWORD as bw
 import STNORM as normal
 import STVENN as venn
@@ -62,13 +64,13 @@ class MenuPlan(unittest.TestCase):
         self.assertNotIn('RETAIN',c._menu_pages)
 
     def test_first_answer_does_not_calculate_statistics(self):
-        with patch.object(info,'binomial_quartiles',side_effect=AssertionError('too early')),patch.object(c,'view',return_value='exit'):
+        with patch.object(info2,'binomial_quartiles',side_effect=AssertionError('too early')),patch.object(c,'view',return_value='exit'):
             info.show_answer(700,(17,25),('>=',521,0),(1,10000),'ANSWER',['P=.0001'])
 
     def test_quartiles_cached_across_answer_revisits(self):
         cache={}
-        with patch.object(info,'binomial_quartiles',wraps=info.binomial_quartiles) as calculate:
-            for _ in range(2): list(info.report_pages(10,(1,20),('=',1,0),(3,10),(1,100),cache))
+        with patch.object(info2,'binomial_quartiles',wraps=info2.binomial_quartiles) as calculate:
+            for _ in range(2): list(info3.report_pages(10,(1,20),('=',1,0),(3,10),(1,100),cache))
         self.assertEqual(calculate.call_count,1)
 
     def test_binomial_format_and_threshold_persist(self):

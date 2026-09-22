@@ -8,7 +8,6 @@
 
 # Binomial reference and parameter screens, loaded after event UI.
 import STCORE as c
-from STBMATH import usual_counts, binomial_exact_event, binomial_exact_ratio, binomial_shape
 
 
 def cheat_sheet():
@@ -26,6 +25,7 @@ def cheat_sheet():
 
 def parameter_results(kind,n,p):
     import math
+    from STBMATH import usual_counts, binomial_exact_event, binomial_exact_ratio, binomial_shape
     mean=c.rmul((n,1),p)
     variance=c.rmul(mean,c.radd((1,1),(-p[0],p[1])))
     if kind=='full':

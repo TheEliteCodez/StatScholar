@@ -15,7 +15,7 @@ questions from Practice Test 1.
 
 ## Install and run
 
-1. Transfer all **59 `ST*.py` files** to the calculator's Python environment
+1. Transfer all **140 `ST*.py` files** to the calculator's Python environment
    using its supported transfer workflow. Preserve their filenames and make
    the modules available together.
 2. Restart the Python environment after replacing modules.
@@ -61,9 +61,10 @@ remain next/previous controls; legacy letter choices still work in text input.
 | 5 - Normal / Z / Graphs | Z-scores, empirical rule, usual limits, relative position and plotting values/instructions. |
 | 6 - Study / Concepts | Sampling, measurement, definitions, significance, errors and quiz guides. |
 | 7 - Practice Test 1 | Printed questions 1-30, worked answers and solver links. |
+| 8 - Question Wizard | Yes/no classifier: identify the question type from what you literally see (table, raw list, dice, fixed trials, supplied percents, X/P table, counting). |
 
-Home shows six choices per page. Option 7 is on the next page; entering 7
-directly also selects it.
+Home shows six choices per page. Options 7 and 8 are on the next page; entering
+7 or 8 directly also selects them.
 
 ### Binomial: reuse n and p
 
@@ -148,7 +149,9 @@ are separate from older `PT` lookup identifiers. Search supports `pretest 24`.
 | Files | Role |
 | --- | --- |
 | `STAT1.py` | Entry point and home routing |
-| `STCORE.py`, `STVIEW.py`, `STPAGE.py` | Arithmetic helpers, input, paging and module lifecycle |
+| `STHOME.py` | Home-menu dispatcher, loaded on demand |
+| `STTASKS.py`, `STPROBM.py`, `STWIZM.py` | Home-menu task routes, loaded per task on demand |
+| `STCORE.py`, `STEXACT.py`, `STEFMT.py`, `STEVENT.py`, `STVIN.py`, `STVMENU.py`, `STVDISP.py`, `STVRES.py`, `STPAGE.py` | Input/display/lifecycle core plus on-demand exact arithmetic |
 | `STB*.py`, `STSAMPLE.py`, `STFINITE.py` | Binomial and finite-population workflows |
 | `STDATA.py`, `STDMATH.py`, `STDESC.py` | Descriptive data workflows and arithmetic |
 | `STPROB.py`, `STCOUNT.py`, `STVENN.py` | Probability tables, counting, payoffs and groups |

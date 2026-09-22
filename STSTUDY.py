@@ -108,59 +108,22 @@ def study_menu():
             continue
         {'1':population_classifier,'2':parameter_classifier,'3':sampling_menu,'4':experiment_classifier,'5':measurement_menu,'6':significance_menu,'7':definitions_menu,'8':large_numbers}[key]()
 
-def population_classifier():
-    definition_pages('STUDY > POPULATION / SAMPLE','POPULATION: ENTIRE GROUP THE STUDY WANTS TO DESCRIBE. SAMPLE: SUBSET ACTUALLY OBSERVED. IDENTIFY THE TARGET GROUP FROM THE QUESTION; DO NOT ASSUME AN UNSTATED POPULATION.')
-    key=STCORE.menu('STUDY > GROUP DESCRIBED',[('1','ENTIRE TARGET GROUP'),('2','SUBSET ACTUALLY OBSERVED'),('3','TARGET NOT STATED')])
-    if key!='0': definition_pages('STUDY > ANSWER',{'1':'POPULATION','2':'SAMPLE','3':'NEED THE GROUP THE STUDY WANTS TO DESCRIBE BEFORE IDENTIFYING THE POPULATION.'}[key])
+def population_classifier(): STCORE.call('STSTU1','population_classifier')
 
-def parameter_classifier():
-    entire=study_yesno('BASED ON ENTIRE POPULATION?')
-    if entire is None: return
-    definition_pages('STUDY > '+('PARAMETER' if entire else 'STATISTIC'),'PARAMETER DESCRIBES POPULATION. STATISTIC DESCRIBES SAMPLE. THIS APPLIES TO MEANS, SDs, COUNTS AND PERCENTAGES. PERCENTAGE ALONE DOES NOT DECIDE.')
+def parameter_classifier(): STCORE.call('STSTU1','parameter_classifier')
 
-def sampling_menu():
-    while True:
-        key=STCORE.menu('STUDY > SAMPLING',[('1','IDENTIFY SELECTION METHOD'),('2','VIEW METHODS'),('3','CHECK FRAME / SURVEY BIAS')])
-        if key=='0': return
-        if key=='2': definition_list('STUDY > METHODS',SAMPLING_DEFINITIONS)
-        elif key=='3': definition_list('SURVEY BIAS / QUOTAS',BIAS_DEFINITIONS)
-        else:
-            method=STCORE.menu('HOW ARE PEOPLE SELECTED?', [('1','EVERY kth PERSON'),('2','RANDOM FROM EVERY GROUP'),('3','RANDOM WHOLE GROUPS'),('4','PEOPLE CHOOSE TO RESPOND'),('5','FILL SUBGROUP QUOTAS'),('6','EASIEST PEOPLE TO REACH'),('7','ALL SIZE-n SUBSETS EQUALLY'),('8','EACH PERSON EQUALLY'),('9','GROUPS THEN SOME MEMBERS')])
-            if method=='0': continue
-            if method in ('1','2','3','6','7','8'):
-                definition_pages(*SAMPLING_DEFINITIONS[{'1':2,'2':4,'3':5,'6':3,'7':0,'8':1}[method]])
-            elif method=='9': definition_pages(*DEFINITIONS[-1])
-            else: definition_pages(*BIAS_DEFINITIONS[0 if method=='4' else 3])
-            definition_pages('METHOD VERSUS BIAS','THE SELECTION METHOD AND REPRESENTATIVENESS ARE SEPARATE. EVERY TENTH LIBRARY VISITOR IS SYSTEMATIC, BUT EXCLUDES NONVISITORS. SAMPLING MENU 3 EXPLAINS SURVEY BIAS.')
+def sampling_menu(): STCORE.call('STSTU2','sampling_menu')
 
 
-def experiment_classifier():
-    yes=study_yesno('RESEARCHERS IMPOSE TREATMENT?')
-    if yes is None: return
-    definition_pages('STUDY > '+('EXPERIMENT' if yes else 'OBSERVATIONAL'),'ASSIGNED OR IMPOSED TREATMENT MEANS EXPERIMENT. MERELY OBSERVING, MEASURING OR SURVEYING IS AN OBSERVATIONAL STUDY.')
+def experiment_classifier(): STCORE.call('STSTU1','experiment_classifier')
 
-def measurement_menu():
-    while True:
-        key=STCORE.menu('STUDY > DATA TYPE',[('1','QUALITATIVE / QUANTITATIVE'),('2','DISCRETE / CONTINUOUS'),('3','MEASUREMENT LEVELS')])
-        if key=='0': return
-        if key=='1': definition_pages('STUDY > DATA TYPE','QUALITATIVE: CATEGORIES OR LABELS. QUANTITATIVE: NUMERICAL COUNTS OR MEASUREMENTS. A NUMBER USED ONLY AS AN ID IS A LABEL.')
-        elif key=='2': definition_pages('STUDY > DATA TYPE','DISCRETE: COUNTABLE VALUES, LIKE NUMBER OF CHILDREN. CONTINUOUS: MEASUREMENTS THROUGH AN INTERVAL, LIKE HEIGHT.')
-        elif key=='3': definition_list('STUDY > MEASUREMENT',MEASUREMENT_DEFINITIONS)
+def measurement_menu(): STCORE.call('STSTU2','measurement_menu')
 
 
-def significance_menu():
-    while True:
-        key=STCORE.menu('STUDY > SIGNIFICANCE',[('1','STATISTICAL VS PRACTICAL'),('2','ERROR DEFINITIONS'),('3','GIVEN p-VALUE: COMPARE alpha')])
-        if key=='0': return
-        if key=='1': definition_pages('STUDY > INTERPRETATION','STATISTICAL: UNLIKELY UNDER THE NULL; COMPARE p-VALUE TO alpha. PRACTICAL: IS THE EFFECT LARGE ENOUGH TO MATTER IN CONTEXT? CONSIDER EFFECT SIZE, COSTS AND CONSEQUENCES. STATISTICAL SIGNIFICANCE ALONE CANNOT DECIDE PRACTICAL IMPORTANCE.')
-        elif key=='2': definition_list('STUDY > ERROR',STUDY_DEFINITIONS[:2])
-        elif key=='3':
-            p=STCORE.read_exact('p-VALUE: '); alpha=STCORE.read_exact('alpha: ')
-            STCORE.results('STUDY > SIGNIFICANCE',[('STATISTICALLY SIGNIFICANT','YES' if STCORE.compare_exact(p,alpha)<=0 else 'NO'),('PRACTICALLY SIGNIFICANT','NEED EFFECT SIZE / CONTEXT')],['COMPARE p-VALUE <= alpha'])
+def significance_menu(): STCORE.call('STSTU2','significance_menu')
 
 
-def large_numbers():
-    definition_pages('LAW OF LARGE NUMBERS','AS THE NUMBER OF INDEPENDENT TRIALS WITH THE SAME PROBABILITY BECOMES LARGE, RELATIVE FREQUENCY TENDS TO GET CLOSER TO THE TRUE PROBABILITY. SEE RELATIVE FREQUENCY AND EMPIRICAL PROBABILITY. THIS DOES NOT MEAN A LOSING STREAK MAKES A WIN DUE.')
+def large_numbers(): STCORE.call('STSTU2','large_numbers')
 
 
 def open_reference(name, context, *args):

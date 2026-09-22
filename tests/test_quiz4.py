@@ -63,6 +63,17 @@ for repeat in range(3):
         self.assertIn('PAGE 2/',out)
         self.assertIn('3/4',out)
 
+    def test_multi_dice_count_of_face_any_wording(self):
+        import STMDICE as multi
+        # At least 2 fours of 3 dice: 16/216 = 2/27.
+        out,_=flow(lambda:multi.solver_multi_dice(3),['15','4','4','2','1','0'])
+        self.assertIn('P=0.0741',out)
+        self.assertIn('SUCCESSFUL=16',out)
+        # At most 1 four of 3 dice: 200/216 = 25/27.
+        out,_=flow(lambda:multi.solver_multi_dice(3),['15','4','2','1','1','0'])
+        self.assertIn('P=0.9259',out)
+        self.assertIn('SUCCESSFUL=200',out)
+
     def test_selection_exact_changed_inputs_and_limits(self):
         self.assertEqual(Fraction(*venn.all_probability(450,238,3,False)),Fraction(238,450)*Fraction(237,449)*Fraction(236,448))
         self.assertEqual(Fraction(*venn.all_probability(450,238,3,True)),Fraction(238,450)**3)

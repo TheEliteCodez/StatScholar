@@ -19,7 +19,7 @@ from unittest.mock import patch
 from test_expansion import flow,raw
 import STAT1 as app
 import STCORE as c
-import STBWORD as w
+import STBW2 as w
 import STBMATH as bm
 import STDICE as dice
 import STQUEST as questions

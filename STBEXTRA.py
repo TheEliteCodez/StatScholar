@@ -8,8 +8,6 @@
 
 # STBEXTRA - loaded on demand.
 import STCORE
-import math
-from STBMATH import *
 
 def binomial_model_session():
     STCORE.heading('B01 IDENTIFY DISTRIBUTION')
@@ -20,6 +18,7 @@ def binomial_model_session():
     STCORE.call('STBINOM','binomial_session',n,p)
 
 def symmetry_session():
+    from STBMATH import binomial_exact_event
     STCORE.heading('B12 COMPARE TAILS')
     n = STCORE.read_int('NUMBER OF TRIALS n: ')
     lower = STCORE.read_exact('LEFT EVENT: X LESS THAN: ')
@@ -46,6 +45,7 @@ def shape_tasks():
         symmetry_session()
 
 def shape_session():
+    from STBMATH import binomial_shape, binomial_exact_ratio
     n = STCORE.read_int('BINOMIAL n ON GRAPH: ')
     candidates = []
     for i in range(STCORE.read_size('NUMBER OF p OPTIONS: ', 10)):

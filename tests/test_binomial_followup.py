@@ -14,7 +14,8 @@ import unittest
 from unittest.mock import patch
 import STCORE as c
 import STBWORD as wording
-import STBINFO as info
+import STBINFO2 as info
+import STBINFO3 as info3
 
 
 class BinomialFollowup(unittest.TestCase):
@@ -33,19 +34,19 @@ class BinomialFollowup(unittest.TestCase):
                 self.assertEqual(info.binomial_quartiles(n,p),tuple(expected))
 
     def test_stats_cutoff_and_distinct_unusual_rules(self):
-        lines=info.followup(10,(1,20),('=',1,0),(3151247048623047,10**16))
+        lines=info3.followup(10,(1,20),('=',1,0),(3151247048623047,10**16))
         for value in ('MEAN=0.5000','VARIANCE=0.4750','SD=0.6892',
                       'MIN USUAL=-0.8784','MAX USUAL=1.8784',
                       'z=0.7255','2 SD: NOT UNUSUAL','EVENT UNUSUAL=NO',
                       'LOWER FENCE=-1.5','UPPER FENCE=2.5'):
             self.assertIn(value,lines)
-        lines=info.followup(4,(1,2),('[]',0,4),(1,1))
+        lines=info3.followup(4,(1,2),('[]',0,4),(1,1))
         self.assertIn('LOWER CUTOFF=0',lines)
         self.assertIn('UPPER CUTOFF=4',lines)
         self.assertIn('z=-2.0000',lines)
         self.assertIn('z=2.0000',lines)
         self.assertEqual(lines.count('2 SD: NOT UNUSUAL'),2)
-        self.assertIn('z=DNE (SD=0)',info.followup(10,(0,1),('=',0,0),(1,1)))
+        self.assertIn('z=DNE (SD=0)',info3.followup(10,(0,1),('=',0,0),(1,1)))
 
     def test_answer_next_page_stats_previous_page_answer(self):
         # Real viewer, physical arrows. No data re-entry to see the second page.
@@ -64,10 +65,10 @@ class BinomialFollowup(unittest.TestCase):
             with patch.object(c,'HAS_KEYS',False),patch.object(c,'view',side_effect=lambda title,lines:views.append(list(lines))),patch('builtins.input',side_effect=['10','.05']+event_input+['0']),contextlib.redirect_stdout(io.StringIO()):
                 wording.wording_session(op)
             self.assertTrue(views[0][0].startswith('ANSWER='))
-            self.assertEqual(views[1][0],'MEAN / SD / USUAL LIMITS')
+            self.assertEqual(views[1][0],'MEAN / SD / USUAL')
             lines=[line for page in views for line in page]
             self.assertIn('LOWER FENCE=-1.5',lines)
-            self.assertIn('REQUESTED EVENT / PROBABILITY',lines)
+            self.assertIn('REQUESTED EVENT',lines)
 
 
 if __name__=='__main__': unittest.main()

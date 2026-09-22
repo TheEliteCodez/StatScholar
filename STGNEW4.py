@@ -1,0 +1,22 @@
+# StatScholar - TI-84 Python Statistics Tutor
+# Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
+# STGNEW4 guide records.
+import STCORE
+
+
+def get_guide(gid, field=None):
+    if gid == 'G09':
+        return STCORE.unpack_guide('Relative Position\nCOMPARE SCORES FROM DIFFERENT GROUPS\nz=(x-MEAN)/SD FOR EACH\nCOMPARE z VALUES\nUSE Z-SCORE FORMULA TWICE\n44 WITH MEAN40 SD4: z=1\nHIGHER z IS NOT ALWAYS A BETTER OUTCOME\nS12 G07\nG09', field)
+
+    if gid == 'F08':
+        return STCORE.unpack_guide('Grouped Frequency Table\nCLASS WIDTH OR NUMBER OF CLASSES\nLOWER UPPER BOUNDARIES f RELATIVE CUMULATIVE\nCOUNT INPUT WEIGHTS INTO NONOVERLAPPING BINS\nUSE TABLE TO DRAW HISTOGRAM\nINTEGER 0..3 WIDTH2: LIMITS0..1,2..3\nMEASUREMENT UNIT DETERMINES BOUNDARIES\nG06 F03\nF08', field)
+
+    if gid == 'D05':
+        return STCORE.unpack_guide('Sampling Methods\nHOW WERE SUBJECTS SELECTED?\nCONVENIENCE SYSTEMATIC STRATIFIED CLUSTER RANDOM\nDISTINGUISH EVERY GROUP FROM SELECTED WHOLE GROUPS\nUSE CLASSIFIER\nRANDOM START EVERY 10th: SYSTEMATIC\nSIMPLE RANDOM NEEDS ALL SIZE-n SUBSETS EQUALLY LIKELY\nD03\nD05', field)
+    return None

@@ -1,0 +1,52 @@
+# StatScholar - TI-84 Python Statistics Tutor
+# Author: Gregory King
+# Date: 2026-09-20
+# Copyright (c) 2026 Gregory King
+# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
+#
+# License terms: see LICENSE or STAT1.py.
+
+# STGDESC1 guide records.
+import STCORE
+
+
+def get_guide(gid, field=None):
+    if gid == 'D01':
+        return STCORE.unpack_guide(
+            'Qualitative vs Quantitative\n'
+            'TYPICAL START:\t"CLASSIFY THE VARIABLE..."\t"IS THIS QUALITATIVE OR\tQUANTITATIVE?"\t\tASK YOURSELF:\tIS THE ANSWER A CATEGORY\tOR A NUMBER WITH MEANING?\n'
+            'QUALITATIVE:\tCATEGORY/LABEL.\tEX: CITY, COLOR, MAJOR.\t\tQUANTITATIVE:\tNUMERICAL COUNT/MEASURE.\tEX: AGE, MILES, HEIGHT.\n'
+            '1. IDENTIFY WHAT IS RECORDED.\t2. CATEGORY/LABEL?\t   -> QUALITATIVE.\t3. NUMERICAL VALUE WHERE\t   ARITHMETIC MAKES SENSE?\t   -> QUANTITATIVE.\n'
+            'NO CALCULATOR NEEDED.\tTHIS IS A DEFINITION/\tCLASSIFICATION QUESTION.\n'
+            '"WHAT CITY DO YOU LIVE IN?"\t-> QUALITATIVE.\t\t"HOW MANY MILES DO YOU\tCOMMUTE?"\t-> QUANTITATIVE.\n'
+            'DIGITS DO NOT AUTOMATICALLY\tMAKE DATA QUANTITATIVE.\tJERSEY #17 IS A LABEL,\tNOT A MEASUREMENT.\n'
+            'D02 DISCRETE/CONTINUOUS\tD03 POPULATION/SAMPLE\n'
+            ''
+            , field)
+
+    if gid == 'D02':
+        return STCORE.unpack_guide(
+            'Discrete vs Continuous\n'
+            'TYPICAL START:\t"IS THE QUANTITATIVE\tVARIABLE DISCRETE OR\tCONTINUOUS?"\t\tMEMORY:\tCOUNT -> DISCRETE.\tMEASURE -> CONTINUOUS.\n'
+            'DISCRETE:\tCOUNTABLE SEPARATE VALUES.\t\tCONTINUOUS:\tMEASUREMENT CAN TAKE\tVALUES BETWEEN VALUES.\n'
+            '1. CONFIRM IT IS NUMERIC.\t2. IS IT A COUNT?\t   -> DISCRETE.\t3. IS IT MEASURED?\t   -> CONTINUOUS.\n'
+            'NO CALCULATOR NEEDED.\n'
+            '# OF CHILDREN -> DISCRETE.\tHEIGHT -> CONTINUOUS.\tCOMMUTE DISTANCE ->\tCONTINUOUS.\n'
+            'A MEASURED VALUE MAY BE\tROUNDED TO A WHOLE NUMBER\tAND STILL BE CONTINUOUS.\n'
+            'D01 QUAL/QUANT\n'
+            ''
+            , field)
+
+    if gid == 'D03':
+        return STCORE.unpack_guide(
+            'Population vs Sample\n'
+            'TYPICAL START:\t"IDENTIFY THE POPULATION\tAND SAMPLE."\t\tLOOK FOR:\tWHO STUDY WANTS TO DESCRIBE\tVS WHO WAS ACTUALLY ASKED.\n'
+            'POPULATION = ENTIRE TARGET.\tSAMPLE = OBSERVED SUBSET.\t\tYOU NEED TO IDENTIFY:\tWHO SHOULD CONCLUSION APPLY TO?\tWHO ACTUALLY PROVIDED DATA?\n'
+            '1. READ PURPOSE OF STUDY.\t2. TARGET WHOLE GROUP\t   -> POPULATION.\t3. ACTUAL OBSERVED GROUP\t   -> SAMPLE.\n'
+            'NO CALCULATOR NEEDED.\n'
+            'OUR COMMUTE PROJECT:\tPEOPLE WE ASKED -> SAMPLE.\tLARGER RELEVANT SRJC\tSTUDENT GROUP -> POPULATION.\n'
+            'COLLECTION LOCATION IS NOT\tAUTOMATICALLY POPULATION.\tPOPULATION IS A GROUP OF\tPEOPLE/OBJECTS.\n'
+            'D04 PARAMETER/STATISTIC\n'
+            ''
+            , field)
+    return None

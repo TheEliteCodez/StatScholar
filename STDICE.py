@@ -56,7 +56,7 @@ def read_pair_event():
         op=STCORE.choice_pages('DICE > WORDS',((('EXACTLY','='),('AT MOST','<='),('AT LEAST','>='),('LESS THAN','<'),('MORE THAN','>'),('BETWEEN','[]')),))
         if op is None: return None
         if op=='[]':
-            event=STCORE.call('STBWORD','read_event',op)
+            event=STCORE.call('STBWE','read_event',op)
             return (kind,)+event if event else None
         value=STCORE.read_int('VALUE: ')
     elif key=='7': value=STCORE.read_size('FACE (1..6): ',6)

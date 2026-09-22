@@ -9,6 +9,7 @@
 # STBMATH - loaded on demand.
 import STCORE
 import math
+import STEXACT
 from STCOMB import ncr
 
 def binomial_exact_ratio(n, p, k):

@@ -20,10 +20,10 @@ import STFIND as find
 
 class Quiz5(unittest.TestCase):
     def test_probability_guided_none_and_overlap(self):
-        out,_=flow(app.main,['3','H','5','3','4','.5','0','0','0','0'])
+        out,_=flow(app.main,['3','15','5','3','4','.5','0','0','0','0'])
         self.assertIn('P(X = 0)',out)
         self.assertIn('ANSWER=0.0625',out)
-        out,_=flow(app.main,(['3','H','3','5','100','40','30','10','3','1','0','0','0'])+['0'])
+        out,_=flow(app.main,(['3','15','3','5','100','40','30','10','3','1','0','0','0'])+['0'])
         self.assertIn('A OR B=0.6000',out)
         self.assertIn('A BUT NOT B=0.3000',out)
 
