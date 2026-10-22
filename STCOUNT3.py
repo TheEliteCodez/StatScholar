@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Distribution-table task loop; helpers load back through the dispatcher.
 import STCORE as c
-
-
 def distribution_session(rows=None, approximate=False, source=None, first_word=None):
     if rows is None:
         rows, approximate = c.call('STCOUNT', 'read_distribution')
@@ -18,7 +7,7 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
         if key == '0':
             return
         if key == '9':
-            c.call('STCOUNT7', 'heights_page', rows, approximate)
+            c.call('STCOUNT4', 'heights_page', rows, approximate)
             continue
         if key == '8':
             approximate=True
@@ -41,9 +30,9 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
                 c.view('ROUNDED TABLE / TOTAL', note + ['EXACT MOMENTS REQUIRE KNOWN P SUMMING TO 1.', 'OPTION 8 MARKS ROUNDED INPUT.', 'OPTION 6: BINOMIAL ONLY IF JUSTIFIED.'])
                 continue
             mean, var, sd = c.call('STCOUNT', 'distribution_moments', rows)
-            c.results('R02/R03', [('mu', mean), ('VAR', var), ('sigma', sd)], note + ['mu=SUM(x*P(x))', 'VAR=SUM(x^2*P)-mu^2', 'SD=SQRT(VAR)'])
+            c.results('R02/R03', [('mu', mean), ('VAR', var), ('sigma', sd)], note + ['mu=SUM(x*P(x))', 'VAR=SUM(x^2*P)-mu^2', 'SD=SQRT(VAR)'],drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0])))
         elif key == '5':
-            c.call('STCOUNT7', 'check_table', rows, note, approximate)
+            c.call('STCOUNT4', 'check_table', rows, note, approximate)
         else:
             counts_only = all((x[1] == 1 and x[0] >= 0 for x, p in rows))
             if first_word:
@@ -60,4 +49,4 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
                 c.call('STCOUNT', 'unusual_result', p)
             else:
                 selected = [c.exact_text(x) for x, q in rows if c.event_match(x, *ev)]
-                c.results('R04 TABLE EVENT', [('P APPROX' if approximate else 'P', p)], note + (['P=1-P(0)' if counts_only else 'P(X>=1)=1-P(X<1)'] if key == '3' else ['ADD MATCHING ROWS']) + ['ROWS: ' + ','.join(selected)])
+                c.results('R04 TABLE EVENT', [('P APPROX' if approximate else 'P', p)], note + (['P=1-P(0)' if counts_only else 'P(X>=1)=1-P(X<1)'] if key == '3' else ['ADD MATCHING ROWS']) + ['ROWS: ' + ','.join(selected)],drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0]),('>=',1,0) if key=='3' else ev))

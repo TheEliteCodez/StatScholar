@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Normal/z main loop and the observation report.
 import STCORE as c
-
-
 def normal_session(mean=None,sd=None,first=None,variance=None):
     inclusive=False
     while True:
@@ -35,7 +24,8 @@ def normal_session(mean=None,sd=None,first=None,variance=None):
             c.call('STNORM','observation_report',x,mean,sd,variance,inclusive)
         elif key=='2':
             z=c.read_exact('z: ')
-            c.results('GRAPH > FIND x',[('x',c.call('STNORM','x_value',z,mean,sd))],['x=MEAN+z*SD',c.exact_text(mean)+'+'+c.exact_text(z)+'*'+c.exact_text(sd)])
+            x=c.call('STNORM','x_value',z,mean,sd)
+            c.results('GRAPH > FIND x',[('x',x)],['x=MEAN+z*SD',c.exact_text(mean)+'+'+c.exact_text(z)+'*'+c.exact_text(sd)],drawing=c.call('STSKETCH','position',mean,sd,x))
         elif key=='3':
             c.call('STNORM','show_axes','ALIGNED x / z AXES',mean,sd)
             c.results('GRAPH > AXES', [('z='+str(z)+' x',c.call('STNORM','x_value',(z,1),mean,sd)) for z in range(-3,4)],['DRAW BELL CENTERED AT z=0', 'x=MEAN+z*SD; EVEN TICK SPACING'])
@@ -57,4 +47,3 @@ def normal_session(mean=None,sd=None,first=None,variance=None):
             if raw:
                 x=c.as_ratio(raw)
                 c.call('STNORM','observation_report',x,mean,sd,variance,inclusive)
-

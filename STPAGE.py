@@ -1,16 +1,5 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Small numeric text pager; no study definitions loaded.
 import STCORE
-
 def text_pages(title, definition):
-    # Text input avoids relying on device-specific arrow key codes.
     lines = (definition,)
     count = sum(1 for line in STCORE.wrapped_lines(lines))
     page = 0

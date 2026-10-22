@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Multiple-dice menus; count arithmetic loads back through the dispatcher.
 import STCORE
-
-
 def solver_multi_dice(n=None):
     STCORE.heading('C07 MULTIPLE DICE')
     if n is None: n = STCORE.read_int('HOW MANY FAIR 6-SIDED DICE: ')
@@ -56,8 +45,6 @@ def solver_multi_dice(n=None):
         good = STCORE.call('STMDICE','dice_event_count',n,event,value)
         answers = [('TOTAL OUTCOMES', str(6 ** n))] if event == '1' else [('P', STCORE.ratio(good, 6 ** n)), ('SUCCESSFUL', str(good))]
         STCORE.results('C07', answers, steps)
-
-
 def word_event(n,word,sum_only=False):
     key='2' if sum_only else '1' if word=='one' else STCORE.menu('DICE: WHAT IS COUNTED?',[('1','DICE SHOWING ONE FACE'),('2','SUM OF ALL DICE')])
     if key=='0': return

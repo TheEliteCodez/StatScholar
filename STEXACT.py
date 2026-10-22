@@ -1,21 +1,9 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Exact-ratio input parsing and comparison core, loaded only while needed.
-
 def gcd(a, b):
     a = abs(int(a))
     b = abs(int(b))
     while b != 0:
         a, b = b, a % b
     return a
-
-
 def ratio(a, b=1):
     if b == 0:
         raise ValueError("ZERO DENOMINATOR")
@@ -24,12 +12,8 @@ def ratio(a, b=1):
     if b < 0:
         g = -g
     return (a//g, b//g)
-
-
 def rdiv(a, b):
     return ratio(a[0]*b[1], a[1]*b[0])
-
-
 def as_ratio(text):
     text = str(text).strip()
     if text.endswith("%"):
@@ -51,20 +35,14 @@ def as_ratio(text):
         whole, part = text.split(".")
         return ratio(sign*int((whole or "0")+part), 10**len(part))
     return ratio(sign*int(text))
-
-
 def to_ratio(value):
     if isinstance(value, tuple): return value
     if isinstance(value, int): return (value, 1)
     return as_ratio(str(value))
-
-
 def compare_exact(a, b):
     a = to_ratio(a); b = to_ratio(b)
     delta = a[0]*b[1] - b[0]*a[1]
     return (delta > 0) - (delta < 0)
-
-
 def event_match(x, op, a, b=0):
     left = compare_exact(x, a)
     if op == "=": return left == 0
@@ -78,8 +56,6 @@ def event_match(x, op, a, b=0):
     if op == "()": return left > 0 and right < 0
     if op == "[)": return left >= 0 and right < 0
     return left > 0 and right <= 0
-
-
 def read_exact(prompt):
     while True:
         try:

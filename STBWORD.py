@@ -1,21 +1,7 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Wording-led binomial UI; imports only small arithmetic dependencies.
 import STCORE as c
-
 WORDS={'=':'EXACTLY','<=':'AT MOST','>=':'AT LEAST','<':'LESS THAN','>':'MORE THAN','[]':'BETWEEN','()':'BETWEEN','[)':'BETWEEN','(]':'BETWEEN','!=':'NOT EQUAL'}
-
-
 def read_parameters():
-    return c.read_int('TRIALS n: '),c.read_exact('CHANCE p (DECIMAL OR %): ') 
-
-
+    return c.read_int('TRIALS n: '),c.read_exact('CHANCE p (DECIMAL OR %): ')
 def wording_session(first=None,n=None,p=None):
     style,places='D',4
     threshold=(1,20)

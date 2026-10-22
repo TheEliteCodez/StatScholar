@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Scrolling text viewer, loaded only while a screen is displayed.
 import STCORE as c
-
-
 def view(title, lines):
     if len(lines) == 0:
         lines = ('NO CONTENT',)

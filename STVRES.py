@@ -1,16 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Answer tables, loaded only while a result is displayed.
-# Formatting is inlined so displaying a result never imports STEFMT.
 import STCORE as c
-
-
 def _answer_text(value, style="D", places=4):
     if isinstance(value, str):
         return value
@@ -40,15 +28,13 @@ def _answer_text(value, style="D", places=4):
     if style == "P":
         value = value * 100
     return ("%.*f" % (places, value)) + ("%" if style == "P" else "")
-
-
-def results(title, answers, steps=None, default_places=4):
+def results(title, answers, steps=None, default_places=4, drawing=()):
     style, places = ('D', default_places)
     while True:
         lines = []
         for label, value in answers:
             lines.append(label + '=' + _answer_text(value, style, places))
-        if c.view(title, lines) in ('back', 'exit'): return
+        if c.view(title, lines+list(drawing)) in ('back', 'exit'): return
         key = c.menu('ANSWER FORMAT', [('1', 'DONE / NEXT PART'), ('2', 'DECIMAL PLACES'), ('3', 'REDUCED FRACTIONS'), ('4', 'PERCENT PLACES'), ('5', 'SHOW METHOD')])
         if key in ('0', '1'):
             return
@@ -60,11 +46,9 @@ def results(title, answers, steps=None, default_places=4):
         else:
             style = 'P' if key == '4' else 'D'
             places = max(0, c.read_int('DECIMAL PLACES: '))
-
-
-def paged_results(title, count, row_at, steps=None):
+def paged_results(title, count, row_at, steps=None, drawing=()):
     if count <= c.VIEW_LINES:
-        c.results(title, [row_at(i) for i in range(count)], steps)
+        c.results(title, [row_at(i) for i in range(count)], steps,drawing=drawing)
         return
     start = 0
     style, places = ('D', 4)
@@ -74,7 +58,7 @@ def paged_results(title, count, row_at, steps=None):
         for i in range(start, end):
             label, value = row_at(i)
             lines.append(label + '=' + _answer_text(value, style, places))
-        navigation = c.view(title, ['ROWS ' + str(start + 1) + '..' + str(end) + '/' + str(count)] + lines)
+        navigation = c.view(title, ['ROWS ' + str(start + 1) + '..' + str(end) + '/' + str(count)] + lines + (list(drawing) if end==count else []))
         if navigation == 'exit': return
         if navigation == 'back':
             if start == 0: return

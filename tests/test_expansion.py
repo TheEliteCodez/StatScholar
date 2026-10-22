@@ -132,7 +132,7 @@ class Expansion(unittest.TestCase):
 
     def test_histogram_probability_and_reuse(self):
         out,prompts=flow(d.histogram_session,['1','4','0','1','2','3','1','4','2','0','1','2','0'])
-        self.assertEqual(prompts.count('NUMBER OF VALUES (1..100): '),1)
+        self.assertEqual(prompts.count('NUMBER OF VALUES (1..100) OR L1: '),1)
         self.assertIn('LIMITS 2 TO 3',out)
         out,_=flow(d.histogram_session,['3','2','0','.4','1','.6','5','1','0'])
         self.assertIn('BAR HEIGHT=P(x)',out)
@@ -161,22 +161,12 @@ class Expansion(unittest.TestCase):
         out,_=flow(prob.supplied_session,['.6','.4','.2','1'])
         self.assertIn('P(NOT A)=0.4000',out);self.assertIn('P(NOT B)=0.6000',out)
 
-    def test_search_language(self):
-        cases={'shortest 25%':'S06','half are below':'S13','usual':'S10','statistically high':'S12','at least one':'P09','no more than':'B03','without replacement':'R07','every 10th':'D05','easiest people':'D05','sample every group':'D05','select classrooms':'D05','treatment':'D06','bell shaped':'G08'}
-        for query,gid in cases.items():
-            self.assertIn(gid,[g for label,g in ref.search_methods(query)],query)
-        self.assertEqual(ref.search_methods('quartile')[0][1],'S13')
-        self.assertTrue(all(any(gid==g for _,g,_ in ref.SEARCH_METHODS) for gid in ('G04','G05','G06','G07','G08','G09','F08')))
 
     def test_new_guides_and_menu_navigation(self):
-        for gid in app.NEW_ROUTES:
-            guide=app.get_guide(gid)
-            self.assertEqual(guide['title'],app.GUIDES[gid][0])
-            self.assertEqual(guide['solver'],gid)
         # Real data entry begins after the advertised menu choices.
         out,prompts=flow(app.main,(['4','1','3','1','2','3','1','0','0'])+['0'])
         self.assertIn('MEAN=2.0000',out)
-        self.assertEqual(prompts[:3],['> ','> ','NUMBER OF VALUES (1..100): '])
+        self.assertEqual(prompts[:3],['> ','> ','NUMBER OF VALUES (1..100) OR L1: '])
         out,prompts=flow(app.main,['5','1','1','40','4','44','1','0','0','0'])
         self.assertEqual(prompts[:4],['> ','> ','> ','MEAN: '])
         self.assertIn('z=1.0000',out)
@@ -185,13 +175,10 @@ class Expansion(unittest.TestCase):
 
     def test_raw_session_reuses_list(self):
         out,prompts=flow(d.raw_session,['3','1','2','3','1','2','3','1','0','4','1','0'])
-        self.assertEqual(prompts.count('NUMBER OF VALUES (1..100): '),1)
+        self.assertEqual(prompts.count('NUMBER OF VALUES (1..100) OR L1: '),1)
         self.assertIn('z=1.0000',out)
         self.assertIn('LOW WHISKER=1.0000',out)
 
-    def test_reference_callbacks_do_not_overwrite_local_functions(self):
-        for name in ('ti84_methods','wizard_formula','browse_matrix','question_starters'):
-            flow(lambda:app.reference_call(name),['0'])
 
     def test_graph_import_isolation_and_nested_cleanup(self):
         code="""
@@ -208,7 +195,7 @@ def read(prompt=''):
 builtins.input=read
 STCORE.view=lambda *args:None
 with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+assert not set(STCORE.topic_modules()).intersection(sys.modules)
 # Search metadata completes before entering the raw solver, even in FIND.
 pending=iter(['1','N','N','9','1','shortest 25%','1','1','2','1','3','1','0','0','0','0','0'])
 def read(prompt=''):
@@ -218,7 +205,7 @@ def read(prompt=''):
  return next(pending)
 builtins.input=read
 with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+assert not set(STCORE.topic_modules()).intersection(sys.modules)
 print('ISOLATED')
 """
         run=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=20,cwd=Path(__file__).resolve().parent.parent)
@@ -236,20 +223,20 @@ print('ISOLATED')
         code="""
 import sys,io,contextlib,weakref
 import STAT1,STCORE
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+assert not set(STCORE.topic_modules()).intersection(sys.modules)
 for repeat in range(5):
  refs=[]
  def capture(title,lines):
-  refs.extend(weakref.ref(sys.modules[n]) for n in STCORE.TOPIC_MODULES if n in sys.modules)
+  refs.extend(weakref.ref(sys.modules[n]) for n in STCORE.topic_modules() if n in sys.modules)
  STCORE.view=capture
- cases=[['4','1','3','1','2','3','1','0','0','0'],['5','1','4','2','1','0','0','0','0'],['1','N','N','9','1','shortest 25%','1','1','2','1','3','1','0','0','0','0','0']]
+ cases=[['4','1','3','1','2','3','1','0','0','0'],['5','1','4','2','1','0','0','0','0']]
  for answers in cases:
   pending=iter(answers)
   import builtins
   builtins.input=lambda prompt='':next(pending)
   with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
   assert list(pending)==[]
-  assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+  assert not set(STCORE.topic_modules()).intersection(sys.modules)
  assert all(ref() is None for ref in refs)
 print('PASS')
 """

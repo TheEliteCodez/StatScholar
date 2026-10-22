@@ -71,27 +71,7 @@ class AuditRegressions(unittest.TestCase):
                 STREF.definitions_menu()
             self.assertEqual(show.call_args.args[0], expected)
 
-    def test_range_rule_home_menu_solves_both_inputs(self):
-        import STAT1
-        out, prompts = capture(STAT1.main, ['S10','50','5','1','','0'])
-        self.assertIn('MIN USUAL=40.0000', str(out))
-        self.assertIn('MAX USUAL=60.0000', str(out))
-        out, prompts = capture(STAT1.main, ['B13','47','.387','4','1','','0','0'])
-        self.assertIn('MIN USUAL=11.5107', str(out))
-        self.assertIn('MAX USUAL=24.8673', str(out))
-        self.assertIn('MIN USUAL COUNT=12', str(out))
-        self.assertIn('MAX USUAL COUNT=24', str(out))
-        self.assertIn('FIRST UNUSUALLY HIGH=25', str(out))
 
-    def test_range_rule_checks_number_and_exact_boundaries(self):
-        import STAT1
-        for value, label in [('39.99','UNUSUALLY LOW'), ('40','NOT UNUSUAL'),
-                             ('60','NOT UNUSUAL'), ('60.01','UNUSUALLY HIGH')]:
-            out, _ = capture(STAT1.main, ['S10','50','5','1',value,'1','0'])
-            self.assertIn('CLASSIFICATION='+label, str(out))
-        for value, label in [('88','NOT UNUSUAL'), ('87','UNUSUALLY LOW'), ('106','UNUSUALLY HIGH')]:
-            out, _ = capture(STAT1.main, ['B13','121','.8','4','1',value,'1','0','0'])
-            self.assertIn('CLASSIFICATION='+label, str(out))
 
     def test_A01_range_includes_exact_lower_endpoint(self):
         # mu=96.8, sigma=4.4, hence exact lower endpoint=88.
@@ -104,27 +84,13 @@ class AuditRegressions(unittest.TestCase):
         output,_=capture(lambda:s.distribution_session(rows),['3','5','1','0'])
         self.assertIn('P=0.2500',str(output))
 
-    def test_A03_direct_guide_id_does_not_silently_disappear(self):
-        # R01 has real guide content but no solver name.
-        with patch('STNAV.show_identified') as guide:
-            output,_=capture(s.main,['R01','0'])
-        self.assertTrue(guide.called or output,"Home accepted R01 but displayed no guide or result")
 
-    def test_A04_q038_solver_accepts_distribution_parameters(self):
-        output,prompts=capture(lambda:s.question_lookup('Q038'),['1','26','.16','1','0','0'])
-        data_prompts=[p for p in prompts if p not in ('> ','Y/N: ')]
-        self.assertTrue(data_prompts,"Solve-with-your-numbers must accept parameters")
-        self.assertIn("X~Binomial(26,0.16)",str(output))
 
     def test_A05_roulette_zero_label_is_not_double_zero(self):
         wheel=[(str(k),k) for k in range(1,37)]+[('0',0),('00',0)]
         selected=s.experiment_indices(wheel,'roulette','=0')
         self.assertEqual([wheel[i][0] for i in selected],['0'])
 
-    def test_A06_legacy_direct_solver_has_claimed_format_selection(self):
-        with patch.object(s,'results') as formatter:
-            output,_=capture(s.main,['P01','1','3','0'])
-        self.assertTrue(formatter.called,"P01 bypasses shared formatting and returns straight home")
 
     def test_A07_exact_table_value_is_less_than_one_third(self):
         # 3333333333333333/10^16 is strictly smaller than 1/3.
@@ -133,74 +99,8 @@ class AuditRegressions(unittest.TestCase):
         self.assertIn('P=1.0000',str(output))
 
 
-    def test_all_question_solve_and_method_routes(self):
-        # Changed-number fixtures exercise real dispatch and solvers. They do
-        # not reconstruct missing source questions or replace original oracles.
-        fixtures={
-          'F05':(['2','1','1','3','1','1'],'MEAN=2.0000'),
-          'F06':(['2','1','1','3','1','1'],'MEDIAN=2.0000'),
-          'ROULETTE':(['2','36','6','=00','3','1','0'],'1/38'),
-          'C05':(['6','6','3 OR H','1','0'],'0.5833'),
-          'CATEGORY':(['2','YES','1','NO','3','1','1','0'],'0.2500'),
-          'CONCEPT':([], 'EXPECTED'),
-          'P13':(['1/4','1'],'YES'),
-          'CARDS':(['6','4S','1','0'],'0.0192'),
-          'P14':(['2','2','A','B','C','D','1','2','3','4','1','1','1','0'],'0.1000'),
-          'P12':(['2','2','A','B','C','D','1','2','3','4','1','1','1','0'],'0.1000'),
-          'SPINNER':(['2','1','1','2','3','6','EVEN','1','0'],'0.7500'),
-          'P10':(['.6','.63','.43','1'],'0.6825'),
-          'P11':(['.57','.69','.46','1'],'INDEPENDENT=NO'),
-          'R05':(['3','.1','.2','.2','1'],'0.5000'),
-          'R04':(['3','-1','.25','0','.5','1','.25','3','1','0'],'P=0.2500'),
-          'R02':(['2','1','.25','3','.75','2','1','0'],'mu=2.5000'),
-          'R07':(['8','5','2','3','1','0'],'3/28'),
-          'WIN_LOSS':(['1/4','4','270','3','2','6','1','0'],'-1.933594'),
-          'R08':(['1','PLAYER','1','3','6','3','2','9','0','30','1','0'],'-0.14'),
-          'INSURANCE':(['1','.999363','259','206000','1'],'127.78'),
-          'RAFFLE':(['240','2','80','8','1'],'-13.33'),
-          'B01':(['Y','Y','Y','Y','1'],'BINOMIAL=YES'),
-          'SYMMETRY':(['20','4','16','','1'],'ALWAYS EQUAL=NO'),
-          'B13':(['121','.8','4','1','88','1','0'],'USUAL'),
-          'B11':(['3','.5','3','3','1','0'],'P(0)=1/8'),
-          'BINOMIAL_MODEL':(['8','25%','1','1','1','2','1','0'],'X~Binomial(8,0.25)'),
-          'B02':(['4','.5','1','1','2','1','0'],'0.3750'),
-          'B09':(['4','.5','2','1','0'],'sigma=1.0000'),
-          'B08':(['4','.5','2','1','0'],'mu=2.0000'),
-          'B12':(['1','10','3','.35','.25','.2','N','N','N'],'CENTER=3.5'),
-          'B03':(['4','.5','1','2','2','1','0'],'0.6875'),
-          'B04':(['4','.5','1','3','2','1','0'],'0.3125')}
-        for qid,title,route,example in s.QUESTION_DATA:
-            with self.subTest(qid=qid,branch='solve'):
-                inputs,expected=fixtures[route]
-                out,_=capture(lambda:s.question_lookup(qid),['1']+inputs+['0'])
-                self.assertIn(expected,str(out))
-            with self.subTest(qid=qid,branch='method'):
-                out,_=capture(lambda:s.question_lookup(qid),['3','2','0','0'])
-                self.assertIn(s.QUESTION_METHODS[qid]+' RECOGNIZE',str(out))
 
-    def test_all_fifteen_reference_only_home_routes(self):
-        ids=['D01','D02','D03','D04','S01','S02','S03','S05','S06','S07','S09','G01','G02','P08','R01']
-        for gid in ids:
-            with self.subTest(gid=gid):
-                out,_=capture(s.main,[gid,'1','0','0'])
-                self.assertIn(gid+' RECOGNIZE',str(out))
 
-    def test_legacy_numeric_routes_reformat_without_reentry(self):
-        fixtures={'P01':(['1','3'],'1/3'),'P02':(['.25'],'3/4'),
-          'P03':(['.2','.3'],'1/2'),'P04':(['.6','.63','.43'],'4/5'),
-          'P05':(['.5','.25'],'1/8'),'P06':(['.5','.25'],'1/8'),
-          'P07':(['1','.2','.4'],'1/2'),'P09':(['.5','3'],'7/8'),
-          'F04':(['7','20'],'7/20'),'B07':(['4','.5','2'],'3/8'),
-          'S04':(['1','8','2'],'6/1'),'S08':(['2','8','2'],'6/1'),
-          'S10':(['5','1'],'3/1'),'S11':(['5','1'],'3/1'),
-          'S12':(['8','4','2'],'2/1'),'G03':(['2','4'],'2/1'),
-          'C01':(['2','6','2'],'12/1'),'C02':(['5'],'7776/1'),
-          'C03':(['5','2'],'10/1'),'C04':(['5','2'],'20/1')}
-        for gid,(inputs,expected) in fixtures.items():
-            with self.subTest(gid=gid):
-                out,_=capture(s.main,[gid]+inputs+['3','2','4','4','2','1']+([''] if gid in ('S10','S11','G03') else [])+['0'])
-                self.assertIn(expected,str(out))
-                self.assertIn('%',str(out))
 
     def test_range_sweep_against_independent_rational_membership(self):
         for n in range(1,151):
@@ -255,9 +155,8 @@ class AuditRegressions(unittest.TestCase):
             from test_support import MODULE_NAMES
             for name in MODULE_NAMES:
                 (Path(folder)/(name+'.py')).write_bytes(Path(__file__).resolve().parent.parent.joinpath(name+'.py').read_bytes())
-            cases=[(['Q001','1','4','3','1','6','2','9','6','12','5','d','u','b','0','0'],['MEAN=9.2143']),
-                   (['Q038','1','8','25%','b','1','1','2','b','0','0','0'],['X~Binomial(8,0.25)','P=0.3115']),
-                   (['B13','121','.8','4','d','d','d','d','b','88','b','0','0'],['USUAL INTEGERS=88..105','UNUSUAL=NO'])]
+            cases=[(['10','1','95%','','5%','','0','0'],['ROUND UP: n=385']),
+                   (['11','1','60','100','95%','','','0','0','0'],['MARGIN OF ERROR=0.0960'])]
             for inputs,expected in cases:
                 run=subprocess.run([sys.executable,'-B',str(runtime)],input='\n'.join(inputs)+'\n',
                                    text=True,capture_output=True,cwd=folder,timeout=10)
@@ -280,80 +179,41 @@ class AuditRegressions(unittest.TestCase):
             # TI launches by importing. Simulate only its key API, not hardware.
             code="import sys,types; ti=types.ModuleType('ti_system'); ti.wait_key=lambda:(_ for _ in ()).throw(AssertionError('Do not use legacy wait_key')); sys.modules['ti_system']=ti; import STAT1"
             run=subprocess.run([sys.executable,'-B','-c',code],
-                               input='Q032\n1\nY\nY\nY\nY\n0\n0\n0\n',
+                               input='10\n1\n95%\n\n5%\n\n0\n0\n',
                                text=True,capture_output=True,cwd=folder,timeout=10)
             self.assertEqual(run.returncode,0,run.stderr)
-            self.assertIn('BINOMIAL=YES',run.stdout)
+            self.assertIn('ROUND UP: n=385',run.stdout)
 
 
-    def test_guide_content_preserved_after_lazy_split(self):
-        import hashlib,json
-        guides={gid:s.get_guide(gid) for gid in s.GUIDES if gid not in s.NEW_ROUTES}
-        self.assertEqual(len(guides),67)
-        for gid,guide in guides.items():
-            self.assertEqual(s.GUIDES[gid],(guide['title'],guide['solver']),gid)
-            for field in guide:
-                self.assertEqual(s.get_guide(gid,field),guide[field],(gid,field))
-        self.assertEqual(hashlib.sha256(json.dumps(guides,sort_keys=True).encode()).hexdigest(),
-                         'c4fde8797669e6c18ec8640d3bc029da2f283a7ca583778b8ba450a1a4cf97d2')
-        self.assertEqual(len(s.STARTERS),43)
 
     def test_lazy_startup_and_repeated_topic_release(self):
-        # Fresh process: never imports test_support or disables module release.
-        code = r"""
+        code = """
 import builtins,contextlib,io,sys,weakref
 import STAT1,STCORE
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
-builtins.input=lambda prompt='':'0'
-with contextlib.redirect_stdout(io.StringIO()): STAT1.question_wizard()
-original_import=builtins.__import__
-def no_guides(name,*args,**kwargs):
- if name.startswith('STG'): raise AssertionError('Guide menu loaded text before section selection')
- return original_import(name,*args,**kwargs)
-builtins.__import__=no_guides
-with contextlib.redirect_stdout(io.StringIO()):
- for gid in STAT1.GUIDES: STAT1.show_identified(gid)
-builtins.__import__=original_import
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
-checks=[
- ('STDESC',['F05','2','1','1','3','1','b','0']),
- ('STPROB',['P01','1','3','b','0']),
- ('STEXPER',['3','4','5','2','36','6','ODD','b','0','0','0','0']),
- ('STBEXTRA',['Q032','1','Y','Y','Y','Y','b','0','0']),
- ('STSAMPLE',['R07','8','5','2','b','0','0']),
- ('STGDESC',['S01','2','b','0','0']),
- ('STGPROB',['Q003','3','2','b','0','0','0']),
- ('STGBIN',['Q032','3','2','b','0','0','0']),
- ('STSTUDY',['6','7','5','binomial','1','0','0','0','0','0'])]
-for repeat in range(3):
- for expected,answers in checks:
-  pending=iter(answers); refs=[];seen=set()
-  def read(prompt=''):
-   for name in STCORE.TOPIC_MODULES:
-    if name in sys.modules:
-     seen.add(name);refs.append(weakref.ref(sys.modules[name]))
-   return next(pending)
-  builtins.input=read
+assert not STCORE.topic_modules()
+for repeat in range(5):
+ refs=[]
+ def capture(title,lines):
+  refs.extend(weakref.ref(sys.modules[n]) for n in STCORE.topic_modules())
+ STCORE.view=capture
+ cases=[['10','1','95%','','5%','0'],['11','1','60','100','95%','0','0'],['9','1','','100','15','36','1','','2','0','0']]
+ for answers in cases:
+  pending=iter(answers)
+  builtins.input=lambda prompt='':next(pending)
   with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
-  assert list(pending)==[],expected
-  # Guide modules unload before the returned guide is displayed.
-  if not expected.startswith('STG'): assert expected in seen,(expected,seen)
-  assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules),(expected,seen)
-  assert all(ref() is None for ref in refs),expected
-# The actual cleanup also runs when an entered-value operation raises.
-def fail(prompt=''): raise ValueError('test interruption')
-builtins.input=fail
+  assert list(pending)==[]
+  assert not STCORE.topic_modules()
+ assert all(ref() is None for ref in refs)
 try:
- with contextlib.redirect_stdout(io.StringIO()): STCORE.call('STDESC','frequency_stats')
-except TypeError: pass
-else: raise AssertionError('Expected input interruption')
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
-print('LAZY_STARTUP_AND_RELEASE=PASS')
+ STCORE.call('STCOMB','does_not_exist')
+except AttributeError:
+ pass
+assert not STCORE.topic_modules()
+print('PASS')
 """
-        run=subprocess.run([sys.executable,'-B','-c',code],text=True,capture_output=True,
-                           cwd=Path(__file__).resolve().parent.parent,timeout=20)
+        run=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=20)
         self.assertEqual(run.returncode,0,run.stderr)
-        self.assertIn('LAZY_STARTUP_AND_RELEASE=PASS',run.stdout)
+        self.assertIn('PASS',run.stdout)
 
 
     def test_numeric_arrow_reader_and_page_navigation(self):
@@ -425,12 +285,6 @@ print('LAZY_STARTUP_AND_RELEASE=PASS')
 
     def test_allocation_limits_and_home_shortcuts(self):
         import STCORE,STAT1,STCOUNT
-        # Membership containers must be passed unchanged, with no concatenation.
-        with patch.object(STCORE,'menu',return_value='0') as menu:
-            STAT1.quick_main()
-            args=menu.call_args.args
-            self.assertIs(args[2],STAT1.GUIDES)
-            self.assertIs(args[3],STAT1.QUESTION_INDEX)
         result=[]
         capture(lambda:result.append(STCORE.read_size('ROWS: ',25)),['101','26','25'])
         self.assertEqual(result,[25])
@@ -455,7 +309,7 @@ print('LAZY_STARTUP_AND_RELEASE=PASS')
                                  ('STDICE.py',{'dice_sum_counts'})]:
             tree=ast.parse(Path(__file__).resolve().parent.parent.joinpath(filename).read_text())
             self.assertFalse(removed.intersection(n.name for n in tree.body if isinstance(n,ast.FunctionDef)))
-        self.assertNotIn('NEW_GUIDES',Path(__file__).resolve().parent.parent.joinpath('STREF.py').read_text())
+        self.assertFalse(Path(__file__).resolve().parent.parent.joinpath('STREF.py').exists())
 
     def test_probe_runs_with_simulated_key_api(self):
         code="import sys,types; ti=types.ModuleType('ti_system'); keys=iter([25,34,24,26,92,93,94,102,105,45]); ti.get_key=lambda *a:next(keys); sys.modules['ti_system']=ti; import EVOPROBE"

@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Finite-population model check, separate from binomial arithmetic.
 import STCORE as c
-
-
 def finite_check():
     total=c.read_int('POPULATION N: ')
     n=c.read_int('SAMPLE n: ')
@@ -27,5 +16,4 @@ def finite_check():
          'EXACT FINITE MODEL: HYPERGEOMETRIC, USING N, EXACT TARGET COUNT K, AND n.',
          'A ROUNDED PERCENT MAY NOT GIVE EXACT K. DO NOT ROUND N*p AND CALL IT EXACT.',
          'OTHER BINOMIAL REQUIREMENTS MUST ALSO HOLD.'])
-
     return total,n,replaced,small

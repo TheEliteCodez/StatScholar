@@ -1,38 +1,39 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# STDATA - data solver dispatcher; heavy code loads per session type.
-import STCORE
-
-
+import STCORE as c
+SUMMARY_KEYS = ('n', 'SUM', 'MEAN', 'SAMPLE SD Sx', 'SAMPLE VARIANCE s^2', 'MIN', 'Q1', 'MEDIAN', 'Q3', 'MAX', 'MODE', 'RANGE', 'IQR', 'MIDRANGE')
 def summary_results(stats, title='DATA > RAW > SUMMARY', population=False):
-    return STCORE.call('STDATA1', 'summary_results', stats, title, population)
-
-
-def data_normal(stats, first, population=False):
-    return STCORE.call('STDATA1', 'data_normal', stats, first, population)
-
-
+    keys=list(SUMMARY_KEYS)
+    if population:
+        keys[3:5]=['POPULATION SD','POPULATION VARIANCE']
+    keys[5:5]=['SAMPLE SD Sx','SAMPLE VARIANCE s^2'] if population else ['POPULATION SD','POPULATION VARIANCE']
+    answers=[(k,stats[k]) for k in keys]
+    if stats['n']>1:
+        answers.extend((k,stats[k]) for k in ('LOWER FENCE','UPPER FENCE','LOW WHISKER','HIGH WHISKER','OUTLIERS'))
+    sd=stats['POPULATION SD' if population else 'SAMPLE SD Sx']
+    if sd!='DNE':
+        distance=c.as_ratio(str(2*sd))
+        answers.extend([('MIN USUAL',c.radd(stats['MEAN'],(-distance[0],distance[1]))),('MAX USUAL',c.radd(stats['MEAN'],distance))])
+    c.results(title,answers,['MEAN=SUM/n','VAR=SUM((x-MEAN)^2)/'+('n' if population else '(n-1)'),
+        'QUARTILES: MEDIANS OF HALVES','ODD n: OMIT CENTER FROM HALVES','MODE: >2 MODES OR NO PEAK = DNE',
+        'IQR OUTLIERS AND 2-SD UNUSUAL ARE DIFFERENT'],drawing=[
+        'POPULATION: mu=MEAN; sigma=POPULATION SD.',
+        'SAMPLE: x-bar=MEAN; s=SAMPLE SD Sx.',
+        'SUM SQUARED DEVIATIONS='+c.exact_text(c.rmul(stats['POPULATION VARIANCE'],(stats['n'],1))),
+        'sigma=SQRT(SUM SQUARED DEVIATIONS/n).',
+        's=SQRT(SUM SQUARED DEVIATIONS/(n-1)).'])
+def data_normal(stats,first,population=False):
+    sd=stats['POPULATION SD' if population else 'SAMPLE SD Sx']
+    if sd=='DNE':
+        c.view('DATA',['NEED TWO VALUES FOR SAMPLE SD']);return
+    c.call('STNORM','normal_session',stats['MEAN'],c.as_ratio(str(sd)),first,
+        stats['POPULATION VARIANCE' if population else 'SAMPLE VARIANCE s^2'])
 def choose_population(population):
-    return STCORE.call('STDATA1', 'choose_population', population)
-
-
+    key=c.menu('VARIANCE / SD USE',[('1','SAMPLE (n-1)'),('2','POPULATION (n)')])
+    return population if key=='0' else key=='2'
 def raw_session(values=None):
-    return STCORE.call('STDATA2', 'raw_session', values)
-
-
+    return c.call('STDATA2', 'raw_session', values)
 def comparison(a, b):
-    return STCORE.call('STDATA2', 'comparison', a, b)
-
-
+    return c.call('STDATA2', 'comparison', a, b)
 def compare_session(a=None, boxes=False):
-    return STCORE.call('STDATA3', 'compare_session', a, boxes)
-
-
+    return c.call('STDATA3', 'compare_session', a, boxes)
 def frequency_data_session():
-    return STCORE.call('STDATA3', 'frequency_data_session')
+    return c.call('STDATA3', 'frequency_data_session')

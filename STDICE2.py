@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Two-dice session; pair math loads back through the dispatcher.
 import STCORE
-
-
 def read_pair_event():
     key=STCORE.menu('DICE > DESCRIBE EVENT',[('1','SUM'),('2','FIRST DIE'),('3','SECOND DIE'),('4','DOUBLES / SAME'),('5','BOTH EVEN'),('6','BOTH ODD'),('7','AT LEAST ONE FACE'),('8','SUM IS ODD'),('9','SUM IS EVEN'),('10','AT LEAST ONE EVEN')])
     if key=='0': return None
@@ -25,8 +14,6 @@ def read_pair_event():
         value=STCORE.read_int('VALUE: ')
     elif key=='7': value=STCORE.read_size('FACE (1..6): ',6)
     return kind,op,value
-
-
 def dice_session(word=None):
     n=STCORE.read_int('HOW MANY FAIR 6-SIDED DICE: ')
     pending={'and':'2','or':'3'}.get(word) if n==2 else None
@@ -54,7 +41,7 @@ def dice_session(word=None):
         if key in ('2','3') and second is None: continue
         join='OR' if key=='3' else 'AND'
         p=STCORE.call('STDICE','pair_probability',first,second,join)
-        STCORE.results('DICE > '+join if second else 'DICE > EVENT',[('P',p),('FRACTION',STCORE.answer_text(p,'F')),('SUCCESSFUL',STCORE.number(STCORE.rmul(p,(36,1)))),('TOTAL',36)],['ORDERED PAIRS: FIRST,SECOND','AND: BOTH CONDITIONS HOLD','OR: EITHER; COUNT OVERLAP ONCE','FIRST/SECOND DISTINGUISHED'])
+        STCORE.results('DICE > '+join if second else 'DICE > EVENT',[('P',p),('FRACTION',STCORE.answer_text(p,'F')),('SUCCESSFUL',STCORE.number(STCORE.rmul(p,(36,1)))),('TOTAL',36)],['ORDERED PAIRS: FIRST,SECOND','AND: BOTH CONDITIONS HOLD','OR: EITHER; COUNT OVERLAP ONCE','FIRST/SECOND DISTINGUISHED'],drawing=['HOW TO DRAW: TWO-DICE GRID','6 ROWS FOR FIRST DIE 1..6.','6 COLUMNS FOR SECOND DIE 1..6.','EACH CELL IS AN ORDERED PAIR.','MARK CELLS SATISFYING THE EVENT.','AND: BOTH; OR: EITHER ONCE.','P=MARKED CELLS / 36.'])
         show=STCORE.menu('DICE > NEXT',[('1','ANOTHER EVENT'),('2','LIST MATCHING OUTCOMES')])
         if show=='0': return
         if show=='2':

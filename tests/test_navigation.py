@@ -38,11 +38,11 @@ builtins.input=lambda prompt='':next(answers)
 import STAT1,STCORE
 assert STCORE.KEY_STYLE=='scan' and STCORE.HAS_KEYS
 assert list(answers)==[]
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+assert not set(STCORE.topic_modules()).intersection(sys.modules)
 """
         result=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=10)
         self.assertEqual(result.returncode,0,result.stderr)
-        self.assertIn('7 PRACTICE TEST 1',result.stdout)
+        self.assertIn('10 SAMPLE SIZE CALCULATOR',result.stdout)
         self.assertIn('ANSWER=0.3151',result.stdout)
 
     def test_scan_release_repeated_digit_and_arrow_pages(self):
@@ -66,7 +66,7 @@ builtins.input=lambda prompt='':next(answers)
 import STAT1,STCORE
 assert STCORE.ON_TI and not STCORE.HAS_KEYS
 assert list(answers)==[]
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+assert not set(STCORE.topic_modules()).intersection(sys.modules)
 """
         result=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=10)
         self.assertEqual(result.returncode,0,result.stderr)
@@ -116,7 +116,7 @@ assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
         code="""
 import builtins,contextlib,io,sys
 import STAT1,STCORE
-assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+assert not set(STCORE.topic_modules()).intersection(sys.modules)
 STCORE.view=lambda *args:None
 for repeat in range(3):
  answers=iter(['2','1','10','.05','1','0','0'])
@@ -126,10 +126,38 @@ for repeat in range(3):
  builtins.input=read
  with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
  assert list(answers)==[]
- assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+ assert not set(STCORE.topic_modules()).intersection(sys.modules)
 """
         result=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)
 
 
 if __name__=='__main__': unittest.main()
+
+
+class ViewerKeyMemory(unittest.TestCase):
+    def test_viewer_keys_do_not_import_input_module(self):
+        import subprocess, sys
+        code = """
+import builtins, sys, types
+physical = sys.argv[1] == 'keys'
+if physical:
+    ti = types.ModuleType('ti_system')
+    keys = iter([0,26])
+    ti.get_key = lambda mode: next(keys)
+    sys.modules['ti_system'] = ti
+import STCORE as c
+original = builtins.__import__
+def guarded(name, *args, **kwargs):
+    if name == 'STVIN':
+        raise AssertionError('Viewer keys must not import STVIN')
+    return original(name, *args, **kwargs)
+builtins.__import__ = guarded
+builtins.input = lambda prompt='': ''
+c.view('RESULT',['ANSWER=385'])
+assert 'STVIN' not in sys.modules
+assert 'STVDISP' not in sys.modules
+"""
+        for mode in ('text','keys'):
+            run = subprocess.run([sys.executable,'-B','-c',code,mode],capture_output=True,text=True)
+            self.assertEqual(run.returncode,0,run.stdout+run.stderr)

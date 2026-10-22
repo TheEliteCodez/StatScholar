@@ -43,10 +43,10 @@ def module_probe():
     first = second = None
     had_core = "STCORE" in modules
     try:
-        first = __import__("STGDICE")
-        del modules["STGDICE"]
-        print("CACHE DELETE: " + str("STGDICE" not in modules))
-        second = __import__("STGDICE")
+        first = __import__("STCOMB")
+        del modules["STCOMB"]
+        print("CACHE DELETE: " + str("STCOMB" not in modules))
+        second = __import__("STCOMB")
         print("FRESH REIMPORT: " + str(first is not second))
     except Exception as exc:
         print("MODULE TEST: " + type(exc).__name__)
@@ -55,8 +55,8 @@ def module_probe():
         first = second = None
         # Only entries introduced or exercised by this probe are removed.
         try:
-            if "STGDICE" in modules:
-                del modules["STGDICE"]
+            if "STCOMB" in modules:
+                del modules["STCOMB"]
             if not had_core and "STCORE" in modules:
                 del modules["STCORE"]
         except Exception as exc:
@@ -98,7 +98,7 @@ def main():
     list_probe(100)
     list_probe(101)
     input("ENTER FOR MODULE TEST: ")
-    print("Needs project STGDICE, STCORE")
+    print("Needs project STCOMB, STCORE")
     module_probe()
     heap("AFTER MODULE TEST")
     input("ENTER FOR KEY TEST: ")

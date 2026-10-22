@@ -1,21 +1,8 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Empirical rule solver.
 import STCORE as c
-
-
 def empirical_percent(k, region='within'):
     within=((68,1),(95,1),(997,10))[k-1]
     outside=c.call('STNORM','sub',(100,1),within)
     return within if region=='within' else outside if region=='outside' else c.rdiv(outside,(2,1))
-
-
 def empirical_session(mean=None,sd=None):
     while True:
         key=c.menu('GRAPH > EMPIRICAL RULE',[(str(i),label) for i,label in enumerate(('WITHIN 1 SD','WITHIN 2 SD','WITHIN 3 SD','OUTSIDE 1 SD','OUTSIDE 2 SD','OUTSIDE 3 SD','ONE TAIL','ENTER / CHANGE MEAN AND SD','BETWEEN SD MARKS'),1)])
@@ -28,7 +15,7 @@ def empirical_session(mean=None,sd=None):
             if low not in marks or high not in marks or low>high: raise ValueError('USE ORDERED INTEGER z -3..3')
             answers=[('APPROX PERCENT',c.as_ratio(str(marks[high]-marks[low])))]
             if mean is not None: answers += [('LOW x',c.call('STNORM','x_value',(low,1),mean,sd)),('HIGH x',c.call('STNORM','x_value',(high,1),mean,sd))]
-            c.results('EMPIRICAL > BETWEEN',answers,['APPROX NORMAL ONLY','OPTION 8 ENTERS MEAN / SD']);continue
+            c.results('EMPIRICAL > BETWEEN',answers,['APPROX NORMAL ONLY','OPTION 8 ENTERS MEAN / SD'],drawing=c.call('STSKETCH','curve','NORMAL',0,1,'3',(low,high))+['AXIS ABOVE IS z, IN SD UNITS.']);continue
         k=(int(key)-1)%3+1
         region='within' if int(key)<=3 else 'outside'
         if key=='7':
@@ -43,4 +30,7 @@ def empirical_session(mean=None,sd=None):
                 answers.append(('BELOW x' if side=='1' else 'ABOVE x',c.call('STNORM','x_value',(-k if side=='1' else k,1),mean,sd)))
             else:
                 answers += [('LOW x',c.call('STNORM','x_value',(-k,1),mean,sd)),('HIGH x',c.call('STNORM','x_value',(k,1),mean,sd))]
-        c.results('GRAPH > EMPIRICAL ANSWER',answers,['PERCENT UNITS, NOT PROBABILITY', 'APPROX NORMAL / BELL-SHAPED ONLY', 'OPTION 8 ENTERS MEAN / SD','68 / 95 / 99.7 WITHIN', 'OUTSIDE=100-WITHIN', 'ONE TAIL=OUTSIDE/2'])
+        drawing=c.call('STSKETCH','curve','NORMAL',0,1,
+            side if region=='tail' else '3' if region=='within' else 'outside',
+            ((-k if side=='1' else k),) if region=='tail' else (-k,k))
+        c.results('GRAPH > EMPIRICAL ANSWER',answers,['PERCENT UNITS, NOT PROBABILITY', 'APPROX NORMAL / BELL-SHAPED ONLY', 'OPTION 8 ENTERS MEAN / SD','68 / 95 / 99.7 WITHIN', 'OUTSIDE=100-WITHIN', 'ONE TAIL=OUTSIDE/2'],drawing=drawing+['AXIS ABOVE IS z, IN SD UNITS.'])

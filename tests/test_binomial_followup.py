@@ -15,7 +15,7 @@ from unittest.mock import patch
 import STCORE as c
 import STBWORD as wording
 import STBINFO2 as info
-import STBINFO3 as info3
+import followup as info3
 
 
 class BinomialFollowup(unittest.TestCase):

@@ -1,26 +1,11 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Binomial wording -> bounds/command translation, loaded only while an event is shown.
 import STCORE as c
 from STBWORD import WORDS
-
-
 def floor_ratio(x):
     a, b = c.to_ratio(x)
     return a // b
-
-
 def ceil_ratio(x):
     a, b = c.to_ratio(x)
     return -(-a // b)
-
-
 def event_bounds(n, event):
     op, a, b = event
     if op == '=':
@@ -32,8 +17,6 @@ def event_bounds(n, event):
     if op == '>': return floor_ratio(a) + 1, n
     return (ceil_ratio(a) if op[0] == '[' else floor_ratio(a) + 1,
             floor_ratio(b) if op[-1] == ']' else ceil_ratio(b) - 1)
-
-
 def translation(n, p, event):
     op, a, b = event
     text = c.exact_text(a)

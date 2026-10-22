@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Event input, guide unpacking and size input, loaded only while needed.
 import STCORE
-
-
 def event_input(binomial=False):
     key = STCORE.menu("BINOMIAL > EVENT" if binomial else "WHAT DOES IT ASK?", [("1", "EXACTLY ="), ("2", "AT MOST <="),
           ("3", "LESS THAN <"), ("4", "AT LEAST >="), ("5", "MORE THAN >"),
@@ -24,10 +13,9 @@ def event_input(binomial=False):
         b = STCORE.read_exact("UPPER: ")
         c = STCORE.menu("INCLUDE ENDPOINTS?", [("1", "BOTH [a,b]"), ("2", "NEITHER (a,b)"),
                ("3", "LOWER ONLY [a,b)"), ("4", "UPPER ONLY (a,b]")])
+        if c == "0": return None
         op = {"1": "[]", "2": "()", "3": "[)", "4": "(]"}.get(c, "[]")
     return op, a, b
-
-
 def unpack_guide(text, field=None):
     names = ("title", "recognize", "values", "byhand", "ti84",
              "example", "mistakes", "related", "solver")
@@ -44,8 +32,6 @@ def unpack_guide(text, field=None):
     for i in range(9):
         result[names[i]] = fields[i] if i in (0, 8) else fields[i].split("\t")
     return result
-
-
 def read_size(prompt, maximum, minimum=1):
     while True:
         n = STCORE.read_int(prompt)

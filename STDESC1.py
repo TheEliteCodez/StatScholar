@@ -1,19 +1,8 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Small descriptive solvers: proportion, range/IQR, usual, z, outlier.
 import STCORE
-
 def solver_rel_freq():
     f = STCORE.read_int('FREQUENCY f: ')
     n = STCORE.read_int('TOTAL n: ')
     STCORE.results('F04 PROPORTION', [('f/n', STCORE.ratio(f, n))], [str(f) + '/' + str(n)])
-
 def solver_range_iqr():
     c = STCORE.menu('RANGE / IQR', [('1', 'RANGE'), ('2', 'IQR'), ('3', 'BOTH')])
     if c == '0':
@@ -31,7 +20,6 @@ def solver_range_iqr():
         answers.append(('IQR', STCORE.radd(q3, (-q1[0], q1[1]))))
         work.append(STCORE.exact_text(q3) + '-' + STCORE.exact_text(q1))
     STCORE.results('S04/S08', answers, work)
-
 def solver_usual():
     mean = STCORE.read_exact('MEAN: ')
     sd = STCORE.read_exact('SD: ')
@@ -47,15 +35,28 @@ def solver_usual():
         above = STCORE.compare_exact(value, high) > 0
         label = 'UNUSUALLY LOW' if below else 'UNUSUALLY HIGH' if above else 'NOT UNUSUAL'
         STCORE.results('CHECK NUMBER', [('NUMBER', value), ('UNUSUAL', 'YES' if below or above else 'NO'), ('CLASSIFICATION', label)], ['USUAL INCLUDES BOTH LIMITS', 'MIN USUAL=' + STCORE.exact_text(low), 'MAX USUAL=' + STCORE.exact_text(high)])
-
 def solver_zscore():
-    x = STCORE.read_exact('x: ')
-    mean = STCORE.read_exact('MEAN: ')
-    sd = STCORE.read_exact('SD: ')
+    mode=STCORE.menu('Z-SCORE: WHAT VALUE?',[('1','INDIVIDUAL VALUE x'),('2','SAMPLE MEAN x-bar')])
+    if mode=='0': return
+    x = STCORE.read_exact('SAMPLE MEAN x-bar: ' if mode=='2' else 'x: ')
+    mean = STCORE.read_exact('POPULATION MEAN mu: ' if mode=='2' else 'MEAN: ')
+    sd = STCORE.read_exact('POPULATION SD sigma: ' if mode=='2' else 'SD: ')
+    extra=[]
+    prefix=[]
+    if mode=='2':
+        n=STCORE.read_int('SAMPLE SIZE n: ')
+        if n<1 or sd[0]<=0: raise ValueError('USE POSITIVE n AND POPULATION SD')
+        sigma=sd
+        sd=STCORE.as_ratio(str(STCORE.number(sigma)/n**.5))
+        extra=[('POPULATION SD sigma',sigma),('n',n)]
+        prefix=['SAMPLE-MEAN z: USE SE, NOT INDIVIDUAL SD.',
+                'SE=sigma/sqrt(n)=%.6f/sqrt(%d)=%.6f' % (STCORE.number(sigma),n,STCORE.number(sd)),
+                'z=(x-bar-mu)/(sigma/sqrt(n))']
     z = STCORE.rdiv(STCORE.radd(x, (-mean[0], mean[1])), sd)
     label = 'HIGH' if STCORE.compare_exact(z, 2) > 0 else 'LOW' if STCORE.compare_exact(z, -2) < 0 else 'NOT EXTREME'
-    STCORE.results('S12 Z-SCORE', [('z', z), ('CLASSIFICATION', label)], ['(' + STCORE.exact_text(x) + '-' + STCORE.exact_text(mean) + ')/' + STCORE.exact_text(sd)])
-
+    work=['z=(x-MEAN)/SD','('+STCORE.exact_text(x)+'-'+STCORE.exact_text(mean)+')/'+STCORE.exact_text(sd)]
+    work=prefix+work
+    STCORE.results('SAMPLE-MEAN Z-SCORE' if mode=='2' else 'Z-SCORE CALCULATOR', [('z', z), ('x-bar' if mode=='2' else 'x',x), ('MEAN',mean), ('STANDARD ERROR SE' if mode=='2' else 'SD',sd)]+extra+[('CLASSIFICATION', label)], work,drawing=work+STCORE.call('STSKETCH','position',mean,sd,x))
 def solver_outlier():
     q1 = STCORE.read_exact('Q1: ')
     q3 = STCORE.read_exact('Q3: ')

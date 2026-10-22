@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Formatting and statistical display helpers, loaded only while needed.
 from STEXACT import ratio, to_ratio, compare_exact
-
-
 def fmt(x):
     try:
         if abs(x - int(x)) < 0.0000000001:
@@ -17,29 +6,16 @@ def fmt(x):
     except:
         pass
     return str(round(x, 10))
-
-
 def radd(a, b):
     return ratio(a[0]*b[1] + b[0]*a[1], a[1]*b[1])
-
-
 def rmul(a, b):
     return ratio(a[0]*b[0], a[1]*b[1])
-
-
 def rsum(values):
     total = (0, 1)
     for value in values:
         total = radd(total, value)
     return total
-
-
-def number(value):
-    if isinstance(value, tuple):
-        return value[0]/value[1]
-    return value
-
-
+from STCORE import number
 def fixed(value, places):
     if isinstance(value, tuple):
         a, b = value
@@ -54,8 +30,6 @@ def fixed(value, places):
             return sign + digits[:-places] + "." + digits[-places:]
         return sign + digits
     return ("%.*f" % (places, value))
-
-
 def exact_text(value):
     a, b = to_ratio(value)
     if b == 1: return str(a)
@@ -64,8 +38,6 @@ def exact_text(value):
     while tail % 5 == 0: tail //= 5; fives += 1
     if tail == 1: return fixed((a, b), max(twos, fives))
     return str(a) + "/" + str(b)
-
-
 def answer_text(value, style="D", places=4):
     if isinstance(value, str):
         return value
@@ -77,8 +49,6 @@ def answer_text(value, style="D", places=4):
         value = rmul(value, (100, 1)) if isinstance(value, tuple) else value*100
         return fixed(value, places) + "%"
     return fixed(value, places)
-
-
 def exact_sorted(values):
     ordered = []
     for value in values:
@@ -87,8 +57,6 @@ def exact_sorted(values):
             i -= 1
         ordered.insert(i, value)
     return ordered
-
-
 def range_relation(count, mean, variance):
     delta = radd(to_ratio(count), (-mean[0], mean[1]))
     if compare_exact(rmul(delta, delta), rmul((4, 1), variance)) <= 0: return 0

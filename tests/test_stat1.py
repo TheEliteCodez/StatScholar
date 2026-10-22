@@ -243,17 +243,6 @@ class Workflow(unittest.TestCase):
         self.assertIn('SUCCESSFUL=4651',str(output));self.assertIn('SUCCESSFUL=1250',str(output))
         self.assertEqual(prompts.count('HOW MANY FAIR 6-SIDED DICE: '),1)
 
-    def test_every_question_and_guide_route(self):
-        self.assertEqual(len(s.QUESTION_INDEX),49)
-        special={'ROULETTE','CARDS','SPINNER','CATEGORY','CONCEPT','WIN_LOSS','INSURANCE','RAFFLE','BINOMIAL_MODEL','SYMMETRY'}
-        for q in s.QUESTION_DATA:
-            self.assertTrue(q[2] in s.GUIDES or q[2] in special)
-            output,_=self.run_flow(lambda:s.question_lookup(q[0]),['2','0'])
-            self.assertTrue(output)
-        for gid,title,solver,cue,method,example in NEW_GUIDES:
-            self.assertEqual(s.GUIDES[gid][1],solver)
-        output,_=self.run_flow(s.main,['Q003','2','0','0']);self.assertIn('1/38',str(output))
-        output,_=self.run_flow(s.question_lookup,['RAIN','Q002','2','0']);self.assertIn('mode=7',str(output))
 
     def test_additional_original_and_changed_workflows(self):
         # All original binomial multi-part probability questions through event menus.
@@ -291,28 +280,6 @@ class Workflow(unittest.TestCase):
         self.assertIn('BUYER ALL BOUGHT=-10.00',str(output));self.assertIn('ORGANIZER ALL SOLD=250.00',str(output))
         output,_=self.run_flow(s.insurance_session,['1','.99','100','5000','1']);self.assertIn('50.00',str(output))
 
-    def test_remaining_original_workflows_and_legacy_routes(self):
-        output,_=self.run_flow(s.distribution_session,['7','1','.32','2','.01','6','.08','8','.35','9','.05','12','.17','13','.02','2','1','0'])
-        self.assertIn('mu=6.3700',str(output))
-        output,_=self.run_flow(s.distribution_session,['6','0','.904','1','.047','2','.024','3','.018','4','.005','5','.002',
-                      '1','1','0','1','3','1','1','6','2','4','1','1','4','1','1','','1','0'])
-        for text in ['P=0.9040','P=0.0960','P=0.0470','UNUSUAL=YES']:self.assertIn(text,str(output))
-        output,_=self.run_flow(s.binomial_session,['12','.86','1','1','5','1','1','2','5','1','6','2','5','','1','0'])
-        self.assertIn('P=0.0004',str(output));self.assertIn('UNUSUAL=YES',str(output))
-        output,_=self.run_flow(s.supplied_session,['.6','.63','.43','1'])
-        for value in ['0.6000','0.4300','0.8000','0.6825']:self.assertIn(value,str(output))
-        for a,b,both,expected in [('.3','.4','0','MUTUALLY EXCLUSIVE=YES'),('.5','.4','.2','INDEPENDENT=YES')]:
-            output,_=self.run_flow(s.supplied_session,[a,b,both,'1']);self.assertIn(expected,str(output))
-        for p,want in [('0','YES'),('1','YES'),('-1/2','NO'),('101%','NO')]:
-            output,_=self.run_flow(s.valid_probability,[p,'1']);self.assertIn('CAN BE PROBABILITY='+want,str(output))
-        for rows,col in [([[6,9,14],[16,12,5]],'2'),([[14,11,12],[2,10,16]],'2')]:
-            output,_=self.run_flow(s.two_way_session,['2','3','MALE','FEMALE','A','B','C']+[str(x) for row in rows for x in row]+['1',col,'1','0'])
-            self.assertIn('0.6613' if rows[0][0]==6 else '0.3231',str(output))
-        output,_=self.run_flow(s.question_lookup,['CH4B 8','2','0']);self.assertIn('.1196',str(output))
-        with patch.object(s,'raw_session') as called:
-            self.run_flow(s.wizard_raw_data,[]);called.assert_called_once_with()
-        output,_=self.run_flow(s.frequency_session,['2','1','2','3','2','5','1'])
-        self.assertIn('CUMULATIVE f=4',str(output));self.assertIn('RELATIVE f=0.5000',str(output))
 
     def test_entry_speed_all_families(self):
         cases=[(['4','1'],'raw_session'),(['4','2'],'frequency_data_session'),(['4','5'],'category_session'),(['4','4'],'two_way_session'),

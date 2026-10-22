@@ -1,15 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Compare-two-lists and frequency-table sessions.
 import STCORE as c
-
-
 def compare_session(a=None, boxes=False):
     a = c.call('STDMATH','read_raw','DATA > COMPARE > A') if a is None else a
     b = c.call('STDMATH','read_raw','DATA > COMPARE > B')
@@ -42,8 +31,6 @@ def compare_session(a=None, boxes=False):
             a=c.call('STDMATH','read_raw','DATA > COMPARE > A');sa=c.call('STDMATH','descriptive',a)
         if key=='3':
             b=c.call('STDMATH','read_raw','DATA > COMPARE > B');sb=c.call('STDMATH','descriptive',b)
-
-
 def frequency_data_session():
     rows=c.call('STDMATH','read_frequency_rows')
     population=False
@@ -58,7 +45,7 @@ def frequency_data_session():
         if key=='8': population=c.call('STDATA','choose_population',population)
         if key in ('1','3','7','8'): c.call('STDATA','summary_results',stats,'DATA > FREQUENCY',population)
         elif key=='2': c.call('STHIST','histogram_session',None,False,rows)
-        elif key=='4': c.call('STQUIZ','frequency_tools',rows)
+        elif key=='4': c.call('STPCT','frequency_tools',rows)
         elif key in ('5','6'): c.call('STDATA','data_normal',stats,'1' if key=='5' else '5',population)
         elif key=='9':
             rule=c.call('STNORM','boundary_rule')

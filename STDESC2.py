@@ -1,14 +1,4 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Value/frequency descriptive session.
 import STCORE
-
 def frequency_stats(rows):
     counts = {}
     for x, f in rows:
@@ -35,7 +25,6 @@ def frequency_stats(rows):
     else:
         mode = ','.join((STCORE.exact_text(x) for x in modes))
     return (total, weighted, STCORE.rdiv(weighted, (total, 1)), median, mode, positions)
-
 def frequency_session(rows=None):
     STCORE.heading('F05-F07 VALUE/FREQUENCY')
     if rows is None:

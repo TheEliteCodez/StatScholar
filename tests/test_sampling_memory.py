@@ -47,7 +47,7 @@ for repeat in range(3):
  builtins.input=lambda prompt='':next(answers)
  STAT1.main()
  assert list(answers)==[]
- assert not set(STCORE.TOPIC_MODULES).intersection(sys.modules)
+ assert not set(STCORE.topic_modules()).intersection(sys.modules)
 """
         result=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=10)
         self.assertEqual(result.returncode,0,result.stderr)
@@ -65,3 +65,49 @@ for repeat in range(3):
 
 
 if __name__=='__main__': unittest.main()
+
+
+class ApproximateInputMemory(unittest.TestCase):
+    def test_clt_changed_values_do_not_import_exact_or_format_modules(self):
+        code = """
+import builtins, sys
+import STAT1, STCORE
+original = builtins.__import__
+def guarded(name,*args,**kwargs):
+    if name in ('STEXACT','STEFMT'):
+        raise AssertionError('CLT numeric input loaded '+name)
+    return original(name,*args,**kwargs)
+builtins.__import__ = guarded
+lines = []
+STCORE.view = lambda title,values: lines.extend(values)
+for repeat in range(3):
+    answers = iter(['9','2','','100','30/2','36','1','','2','2','105','0','0'])
+    builtins.input = lambda prompt='': next(answers)
+    STAT1.main()
+    assert list(answers) == []
+    assert not set(STCORE.topic_modules()).intersection(sys.modules)
+assert 'P(ABOVE)=0.022750 (2.2750%)' in lines, lines
+"""
+        run = subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True)
+        self.assertEqual(run.returncode,0,run.stdout+run.stderr)
+
+    def test_direct_numeric_reader_formats_and_retry(self):
+        with patch('builtins.input',side_effect=['bad','1/0','3/8','12.5%','-2.5e2','1/8%']),contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual([c.read_number('VALUE: ') for _ in range(4)], [.375,.125,-250,.00125])
+
+
+class RuntimeModuleCleanup(unittest.TestCase):
+    def test_cleanup_discovers_loaded_topics_without_static_registry(self):
+        code = """
+import sys, types
+import STAT1, STCORE
+sys.modules['STTEMP'] = types.ModuleType('STTEMP')
+sys.modules['OTHER_TEMP'] = types.ModuleType('OTHER_TEMP')
+assert 'STTEMP' in STCORE.topic_modules()
+STCORE.release_topics()
+assert 'STTEMP' not in sys.modules
+assert 'OTHER_TEMP' in sys.modules
+assert 'STAT1' in sys.modules and 'STCORE' in sys.modules
+"""
+        run = subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True)
+        self.assertEqual(run.returncode,0,run.stdout+run.stderr)

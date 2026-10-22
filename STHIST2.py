@@ -1,16 +1,5 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-20
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Histogram session; binning helper loads back through the dispatcher.
 import STCORE
 from STDMATH import *
-
-
 def histogram_session(values=None,group_first=False,rows=None):
     saved_rows=rows if rows is not None else value_counts(values) if values is not None else None
     while True:
@@ -24,7 +13,7 @@ def histogram_session(values=None,group_first=False,rows=None):
         if key=='3':
             import STCOUNT
             rows,approx=STCOUNT.read_distribution()
-            STCORE.paged_results('GRAPH > PROB HISTOGRAM',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(x)', 'LABEL x AXIS AND PROBABILITY', 'APPROX: ROUNDED P' if approx else 'USE EQUAL-WIDTH BARS'])
+            STCORE.paged_results('GRAPH > PROB HISTOGRAM',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(x)', 'LABEL x AXIS AND PROBABILITY', 'APPROX: ROUNDED P' if approx else 'USE EQUAL-WIDTH BARS'],drawing=['HOW TO DRAW: PROBABILITY BARS','x AXIS=VALUES; y AXIS=P(X).','HEIGHTS FROM THIS TABLE.'])
             continue
         if key=='2': rows=read_frequency_rows()
         elif saved_rows is not None: rows=saved_rows
@@ -36,7 +25,7 @@ def histogram_session(values=None,group_first=False,rows=None):
         saved_rows=rows
         if key!='4':
             total=sum(f for x,f in rows)
-            STCORE.paged_results('GRAPH > FREQUENCIES',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=FREQUENCY','NUMERIC AXIS; BARS TOUCH', 'USE GROUP INTO CLASSES FOR BINS'])
+            STCORE.paged_results('GRAPH > FREQUENCIES',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=FREQUENCY','NUMERIC AXIS; BARS TOUCH', 'USE GROUP INTO CLASSES FOR BINS'],drawing=['HOW TO DRAW: HISTOGRAM','x AXIS=VALUES; y AXIS=COUNT.','NUMERIC SPACING; HEIGHT=f.','FOR CLASSES, DRAW TOUCHING BARS.'])
             continue
         mode=STCORE.menu('GRAPH > CLASS METHOD',[('1','NUMBER OF CLASSES'),('2','CLASS WIDTH')])
         if mode=='0': continue
@@ -67,7 +56,5 @@ def histogram_session(values=None,group_first=False,rows=None):
                 half=STCORE.rdiv(unit,(2,1))
                 lines.append('BOUNDARIES '+STCORE.exact_text(sub(low,half))+' TO '+STCORE.exact_text(sub(edge,half)))
         STCORE.view('GRAPH > GROUPED TABLE',lines+['CONTINUOUS: [LOW,HIGH)', 'FINAL CONTINUOUS BIN INCLUDES HIGH', 'DRAW TOUCHING BARS; HEIGHT=f'])
-
-
 def group_session():
     histogram_session(group_first=True)

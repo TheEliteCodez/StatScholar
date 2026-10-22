@@ -1,17 +1,6 @@
-# StatScholar - TI-84 Python Statistics Tutor
-# Author: Gregory King
-# Date: 2026-09-21
-# Copyright (c) 2026 Gregory King
-# SPDX-License-Identifier: LicenseRef-StatScholar-Free-Use-No-Sale-1.0
-#
-# License terms: see LICENSE or STAT1.py.
-
-# Binomial solver main loop.
 import STCORE as c
 from STBMATH import *
 import math
-
-
 def binomial_session(n=None, exact_p=None, first_action=None):
     c.heading('BINOMIAL: COUNT A RESULT')
     print('FIXED n, SAME p, INDEPENDENT')
@@ -45,11 +34,11 @@ def binomial_session(n=None, exact_p=None, first_action=None):
             else:
                 op, a, b = event
                 guide_id = {'=': 'B02', '<=': 'B03', '<': 'B04', '>=': 'B05', '>': 'B06'}.get(op, 'B10')
-                c.results(guide_id, [('P', answer)], ['X ' + op + ' ' + c.exact_text(a) + (',' + c.exact_text(b) if len(op) == 2 and op[0] in '[(' else ''), 'n=' + str(n) + ' p=' + c.exact_text(exact_p), 'SUM MATCHING BINOMIAL P'] + c.call('STBINOM','binomial_method',n,exact_p,event))
+                c.results(guide_id, [('P', answer)], ['X ' + op + ' ' + c.exact_text(a) + (',' + c.exact_text(b) if len(op) == 2 and op[0] in '[(' else ''), 'n=' + str(n) + ' p=' + c.exact_text(exact_p), 'SUM MATCHING BINOMIAL P'] + c.call('STBINOM','binomial_method',n,exact_p,event),drawing=c.call('STSKETCH','bars',0,n,event))
         elif key == '2':
-            c.results('B08/B09', [('mu', mean), ('VAR', variance), ('sigma', math.sqrt(c.number(variance)))], ['mu=n*p', 'sigma=SQRT(n*p*(1-p))', 'UNITS: NUMBER OF SUCCESSES', 'mu: LONG-RUN AVERAGE COUNT', 'sigma: DISTRIBUTION SD', 'X: COUNT; n: TRIALS; p: CHANCE'])
+            c.results('B08/B09', [('mu', mean), ('VAR', variance), ('sigma', math.sqrt(c.number(variance)))], ['mu=n*p', 'sigma=SQRT(n*p*(1-p))', 'UNITS: NUMBER OF SUCCESSES', 'mu: LONG-RUN AVERAGE COUNT', 'sigma: DISTRIBUTION SD', 'X: COUNT; n: TRIALS; p: CHANCE'],drawing=c.call('STSKETCH','bars',0,n))
         elif key == '3':
-            c.paged_results('B11 DISTRIBUTION', n + 1, lambda k: ('P(' + str(k) + ')', binomial_exact_ratio(n, exact_p, k)), ['X=NUMBER OF SUCCESSES', 'X VALUES: 0 THROUGH n', 'SHAPE=' + binomial_shape(exact_p), 'mu=' + c.exact_text(c.rmul((n, 1), exact_p)), 'P(k)=nCk*p^k*(1-p)^(n-k)'])
+            c.paged_results('B11 DISTRIBUTION', n + 1, lambda k: ('P(' + str(k) + ')', binomial_exact_ratio(n, exact_p, k)), ['X=NUMBER OF SUCCESSES', 'X VALUES: 0 THROUGH n', 'SHAPE=' + binomial_shape(exact_p), 'mu=' + c.exact_text(c.rmul((n, 1), exact_p)), 'P(k)=nCk*p^k*(1-p)^(n-k)'],drawing=c.call('STSKETCH','bars',0,n))
         else:
             mu, sd, lo, hi, low, high, first = usual_counts(n, exact_p)
             inside = binomial_exact_event(n, exact_p, ('[]', low, high))
