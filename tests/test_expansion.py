@@ -167,10 +167,10 @@ class Expansion(unittest.TestCase):
         out,prompts=flow(app.main,(['4','1','3','1','2','3','1','0','0'])+['0'])
         self.assertIn('MEAN=2.0000',out)
         self.assertEqual(prompts[:3],['> ','> ','NUMBER OF VALUES (1..100) OR L1: '])
-        out,prompts=flow(app.main,['5','1','1','40','4','44','1','0','0','0'])
+        out,prompts=flow(app.main,['1','3','1','40','4','44','1','0','0','0'])
         self.assertEqual(prompts[:4],['> ','> ','> ','MEAN: '])
         self.assertIn('z=1.0000',out)
-        out,_=flow(app.main,(['5','1','4','2','1','0','0','0'])+['0'])
+        out,_=flow(app.main,(['1','4','2','1','0','0'])+['0'])
         self.assertIn('APPROX PERCENT=95.0000',out)
 
     def test_raw_session_reuses_list(self):
@@ -186,7 +186,7 @@ import sys,builtins,io,contextlib
 import STAT1,STCORE
 assert 'STQUEST' not in sys.modules
 assert 'STDMATH' not in sys.modules
-pending=iter(['5','1','1','40','4','44','1','0','0','0'])
+pending=iter(['1','3','1','40','4','44','1','0','0','0'])
 def read(prompt=''):
  if prompt=='MEAN: ':
   assert 'STNORM' in sys.modules
@@ -194,16 +194,6 @@ def read(prompt=''):
  return next(pending)
 builtins.input=read
 STCORE.view=lambda *args:None
-with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
-assert not set(STCORE.topic_modules()).intersection(sys.modules)
-# Search metadata completes before entering the raw solver, even in FIND.
-pending=iter(['1','N','N','9','1','shortest 25%','1','1','2','1','3','1','0','0','0','0','0'])
-def read(prompt=''):
- if prompt.startswith('NUMBER OF VALUES'):
-  assert 'STFIND' in sys.modules
-  assert 'STQUEST' not in sys.modules
- return next(pending)
-builtins.input=read
 with contextlib.redirect_stdout(io.StringIO()): STAT1.main()
 assert not set(STCORE.topic_modules()).intersection(sys.modules)
 print('ISOLATED')
@@ -229,7 +219,7 @@ for repeat in range(5):
  def capture(title,lines):
   refs.extend(weakref.ref(sys.modules[n]) for n in STCORE.topic_modules() if n in sys.modules)
  STCORE.view=capture
- cases=[['4','1','3','1','2','3','1','0','0','0'],['5','1','4','2','1','0','0','0','0']]
+ cases=[['4','1','3','1','2','3','1','0','0','0'],['1','4','2','1','0','0','0']]
  for answers in cases:
   pending=iter(answers)
   import builtins

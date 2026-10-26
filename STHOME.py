@@ -1,9 +1,9 @@
 import STCORE as c
 def quick_main():
-    routes={'2':('STBWORD','wording_session'),'3':('STPROBM','probability_tasks'),'4':('STTASKS','data_tasks'),'5':('STTASKS','graph_tasks'),'6':('STSTUDY','study_menu'),'9':('STCLT','clt_menu'),'10':('STSIZE','_required_sample_size'),'11':('STCIMENU','menu'),'12':('STDESC','solver_zscore'),'13':('STCIIO','zstar_session'),'14':('STCIIO','tstar_session')}
+    routes={'1':('STNDIST','normal_menu'),'7':('STUNIF','uniform_menu'),'2':('STBWORD','wording_session'),'3':('STPROBM','probability_tasks'),'4':('STTASKS','data_tasks'),'5':('STTASKS','graph_tasks'),'6':('STSTUDY','study_menu'),'9':('STCLT','clt_menu'),'10':('STSIZE','_required_sample_size'),'11':('STCIMENU','menu'),'12':('STDESC','solver_zscore'),'13':('STCIIO','zstar_session'),'14':('STCIIO','tstar_session')}
     context={'experiment_tasks':experiment_tasks,'money_tasks':money_tasks,'reference_call':reference_call,}
     while True:
-        key=c.menu('STAT1',[('2','BINOMIAL'),('3','PROBABILITY'),('4','DATA / STATS'),('5','NORMAL / Z / GRAPHS'),('6','STUDY / CONCEPTS'),('9','CLT / SAMPLING DISTRIBUTIONS'),('10','SAMPLE SIZE CALCULATOR'),('11','CONFIDENCE INTERVAL / MOE'),('12','Z-SCORE CALCULATOR'),('13','Z* CRITICAL VALUE'),('14','T* CRITICAL VALUE')],page_size=6)
+        key=c.menu('STAT1',[('1','NORMAL DISTRIBUTION'),('2','BINOMIAL'),('3','PROBABILITY'),('4','DATA / STATS'),('5','GRAPHS / DATA SHAPE'),('6','STUDY / CONCEPTS'),('7','UNIFORM DISTRIBUTION'),('9','CLT / SAMPLING DISTRIBUTIONS'),('10','SAMPLE SIZE CALCULATOR'),('11','CONFIDENCE INTERVAL / MOE'),('12','Z-SCORE CALCULATOR'),('13','Z* CRITICAL VALUE'),('14','T* CRITICAL VALUE')],page_size=6)
         if key=='0': return
         try:
             module,func=routes[key]

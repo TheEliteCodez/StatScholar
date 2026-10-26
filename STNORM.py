@@ -11,8 +11,8 @@ def empirical_percent(k, region='within'):
     return STCORE.call('STNORM2','empirical_percent',k,region)
 def empirical_session(mean=None,sd=None):
     return STCORE.call('STNORM2','empirical_session',mean,sd)
-def normal_session(mean=None,sd=None,first=None,variance=None):
-    return STCORE.call('STNORM3','normal_session',mean,sd,first,variance)
+def normal_session(mean=None,sd=None,first=None,variance=None,single=False):
+    return STCORE.call('STNORM3','normal_session',mean,sd,first,variance,single)
 def relative_session():
     return STCORE.call('STNORM4','relative_session')
 def axes_session(): return STCORE.call('STNORM3','normal_session',None,None,'3')
@@ -29,3 +29,9 @@ def usual_data(values,stats,title,inclusive,population=False):
     return STCORE.call('STNORM4','usual_data',values,stats,title,inclusive,population)
 def observation_report(x,mean,sd,variance=None,inclusive=False):
     return STCORE.call('STNORM1','observation_report',x,mean,sd,variance,inclusive)
+
+def z_menu():
+    while True:
+        key=STCORE.menu('Z-SCORE / FIND x',[('1','FIND z FROM x'),('2','FIND x FROM z')])
+        if key=='0': return
+        normal_session(first=key,single=True)

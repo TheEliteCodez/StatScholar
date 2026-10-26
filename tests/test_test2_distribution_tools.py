@@ -13,27 +13,23 @@ from test_expansion import flow
 
 class TestTwoDistributionTools(unittest.TestCase):
     def test_normal_individual_tail_and_expected_count(self):
-        output, _ = flow(distributions.normal_menu, [
-            '9.3', '2', '1', '2', '10', '100', '0'])
+        output, _ = flow(distributions.normal_menu, ['1', '9.3', '2', '2', '10', '100', '0'])
         self.assertIn('P(X > 10.0000)', output)
         self.assertIn('PROBABILITY=0.363169', output)
         self.assertIn('EXPECTED NUMBER=36.3169', output)
 
     def test_expected_count_for_washing_machine_lifetime_question(self):
-        output, _ = flow(distributions.normal_menu, [
-            '9.3', '2', '1', '2', '5', '100', '0'])
+        output, _ = flow(distributions.normal_menu, ['1', '9.3', '2', '2', '5', '100', '0'])
         self.assertIn('P(X > 5.0000)', output)
         self.assertIn('EXPECTED NUMBER=98.4222', output)
 
     def test_lumber_piece_tail_probability(self):
-        output, _ = flow(distributions.normal_menu, [
-            '4', '.05', '1', '2', '4.08', '', '0'])
+        output, _ = flow(distributions.normal_menu, ['1', '4', '.05', '2', '4.08', '', '0'])
         self.assertIn('P(X > 4.0800)', output)
         self.assertIn('PROBABILITY=0.054799', output)
 
     def test_pencil_diameter_tail_returns_expected_count(self):
-        output, _ = flow(distributions.normal_menu, [
-            '.30', '.01', '1', '1', '.293', '450', '0'])
+        output, _ = flow(distributions.normal_menu, ['1', '.30', '.01', '1', '.293', '450', '0'])
         self.assertIn('P(X < 0.2930)', output)
         self.assertIn('EXPECTED COUNT=N*P', output)
         self.assertIn('EXPECTED NUMBER=108.8836', output)
@@ -48,28 +44,23 @@ class TestTwoDistributionTools(unittest.TestCase):
         self.assertIn('P(ABOVE)=%.6e' % probability, output)
 
     def test_normal_cutoff_from_left_tail_percentile(self):
-        output, _ = flow(distributions.normal_menu, [
-            '200', '50', '2', '3', '70%', '0'])
+        output, _ = flow(distributions.normal_menu, ['2', '200', '50', '3', '70%', '0'])
         self.assertIn('AREA TO LEFT=0.7000 (70.00%)', output)
         self.assertIn('z CUTOFF=0.5244', output)
         self.assertIn('VALUE CUTOFF x=226.2200', output)
 
     def test_uniform_mean_sd_and_between_probability(self):
-        output, _ = flow(distributions.uniform_menu, [
-            '0', '20', '1', '0'])
+        output, _ = flow(distributions.uniform_menu, ['3', '0', '20', '0'])
         self.assertIn('MEAN=(a+b)/2=10.0000', output)
         self.assertIn('SD=(b-a)/sqrt(12)=5.7735', output)
-        output, _ = flow(distributions.uniform_menu, [
-            '0', '20', '2', '3', '2.8', '6.4', '0'])
+        output, _ = flow(distributions.uniform_menu, ['1', '0', '20', '3', '2.8', '6.4', '0'])
         self.assertIn('P(2.8000 < X < 6.4000)', output)
         self.assertIn('PROBABILITY=0.180000', output)
 
     def test_uniform_upper_tail_and_percentile_cutoff(self):
-        output, _ = flow(distributions.uniform_menu, [
-            '0', '20', '2', '2', '9', '0'])
+        output, _ = flow(distributions.uniform_menu, ['1', '0', '20', '2', '9', '0'])
         self.assertIn('PROBABILITY=0.550000', output)
-        output, _ = flow(distributions.uniform_menu, [
-            '0', '20', '3', '3', '70%', '0'])
+        output, _ = flow(distributions.uniform_menu, ['2', '0', '20', '3', '70%', '0'])
         self.assertIn('VALUE CUTOFF x=14.0000', output)
 
     def test_t_critical_probability_and_percentile(self):
@@ -201,15 +192,12 @@ class TestTwoDistributionTools(unittest.TestCase):
         self.assertIn('SAMPLE STATISTIC', show.call_args.args[1])
         self.assertIn('0.54*1100=594', show.call_args.args[1])
 
-    def test_graph_menu_routes_to_normal_and_uniform_tools(self):
-        with patch.object(c, 'menu', side_effect=['8', '0']), \
-                patch.object(c, 'call') as dispatch:
-            tasks.graph_tasks({})
-        dispatch.assert_called_once_with('STDIST', 'normal_menu')
-        with patch.object(c, 'menu', side_effect=['9', '0']), \
-                patch.object(c, 'call') as dispatch:
-            tasks.graph_tasks({})
-        dispatch.assert_called_once_with('STDIST', 'uniform_menu')
+    def test_home_routes_to_normal_and_uniform_tools(self):
+        import STHOME
+        for key,module,func in [('1','STNDIST','normal_menu'),('7','STUNIF','uniform_menu')]:
+            with patch.object(c,'menu',side_effect=[key,'0']), patch.object(c,'call') as dispatch:
+                STHOME.quick_main()
+            dispatch.assert_called_once_with(module,func)
 
     def test_study_menu_routes_to_test2_concepts(self):
             with patch.object(c, 'menu', side_effect=['9', '0']), \

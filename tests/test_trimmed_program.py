@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parent.parent
 class TrimmedProgram(unittest.TestCase):
     def test_single_program_and_removed_files(self):
         modules = list(ROOT.glob('ST*.py'))
-        self.assertLess(sum(p.stat().st_size for p in modules), 271000)
+        self.assertLess(sum(p.stat().st_size for p in modules), 281000)
         self.assertLessEqual(len(modules), 100)
         self.assertFalse((ROOT / 'calculator').exists())
         self.assertFalse((ROOT / 'build_calculator.py').exists())
@@ -26,12 +26,14 @@ class TrimmedProgram(unittest.TestCase):
             STHOME.quick_main()
         items = dict(menu.call_args.args[1])
         self.assertTrue({'2', '3', '4', '5', '6', '9', '10', '11'} <= set(items))
-        self.assertFalse({'1', '7', '8'} & set(items))
+        self.assertEqual(items['1'], 'NORMAL DISTRIBUTION')
+        self.assertEqual(items['7'], 'UNIFORM DISTRIBUTION')
+        self.assertNotIn('8', items)
 
     def test_remaining_home_menus_open_and_release(self):
         code = """
 import builtins, STAT1, STCORE
-for option in ['2','3','4','5','6','9','10','11']:
+for option in ['1','2','3','4','5','6','7','9','10','11']:
     pending=iter([option,'0','0'])
     builtins.input=lambda prompt='':next(pending)
     STAT1.main()

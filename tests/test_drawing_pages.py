@@ -14,13 +14,13 @@ from test_expansion import flow
 class DrawingPages(unittest.TestCase):
     def test_bus_cutoff_uses_question_wording_and_matching_shading(self):
         for wording,cutoff,shade in [('1','6.0000','LEFT'),('2','14.0000','RIGHT')]:
-            output,_=flow(STUNIF.uniform_menu,['0','20','3',wording,'30%','0'])
+            output,_=flow(STUNIF.uniform_menu,['2', '0', '20', wording, '30%', '0'])
             self.assertIn('VALUE CUTOFF x='+cutoff,output)
             self.assertIn('SHADE '+shade+' OF CUTOFF.',output)
         self.assertIn('LEFT=1-0.300000=0.700000',output)
 
     def test_normal_at_least_converts_right_tail_area(self):
-        output,_=flow(STNDIST.normal_menu,['0','1','2','2','5%','0'])
+        output,_=flow(STNDIST.normal_menu,['2', '0', '1', '2', '5%', '0'])
         self.assertIn('VALUE CUTOFF x=1.6449',output)
         self.assertIn('SHADE RIGHT OF CUTOFF.',output)
 
@@ -64,7 +64,7 @@ class DrawingPages(unittest.TestCase):
 
     def test_normal_probability_and_percentile_use_entered_cutoffs(self):
         output,_=flow(STNDIST.normal_menu,
-                      ['9.3','2','1','2','10','','2','3','50%','0'])
+                      ['1', '9.3', '2', '2', '10', '', '2', '3', '50%', '0'])
         for text in ('HOW TO DRAW: NORMAL','CENTER=9.3000; SD=2.0000',
                      'MARK CUTOFF: 10.0','SHADE RIGHT OF CUTOFF.',
                      'MARK CUTOFF: 9.3','SHADE LEFT OF CUTOFF.'):
@@ -72,7 +72,7 @@ class DrawingPages(unittest.TestCase):
 
     def test_uniform_rectangle_and_between_shading(self):
         output,_=flow(STUNIF.uniform_menu,
-                      ['2','12','2','3','4','8','0'])
+                      ['1', '2', '12', '3', '4', '8', '0'])
         for text in ('RECTANGLE FROM 2.0000 TO 12.0000','HEIGHT=0.1000',
                      'MARK CUTOFF: 4.0','MARK CUTOFF: 8.0',
                      'SHADE BETWEEN CUTOFFS.'):

@@ -13,12 +13,14 @@ def probability_tasks(g):
             ('9','FILL IN A MISSING CHANCE'),
             ('10','TOTAL, GROUP A, B AND BOTH'),
             ('11','ALL SELECTED ARE IN A GROUP'),
+            ('12','GIVEN / AND / OR / NOT (A,B)'),
 
             ('14','DEFECTIVE ITEMS / BOX')])
         if key=='0': return
         if key=='3': STCORE.call('STPROB','solver_at_least_one')
         elif key=='4': g['experiment_tasks']()
         elif key=='6': g['money_tasks']()
+        elif key=='12': STCORE.call('STPROB','solver_conditional')
         elif key=='14': STCORE.call('STSAMPLE','box_session')
         elif key!='0':
             routes={'1':('STPROB','solver_basic_prob'),'2':('STPROB','supplied_session'),'3':('STPROB','solver_at_least_one'),'5':('STCOUNT','distribution_session'),'7':('STPROB','valid_probability'),'8':('STPROB','two_way_session'),'9':('STCOUNT','missing_probability'),'10':('STVENN','venn_session'),'11':('STVENN','selection_question')}

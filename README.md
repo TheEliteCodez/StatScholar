@@ -1,7 +1,7 @@
 # StatScholar
 
 A statistics calculator for the TI-84 Python environment. Run **STAT1**.
-There is one program: the **100 root `ST*.py` files**, totaling **270,808 bytes**.
+There is one program: the **100 root `ST*.py` files**, totaling **270,837 bytes**.
 No separate build folder or build step is required.
 
 ## Install
@@ -236,3 +236,35 @@ Normal, uniform and t percentile/cutoff solvers first ask the question wording:
 complementing it. At-least converts right area r to left area 1-r, shows
 that calculation and shades the right tail. For Uniform(0,20), 30% at least
 means a 14.0000-minute cutoff; 30% at most means 6.0000 minutes.
+
+Main menu **1 NORMAL DISTRIBUTION** opens probability, percentile/cutoff,
+z-score/find x, empirical rule, usual/unusual values, labeled axes, and
+several-value tools. Main menu **7 UNIFORM DISTRIBUTION** opens probability,
+percentile/cutoff, mean/SD/height, and rectangle drawing tools. Choose the task
+before entering distribution parameters. Normal probability/cutoff/axes share
+entered mean and SD; Uniform tasks share endpoints. Use CHANGE MEAN / SD or
+CHANGE ENDPOINTS to start a different problem. Z/usual/several-value tools
+collect their own inputs; empirical-rule percentages can be used without them.
+
+Main menu **5 GRAPHS / DATA SHAPE** retains boxplots, dotplots, histograms,
+shape/normality, outliers, relative position, and Student t. Sample-mean and
+sample-proportion workflows remain under **9 CLT / SAMPLING DISTRIBUTIONS**.
+
+### Conditional probability and event notation
+
+Home **3 Probability > 12 GIVEN / AND / OR / NOT (A,B)** solves
+P(A|B), P(B|A), intersections (A ? B / AND), unions (A ? B / inclusive OR),
+complements, only A/B, neither, and exactly one. Choose the supplied information:
+just overlap plus given-group probability/count for a conditional answer;
+a conditional and its given-group probability for an intersection; or P(A),
+P(B), and an intersection, union, or conditional for a complete two-event model.
+Independent and mutually exclusive modes require those relationships to be
+explicitly given. Complete models provide both conditional directions,
+complement conditionals, Venn regions, a probability contingency table, and a
+menu for P(event) or P(event | another event), including compound events.
+
+The calculator uses ASCII labels: `AND / INTERSECTION` means ?,
+`OR / UNION` means ?, `|` means GIVEN, and `NOT A` means A? or A?.
+No symbol entry is needed. Answer pages offer fraction/decimal/percent formats;
+SHOW METHOD supplies formulas and substitutions. Conditioning on a zero-probability
+group is reported as undefined. No independence assumption is made by default.

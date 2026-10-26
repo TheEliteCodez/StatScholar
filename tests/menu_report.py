@@ -9,7 +9,6 @@ DORMANT={
     'STBINOM2.py:binomial_session':'Older binomial menu; Home and table tools use STBWORD.',
     'STCOUNT6.py:money_session':'Older money menu; Home uses STPROBM.money_tasks.',
     'STDESC1.py:solver_range_iqr':'Older standalone range/IQR menu; summaries provide these values.',
-    'STPROB1.py:solver_conditional':'Older standalone conditional menu; current tables show conditional results.',
     'STMDICE2.py:word_event':'Its selector needs a nondefault word argument; current Home routes do not pass one. The sum-only branch is exercised.',
 }
 for name in ('_check_assumption','_read_mean_group','choose_confidence_method',

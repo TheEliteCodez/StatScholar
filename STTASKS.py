@@ -7,17 +7,15 @@ def data_tasks(g):
         if key in routes: STCORE.call(*routes[key])
 def graph_tasks(g):
     while True:
-        key=STCORE.menu('GRAPHS / DISTRIBUTIONS',[('1','Z / USUAL / EMPIRICAL RULE'),('2','BOXPLOT'),('3','DOTPLOT'),('4','HISTOGRAM'),('5','INTERPRET SHAPE / NORMALITY'),('6','OUTLIERS'),('7','COMPARE RELATIVE POSITION'),('8','NORMAL: INDIVIDUAL VALUE'),('9','UNIFORM: CONTINUOUS'),('10','STUDENT t DISTRIBUTION')])
+        key=STCORE.menu('GRAPHS / DATA SHAPE',[('2','BOXPLOT'),('3','DOTPLOT'),('4','HISTOGRAM'),('5','INTERPRET SHAPE / NORMALITY'),('6','OUTLIERS'),('7','COMPARE RELATIVE POSITION'),('10','STUDENT t DISTRIBUTION')])
         if key=='0': return
         if key=='5': STCORE.call('STGRAPH','shape_guide')
         elif key=='6':
             choice=STCORE.menu('GRAPH > OUTLIERS',[('1','FROM RAW DATA'),('2','GIVEN Q1 AND Q3')])
             if choice=='1': STCORE.call('STGRAPH','raw_outliers')
             elif choice=='2': STCORE.call('STDESC','solver_outlier')
-        elif key=='8': STCORE.call('STDIST','normal_menu')
-        elif key=='9': STCORE.call('STDIST','uniform_menu')
         elif key=='10': STCORE.call('STDIST','t_menu')
-        elif key!='0': STCORE.call(*{'1':('STNORM','normal_session'),'2':('STGRAPH','boxplot_session'),'3':('STGRAPH','dotplot_session'),'4':('STHIST','histogram_session'),'7':('STNORM','relative_session')}[key])
+        elif key!='0': STCORE.call(*{'2':('STGRAPH','boxplot_session'),'3':('STGRAPH','dotplot_session'),'4':('STHIST','histogram_session'),'7':('STNORM','relative_session')}[key])
 def experiment_tasks(g, word=None):
     while True:
         key=STCORE.menu('PROB > RANDOM EXPERIMENT',[('1','ONE / MULTIPLE DICE'),('2','DIE + COIN'),('3','COIN FLIPS'),('4','52 CARDS'),('5','ROULETTE'),('6','SPINNER')],page_size=6)
