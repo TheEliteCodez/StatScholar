@@ -14,7 +14,7 @@ def show_distribution(total,targets,draws,summary=False):
         if i==count: return ('E(X)',c.ratio(draws*targets,total))
         k=low+i
         p=probability(total,targets,draws,k)
-        return ('P(X='+str(k)+')',p if summary else c.answer_text(p,'F'))
+        return ('P(X='+str(k)+')',p)
     work=['C(K,k)*C(N-K,n-k)/C(N,n)','N='+str(total)+' K='+str(targets)+' n='+str(draws),'E(X)=n*K/N','WITHOUT REPLACEMENT']
     if draws==2:
         work+=['EXACTLY ONE IN TWO:','D THEN G + G THEN D',str(targets)+'/'+str(total)+' * '+str(total-targets)+'/'+str(total-1)+' + '+str(total-targets)+'/'+str(total)+' * '+str(targets)+'/'+str(total-1)]

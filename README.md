@@ -1,14 +1,14 @@
 # StatScholar
 
 A statistics calculator for the TI-84 Python environment. Run **STAT1**.
-There is one program: the **100 root `ST*.py` files**, totaling **270,837 bytes**.
+There is one program: the **105 root `ST*.py` files**, totaling **300,992 bytes**.
 No separate build folder or build step is required.
 
 ## Install
 
 1. Remove the previous StatScholar modules from the calculator. Overwriting
    matching files leaves deleted quiz and guide modules taking up space.
-2. Transfer only the 100 root `ST*.py` files together, preserving their names.
+2. Transfer only the 105 root `ST*.py` files together, preserving their names.
    Do not transfer tests, probes, helper scripts, documentation, or backups.
 3. Restart Python and run **STAT1**.
 
@@ -33,8 +33,9 @@ Existing calculator option numbers are preserved:
 | 12 | Z-score calculator: individual value or sample mean |
 | 13 | z* critical value from confidence, alpha or areas |
 | 14 | t* critical value from confidence, alpha or areas |
+| 15 | Hypothesis tests: one/two proportions and one/two independent means |
 
-**Home 1, worked quizzes, practice tests, numbered homework banks, guide-page
+**Worked quizzes, practice tests, numbered homework banks, guide-page
 libraries, guide/search indexes and the question wizard have been removed.**
 Their source modules are deleted, rather than hidden behind unused menu entries.
 Numeric percent/frequency tools formerly stored in a quiz module now live in
@@ -69,6 +70,33 @@ counts or a supplied p-hat; option 3 calculates a mean interval. Options 4/5
 compare two groups. Option 6 finds margin of error; option 7 constructs an
 interval from a supplied center and margin. Interval results also show margin
 of error. Confidence accepts percentages or decimals.
+
+## Hypothesis testing
+
+Choose **Home 15**: 1 one proportion, 2 two proportions, 3 one mean, or 4 two
+independent means. Enter the claim operator, null value where applicable,
+significance alpha, sample data, and the requirement checks. Means accept
+summary statistics or raw data; raw data reuse the calculated sample mean,
+sample SD and n. Two-proportion tests use H0: p1=p2 and the pooled proportion.
+Two-mean tests use Welch standard error and fractional degrees of freedom;
+paired samples require a different procedure and are not supported here.
+
+Each test shows nine steps: requirements, H0/H1, point estimate, critical
+values, test statistic, sampling-distribution drawing, p-value, initial
+decision and final conclusion. The review menu opens any step or all nine.
+The claim mapping is `< -> <`, `> -> >`, `!= -> !=`, `<= -> >`, `>= -> <`,
+`= -> !=` for H1. The decision uses unrounded p <= alpha. Conclusions distinguish
+supporting an alternative claim from rejecting an equality/inequality claim.
+Unverified or failed assumptions are displayed; numerical conclusions remain
+conditional on satisfying the requirements. No assumption is inferred from
+sample summaries alone.
+
+The proportion z checks use null/pooled expected success and failure counts
+>=10, not the mean-test n>30 rule. The course's 20*n <= N independence check
+is shown separately for each sample. Small-sample mean tests ask about normal
+shape and strong skew/outliers. Two-sample t degrees of freedom are Welch's
+formula, rather than n-1. See the [NIST two-sample t reference](https://www.itl.nist.gov/div898/handbook/eda/section3/eda353.htm)
+and [Penn State proportion-test reference](https://online.stat.psu.edu/stat200/Lesson09).
 
 ## Source and checks
 

@@ -2,7 +2,8 @@ import STCORE
 def choice_pages(title, pages):
     page = min(STCORE._menu_pages.get(title, 0), len(pages)-1)
     while True:
-        STCORE.heading(title)
+        group=('EVENT PROBABILITIES','STATS / TABLES','MODEL / REFERENCE')[page] if title=='BINOMIAL > QUESTION WORDS' else None
+        STCORE.heading('BINOMIAL > '+group if group else title)
         for i, (label, token) in enumerate(pages[page]):
             print(str(i + 1) + ' ' + label[:28])
         print(('LEFT BACK / RIGHT NEXT' if page == 0 else 'LEFT PREV / RIGHT NEXT') if STCORE.HAS_KEYS else '0 BACK ENTER NEXT - PREVIOUS')

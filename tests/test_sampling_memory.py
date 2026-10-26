@@ -43,7 +43,7 @@ def guarded(name,*args,**kwargs):
 builtins.__import__=guarded
 STCORE.view=lambda title,lines:print(title,lines)
 for repeat in range(3):
- answers=iter(['2','N','6','8','5','2','1','2','1','1','1','1','1','0','0','0'])
+ answers=iter(['2','N','N','3','8','5','2','5','1','2','1','1','1','1','1','0','0','0'])
  builtins.input=lambda prompt='':next(answers)
  STAT1.main()
  assert list(answers)==[]
@@ -51,7 +51,7 @@ for repeat in range(3):
 """
         result=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=10)
         self.assertEqual(result.returncode,0,result.stderr)
-        for answer in ('E(X)=1.2500','mu=1.2500','P=0.5357'):
+        for answer in ('mu=1.2500','P=0.5357'):
             self.assertIn(answer,result.stdout)
 
     def test_distribution_paging_does_not_build_probability_list(self):

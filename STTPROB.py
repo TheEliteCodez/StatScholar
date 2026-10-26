@@ -23,8 +23,10 @@ def t_probability_session(degrees,event):
     probability_text=('%.6e (%.6e%%)' % (probability,100*probability)
                      if probability<1e-6 else
                      '%.7f (%.4f%%)' % (probability,100*probability))
+    lower,upper=('-1E99',str(value)) if event=='1' else (str(value),'1E99') if event=='2' else (str(low),str(high))
     c.view('STUDENT t PROBABILITY',[
-        'DEGREES OF FREEDOM df=%d' % degrees,
+        'DEGREES OF FREEDOM df=%g' % degrees,
         label,
+        'tcdf('+lower+','+upper+','+str(degrees)+')',
         'PROBABILITY='+probability_text]+c.call('STSKETCH','curve','t',0,degrees,event,
             (low,high) if event=='3' else (value,)))

@@ -30,8 +30,8 @@ def usual_data(values,stats,title,inclusive,population=False):
 def observation_report(x,mean,sd,variance=None,inclusive=False):
     return STCORE.call('STNORM1','observation_report',x,mean,sd,variance,inclusive)
 
-def z_menu():
+def z_menu(mean=None,sd=None):
     while True:
         key=STCORE.menu('Z-SCORE / FIND x',[('1','FIND z FROM x'),('2','FIND x FROM z')])
         if key=='0': return
-        normal_session(first=key,single=True)
+        normal_session(mean,sd,first=key,single=True)

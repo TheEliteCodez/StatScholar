@@ -5,9 +5,11 @@ def solver_multi_dice(n=None):
     if n < 1:
         raise ValueError('USE AT LEAST ONE DIE')
     while True:
-        event = STCORE.menu('C07 EVENT', [('1', 'TOTAL OUTCOMES'), ('2', 'SUM ='), ('3', 'SUM <='), ('4', 'SUM >='), ('5', 'AT LEAST ONE FACE'), ('6', 'EXACTLY r OF A FACE'), ('7', 'NO DICE OF A FACE'), ('8', 'ALL EVEN'), ('9', 'ALL ODD'), ('10', 'AT LEAST ONE EVEN'), ('11', 'ALL SAME'), ('12', 'ALL = ONE FACE'),('13','SUM LESS / MORE / BETWEEN'),('14','CHANGE DICE COUNT'),('15','COUNT OF A FACE: ANY WORDING')])
+        event = STCORE.menu('C07 EVENT', [('1', 'TOTAL OUTCOMES'), ('2', 'SUM ='), ('3', 'SUM <='), ('4', 'SUM >='), ('5', 'AT LEAST ONE FACE'), ('6', 'EXACTLY r OF A FACE'), ('7', 'NO DICE OF A FACE'), ('8', 'ALL EVEN'), ('9', 'ALL ODD'), ('10', 'AT LEAST ONE EVEN'), ('11', 'ALL SAME'), ('12', 'ALL = ONE FACE'),('13','SUM LESS / MORE / BETWEEN'),('14','CHANGE DICE COUNT'),('15','COUNT OF A FACE: ANY WORDING'),('16','SUM DISTRIBUTION / TABLE / STATS'),('17','FACE COUNT TABLE / STATS')])
         if event == '0':
             return
+        if event in ('16','17'):
+            dice_distribution(n,event=='17');continue
         if event=='14':
             n=STCORE.read_int('NUMBER OF DICE: ');continue
         if event=='13':
@@ -60,3 +62,15 @@ def word_event(n,word,sum_only=False):
         low,high=STCORE.call('STBW2','event_bounds',6*n,event)
         good=max(0,STCORE.call('STMDICE','dice_sum_at_most',n,high)-STCORE.call('STMDICE','dice_sum_at_most',n,low-1))
         STCORE.results('DICE SUM',[('P',STCORE.ratio(good,6**n)),('SUCCESSFUL',good)],['COUNT ORDERED DICE OUTCOMES'])
+
+def dice_distribution(n,face_count=False):
+    if n<1: raise ValueError('USE AT LEAST ONE DIE')
+    if face_count:
+        face=STCORE.read_size('TARGET FACE (1-6): ',6)
+        STCORE.call('STDIST','discrete_tools',n+1,
+            lambda k:((k,1),STCORE.call('STBMATH','binomial_exact_ratio',n,(1,6),k)),
+            'DICE COUNT FACE '+str(face))
+    else:
+        STCORE.call('STDIST','discrete_tools',5*n+1,
+            lambda i:((n+i,1),STCORE.ratio(STCORE.call('STMDICE','dice_event_count',n,'2',n+i),6**n)),
+            'DICE SUM')

@@ -3,9 +3,12 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
     if rows is None:
         rows, approximate = c.call('STCOUNT', 'read_distribution')
     while True:
-        key = '1' if first_word else c.menu('R02-R06 TABLE TASK', [('1', 'EVENT PROBABILITY'), ('2', 'MEAN / VAR / SD'), ('3', 'X>=1 BY COMPLEMENT'), ('4', 'UNUSUAL EVENT'), ('5', 'CHECK / SHOW TABLE'), ('6', 'EXACT BINOMIAL MODEL'), ('7','CHANGE DATA'),('8','MARK TABLE AS ROUNDED'),('9','BAR HEIGHTS / DRAWING STEPS')])
+        key = '1' if first_word else c.menu('DISCRETE DISTRIBUTION', [('1', 'EVENT PROBABILITY'), ('2', 'MEAN / VAR / SD'), ('3', 'X>=1 BY COMPLEMENT'), ('4', 'UNUSUAL EVENT'), ('5', 'CHECK / SHOW TABLE'), ('6', 'EXACT BINOMIAL MODEL'), ('7','CHANGE DATA'),('8','MARK TABLE AS ROUNDED'),('9','BAR HEIGHTS / DRAWING STEPS'),('10','TABLE / CDF / WORK / CUTOFF')])
         if key == '0':
             return
+        if key=='10':
+            c.call('STDIST','discrete_tools',len(rows),lambda i:rows[i],'DISCRETE TABLE',approximate)
+            continue
         if key == '9':
             c.call('STCOUNT4', 'heights_page', rows, approximate)
             continue

@@ -22,9 +22,11 @@ def dice_session(word=None):
         STCORE.call('STDICE','solver_multi_dice',n)
         return
     while True:
-        key=pending or STCORE.menu('TWO DICE > QUESTION',[('1','ONE EVENT / SUM / FIRST'),('2','A AND B / BOTH'),('3','A OR B'),('4','SAMPLE SPACE'),('5','FACE COUNTS / MORE EVENTS'),('6','CHANGE DICE COUNT')])
+        key=pending or STCORE.menu('TWO DICE > QUESTION',[('1','ONE EVENT / SUM / FIRST'),('2','A AND B / BOTH'),('3','A OR B'),('4','SAMPLE SPACE'),('5','FACE COUNTS / MORE EVENTS'),('6','CHANGE DICE COUNT'),('7','SUM DISTRIBUTION / TABLE / STATS'),('8','FACE COUNT TABLE / STATS')])
         pending=None
         if key=='0': return
+        if key in ('7','8'):
+            STCORE.call('STMDICE2','dice_distribution',n,key=='8');continue
         if key=='6':
             n=STCORE.read_int('NUMBER OF DICE: ')
             if n!=2: STCORE.call('STDICE','solver_multi_dice',n)

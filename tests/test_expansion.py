@@ -167,8 +167,8 @@ class Expansion(unittest.TestCase):
         out,prompts=flow(app.main,(['4','1','3','1','2','3','1','0','0'])+['0'])
         self.assertIn('MEAN=2.0000',out)
         self.assertEqual(prompts[:3],['> ','> ','NUMBER OF VALUES (1..100) OR L1: '])
-        out,prompts=flow(app.main,['1','3','1','40','4','44','1','0','0','0'])
-        self.assertEqual(prompts[:4],['> ','> ','> ','MEAN: '])
+        out,prompts=flow(app.main,['1','3','40','4','1','44','1','0','0','0'])
+        self.assertEqual(prompts[:4],['> ','> ','POPULATION MEAN mu: ','POPULATION SD sigma: '])
         self.assertIn('z=1.0000',out)
         out,_=flow(app.main,(['1','4','2','1','0','0'])+['0'])
         self.assertIn('APPROX PERCENT=95.0000',out)
@@ -186,10 +186,10 @@ import sys,builtins,io,contextlib
 import STAT1,STCORE
 assert 'STQUEST' not in sys.modules
 assert 'STDMATH' not in sys.modules
-pending=iter(['1','3','1','40','4','44','1','0','0','0'])
+pending=iter(['1','3','40','4','1','44','1','0','0','0'])
 def read(prompt=''):
- if prompt=='MEAN: ':
-  assert 'STNORM' in sys.modules
+ if prompt=='POPULATION MEAN mu: ':
+  assert 'STNDIST' in sys.modules
   assert not {'STDESC','STDATA','STGRAPH','STHIST','STDMATH','STQUEST'}.intersection(sys.modules)
  return next(pending)
 builtins.input=read

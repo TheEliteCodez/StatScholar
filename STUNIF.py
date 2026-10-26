@@ -31,10 +31,12 @@ def _uniform_probability(low, high):
       raise ValueError('LOWER VALUE MUST NOT EXCEED UPPER VALUE')
     probability = max(0.0, min(upper, high)-max(lower, low))/(high-low)
     label = 'P(%.4f < X < %.4f)' % (lower, upper)
+  clipped=(max(low,min(high,value))-low) if event=='1' else (high-max(low,min(high,value))) if event=='2' else max(0.0,min(upper,high)-max(lower,low))
+  work=['P=SHADED WIDTH/(b-a)', 'P=%g/(%g-%g)=%.6f' % (clipped,high,low,probability)]
   c.view('UNIFORM > PROBABILITY', [
     'X UNIFORM ON [%.4f, %.4f]' % (low, high),
     label,
-    _probability_text(probability)]+c.call('STSKETCH','curve','UNIFORM',low,high,event,
+    _probability_text(probability)]+work+c.call('STSKETCH','curve','UNIFORM',low,high,event,
       (lower,upper) if event=='3' else (value,)))
 
 def _uniform_percentile(low, high):
@@ -51,12 +53,14 @@ def _uniform_percentile(low, high):
     'X UNIFORM ON [%.4f, %.4f]' % (low, high),
     'AREA TO LEFT=%.4f (%.2f%%)' % (probability, 100*probability),
     'x=a+LEFT AREA*(b-a)']+
+    ['x=%g+%g*(%g-%g)=%g' % (low,probability,high,low,cutoff)]+
     c.call('STSKETCH','curve','UNIFORM',low,high,shading,(cutoff,)))
 
 def _uniform_axes(low, high, draw=True):
   lines=[
     'X UNIFORM ON [a,b]=[%.4f, %.4f]' % (low, high),
     'MEAN=(a+b)/2=%.4f' % ((low+high)/2),
+    'VAR=(b-a)^2/12=%.4f' % ((high-low)**2/12),
     'SD=(b-a)/sqrt(12)=%.4f' % ((high-low)/math.sqrt(12)),
     'CONSTANT HEIGHT=1/(b-a)=%.4f' % (1/(high-low)),
     ]
@@ -69,7 +73,7 @@ def uniform_menu():
     key=c.menu('UNIFORM DISTRIBUTION',[
       ('1','FIND A PROBABILITY'),
       ('2','FIND A PERCENTILE / CUTOFF'),
-      ('3','MEAN / SD / RECTANGLE HEIGHT'),
+      ('3','MEAN / VAR / SD / HEIGHT'),
       ('4','DRAW / LABEL RECTANGLE'),
       ('5','CHANGE ENDPOINTS a / b')])
     if key=='0': return

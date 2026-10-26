@@ -35,7 +35,7 @@ def wording_session(first=None,n=None,p=None):
         if n is None:
             if p is None: n,p=read_parameters()
             else: n=c.read_int('TRIALS n: ')
-        if op in ('stats','usual','shape','model','full'):
+        if op in ('stats','usual','shape','model','full','tables'):
             c.call('STBHELP','parameter_results',op,n,p)
             continue
         event=c.call('STBWE','read_event',op)

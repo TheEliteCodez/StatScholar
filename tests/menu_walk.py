@@ -55,6 +55,9 @@ class Walker:
 
     def choose(self, title, items):
         frame = sys._getframe(2)
+        # Scoped walkers may wrap choose(); locate the actual calculator caller.
+        while frame.f_globals.get('__name__') not in self.sizes:
+            frame=frame.f_back
         site = Path(frame.f_code.co_filename).name+':'+frame.f_code.co_name
         identity = site+' | '+title
         if title=='SEARCH RESULTS': identity+=' | '+', '.join(label for key,label in items)
@@ -124,6 +127,10 @@ class Walker:
         if p == '> ': return 'N'  # Definition pages: visit every page.
         if 'ENTER=' in p or 'ENTER IF' in p: return ''
         if p=='Y/N: ': return self.replacement
+        if p in ('RIGHT-TAIL AREA: ','LEFT-TAIL AREA: ','AREA FROM 0 TO CUTOFF: '): return '.25'
+        if 'COUNT IN GIVEN GROUP' in p: return '50'
+        if p=='VALUE IN H0: ': return '.4'
+        if 'SUCCESSES X' in p: return '40'
         if 'CONFIDENCE' in p: return '95%'
         if 'SEARCH TERM' in p: return self.search
         if 'EVENT (BACK' in p: return 'EVEN'
@@ -215,6 +222,11 @@ class Walker:
 
 
 if __name__=='__main__':
+    # OS-list transfer is simulated; all calculator arithmetic stays real.
+    import types
+    ti=types.ModuleType('ti_system')
+    ti.recall_list=lambda number:[1,2,3,4,5]
+    sys.modules['ti_system']=ti
     walker=Walker()
     result=walker.run()
     walker.replacement='N'
@@ -237,6 +249,7 @@ if __name__=='__main__':
     result['uncovered']={name:sorted(set(menu['options'])-set(menu['passed']))
                          for name,menu in result['menus'].items()
                          if set(menu['options'])-set(menu['passed'])}
+    result['scope']+=' ti_system.recall_list uses a five-value desktop fixture, not a physical calculator.'
     from menu_report import render
     render(result)
     destination=ROOT/'MENU_AUDIT.json'

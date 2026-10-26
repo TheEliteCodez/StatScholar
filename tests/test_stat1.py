@@ -235,7 +235,7 @@ class Workflow(unittest.TestCase):
         output,_=self.run_flow(s.valid_probability,['100%','1']);self.assertIn('YES',str(output))
         output,_=self.run_flow(s.missing_probability,['3','.1','.2','.2','1']);self.assertIn('MISSING P=0.5000',str(output))
         output,_=self.run_flow(s.category_session,['2','TARGET','7','OTHER','13','1','4','2','1','0']);self.assertIn('35.00%',str(output))
-        output,_=self.run_flow(s.sample_session,['8','5','2','3','1','0']);self.assertIn('3/28',str(output))
+        output,_=self.run_flow(s.sample_session,['8','5','2','5','3','1','0']);self.assertIn('3/28',str(output))
         output,_=self.run_flow(lambda:s.unusual_result(R('.047')),['','1']);self.assertIn('UNUSUAL=YES',str(output))
 
     def test_dice_reuse(self):
@@ -259,7 +259,7 @@ class Workflow(unittest.TestCase):
             output,_=self.run_flow(s.binomial_session,answers)
             for value in expected:self.assertIn(value,str(output))
         for total,targets,n in [(8,5,2),(6,4,2),(17,5,3),(8,3,2),(10,4,3),(5,4,3)]:
-            output,_=self.run_flow(s.sample_session,[str(total),str(targets),str(n),'3','1','0'])
+            output,_=self.run_flow(s.sample_session,[str(total),str(targets),str(n),'5','3','1','3','1','0'])
             for x,p in s.hyper_distribution(total,targets,n):self.assertIn(s.answer_text(p,'F'),str(output))
         output,_=self.run_flow(s.frequency_session,['5','6','5','7','6','8','3','9','4','10','2','1'])
         self.assertIn('MEDIAN=7.0000',str(output));self.assertIn('MODE=7',str(output))

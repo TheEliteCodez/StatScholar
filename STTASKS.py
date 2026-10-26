@@ -1,20 +1,19 @@
 import STCORE
 def data_tasks(g):
     while True:
-        key=STCORE.menu('DATA / STATISTICS',[('1','RAW LIST OF NUMBERS'),('2','VALUE + FREQUENCY'),('3','X + P(X)'),('4','ROW / COLUMN TABLE'),('5','CATEGORY COUNTS'),('6','COMPARE TWO DATA SETS'),('7','PERCENT OF TOTAL')],page_size=7)
+        key=STCORE.menu('DATA / STATISTICS',[('1','RAW LIST OF NUMBERS'),('2','VALUE + FREQUENCY'),('3','DISCRETE DISTR: x / P(x)'),('4','ROW / COLUMN TABLE'),('5','CATEGORY COUNTS'),('6','COMPARE TWO DATA SETS'),('7','PERCENT OF TOTAL')],page_size=7)
         if key=='0': return
         routes={'1':('STDATA','raw_session'),'2':('STDATA','frequency_data_session'),'3':('STCOUNT','distribution_session'),'4':('STPROB','two_way_session'),'5':('STPROB','category_session'),'6':('STDATA','compare_session'),'7':('STPCT','percent_session')}
         if key in routes: STCORE.call(*routes[key])
 def graph_tasks(g):
     while True:
-        key=STCORE.menu('GRAPHS / DATA SHAPE',[('2','BOXPLOT'),('3','DOTPLOT'),('4','HISTOGRAM'),('5','INTERPRET SHAPE / NORMALITY'),('6','OUTLIERS'),('7','COMPARE RELATIVE POSITION'),('10','STUDENT t DISTRIBUTION')])
+        key=STCORE.menu('GRAPHS / DATA SHAPE',[('2','BOXPLOT'),('3','DOTPLOT'),('4','HISTOGRAM'),('5','INTERPRET SHAPE / NORMALITY'),('6','OUTLIERS'),('7','COMPARE RELATIVE POSITION')])
         if key=='0': return
         if key=='5': STCORE.call('STGRAPH','shape_guide')
         elif key=='6':
             choice=STCORE.menu('GRAPH > OUTLIERS',[('1','FROM RAW DATA'),('2','GIVEN Q1 AND Q3')])
             if choice=='1': STCORE.call('STGRAPH','raw_outliers')
             elif choice=='2': STCORE.call('STDESC','solver_outlier')
-        elif key=='10': STCORE.call('STDIST','t_menu')
         elif key!='0': STCORE.call(*{'2':('STGRAPH','boxplot_session'),'3':('STGRAPH','dotplot_session'),'4':('STHIST','histogram_session'),'7':('STNORM','relative_session')}[key])
 def experiment_tasks(g, word=None):
     while True:

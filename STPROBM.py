@@ -6,7 +6,7 @@ def probability_tasks(g):
             ('2','GIVEN P(A), P(B), P(BOTH)'),
             ('3','AT LEAST ONE OCCURS'),
             ('4','ROLL DICE / FLIP / DRAW CARD'),
-            ('5','TABLE OF x AND ITS CHANCE'),
+            ('5','DISCRETE DISTR: x / P(x)'),
             ('6','AVERAGE WIN / LOSS / PAYOUT'),
             ('7','IS THIS PROBABILITY VALID?'),
             ('8','COUNTS IN ROWS AND COLUMNS'),

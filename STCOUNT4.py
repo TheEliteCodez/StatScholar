@@ -32,3 +32,65 @@ def check_table(rows, note, approximate):
     lines = note + ['VALID=' + ('UNKNOWN (ROUNDED)' if approximate else str(valid))]
     lines += [c.exact_text(x) + ': ' + c.answer_text(p, 'F') for x, p in rows]
     c.view('R01 TABLE', lines)
+
+def discrete_tools(count,row_at,title,approximate=False):
+    order=[]
+    for i in range(count):
+        x,p=row_at(i)
+        if c.compare_exact(p,0)<0 or c.compare_exact(p,1)>0:
+            raise ValueError('TABLE PROBABILITIES MUST BE 0..1')
+        at=len(order)
+        while at and c.compare_exact(row_at(order[at-1])[0],x)>0: at-=1
+        order.insert(at,i)
+    starts=[i for i in range(count) if i==0 or c.compare_exact(row_at(order[i])[0],row_at(order[i-1])[0])!=0]
+    def row(i):
+        low=starts[i];high=starts[i+1] if i+1<len(starts) else len(order)
+        return row_at(order[low])[0],c.rsum(row_at(order[j])[1] for j in range(low,high))
+    count=len(starts)
+    def cumulative(x):
+        return c.rsum(row(i)[1] for i in range(count) if c.compare_exact(row(i)[0],x)<=0)
+    total=c.rsum(row(i)[1] for i in range(count))
+    note=['X=VALUE; P=P(X=x); CDF=P(X<=x).',
+          'SUM P='+c.exact_text(total),
+          'ROUNDED INPUT: APPROXIMATE OUTPUT.' if approximate else 'EXACT ENTERED MODEL.']
+    drawing=c.call('STSKETCH','bars',c.exact_text(row(0)[0]),c.exact_text(row(count-1)[0]))
+    while True:
+        key=c.menu(title+' > TABLE TOOLS',[
+            ('1','PROBABILITY TABLE / BAR HEIGHTS'),('2','CUMULATIVE PROBABILITY TABLE'),
+            ('3','WORK TABLE: P, xP, x^2P'),('4','PERCENTILE / DISCRETE CUTOFF'),
+            ('5','EXPECTED FREQUENCIES'),('6','MEAN / VAR / SD / SUMS')])
+        if key=='0': return
+        if key=='1':
+            c.paged_results(title+' > P(x)',count,lambda i:('x='+c.exact_text(row(i)[0]),row(i)[1]),note,drawing=drawing)
+        elif key=='2':
+            c.paged_results(title+' > CDF',count,lambda i:('P(X<='+c.exact_text(row(i)[0])+')',cumulative(row(i)[0])),note,drawing=drawing)
+        elif key=='3':
+            def cell(i):
+                x,p=row(i//3)
+                values=(p,c.rmul(x,p),c.rmul(c.rmul(x,x),p))
+                return ('x='+c.exact_text(x)+' '+('P','xP','x^2P')[i%3],values[i%3])
+            c.paged_results(title+' > WORK TABLE',3*count,cell,note+['mu=SUM(xP); VAR=SUM(x^2P)-mu^2.'])
+        elif key=='5':
+            repeats=c.read_int('NUMBER OF REPEATED EXPERIMENTS: ')
+            if repeats<0: raise ValueError('REPETITIONS MUST BE NONNEGATIVE')
+            c.paged_results(title+' > EXPECTED COUNTS',count,lambda i:('x='+c.exact_text(row(i)[0]),c.rmul((repeats,1),row(i)[1])),note+['EXPECTED COUNT=m*P(x); m='+str(repeats), 'EXPECTED, NOT OBSERVED COUNTS.'])
+        else:
+            if approximate or total!=(1,1):
+                c.view('EXACT MODEL NEEDED',note+['EXACT MOMENTS / CUTOFF NEED P SUMMING TO 1.']);continue
+            if key=='4':
+                area=c.read_exact('PERCENTILE / LEFT AREA: ')
+                if c.compare_exact(area,0)<0 or c.compare_exact(area,1)>0: raise ValueError('USE AREA 0..1')
+                running=(0,1)
+                for i in range(count):
+                    x,p=row(i);running=c.radd(running,p)
+                    if c.compare_exact(running,area)>=0: break
+                left=cumulative(x)
+                point=c.rsum(row(j)[1] for j in range(count) if c.compare_exact(row(j)[0],x)==0)
+                below=c.radd(left,(-point[0],point[1]))
+                c.results(title+' > CUTOFF',[('x CUTOFF',x),('P(X<x)',below),('P(X<=x)',left)],note+['SMALLEST LISTED x WITH CDF>=GIVEN AREA.', 'CDF MAY JUMP PAST THE REQUESTED AREA.', 'AREA 0 USES MINIMUM LISTED x.'])
+            else:
+                mean=c.rsum(c.rmul(*row(i)) for i in range(count))
+                second=c.rsum(c.rmul(c.rmul(row(i)[0],row(i)[0]),row(i)[1]) for i in range(count))
+                variance=c.radd(second,(-c.rmul(mean,mean)[0],c.rmul(mean,mean)[1]))
+                import math
+                c.results(title+' > SUMMARY',[('SUM P',total),('SUM xP / MEAN',mean),('SUM x^2P',second),('VAR',variance),('SD',math.sqrt(c.number(variance)))],note+['mu=SUM(xP); VAR=SUM(x^2P)-mu^2; SD=sqrt(VAR).'])

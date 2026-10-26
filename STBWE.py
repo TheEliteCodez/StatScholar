@@ -2,9 +2,13 @@ import STCORE as c
 PAGES = (
  (('EXACTLY / P(X=n)','='),('AT MOST / X<=n','<='),('AT LEAST / X>=n','>='),
   ('LESS THAN / X<n','<'),('MORE THAN / X>n','>'),('BETWEEN TWO VALUES','[]'),
-  ('AT LEAST ONE','one'),('MEAN / SD / USUAL','stats'),('IS THIS BINOMIAL?','conditions')),
- (('FULL DISTRIBUTION','full'),('DISTRIBUTION SHAPE','shape'),('DEFINE X, n, p','model'),
-  ('USUAL COUNTS / TAILS','usual'),('FORMULA / CHEAT SHEET','cheat'),('WITHOUT REPLACEMENT','sample'),('FINITE SAMPLE / 5% CHECK','finite')))
+  ('AT LEAST ONE','one')),
+ (('MEAN / VAR / SD / USUAL','stats'),('USUAL COUNTS / TAILS','usual'),
+  ('DISTRIBUTION SHAPE','shape'),('DEFINE X, n, p','model'),
+  ('PROBABILITY TABLE / HEIGHTS','full'),('CDF / WORK / CUTOFF / COUNTS','tables')),
+ (('IS THIS BINOMIAL?','conditions'),('FINITE SAMPLE / 5% CHECK','finite'),
+  ('WITHOUT REPLACE / HYPERGEOM','sample'),('FORMULA / CHEAT SHEET','cheat')))
+
 def pages():
     return PAGES
 def read_event(op):

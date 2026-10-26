@@ -6,7 +6,7 @@ def empirical_percent(k, region='within'):
 def empirical_session(mean=None,sd=None):
     while True:
         key=c.menu('GRAPH > EMPIRICAL RULE',[(str(i),label) for i,label in enumerate(('WITHIN 1 SD','WITHIN 2 SD','WITHIN 3 SD','OUTSIDE 1 SD','OUTSIDE 2 SD','OUTSIDE 3 SD','ONE TAIL','ENTER / CHANGE MEAN AND SD','BETWEEN SD MARKS'),1)])
-        if key=='0': return
+        if key=='0': return mean,sd
         if key=='8':
             mean=c.read_exact('MEAN: ');sd=c.read_exact('SD: ');continue
         if key=='9':

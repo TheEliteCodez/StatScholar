@@ -15,7 +15,9 @@ def parameter_results(kind,n,p):
     from STBMATH import usual_counts, binomial_exact_event, binomial_exact_ratio, binomial_shape
     mean=c.rmul((n,1),p)
     variance=c.rmul(mean,c.radd((1,1),(-p[0],p[1])))
-    if kind=='full':
+    if kind=='tables':
+        c.call('STDIST','discrete_tools',n+1,lambda k:((k,1),binomial_exact_ratio(n,p,k)),'BINOMIAL')
+    elif kind=='full':
         c.paged_results('BINOMIAL > DISTRIBUTION',n+1,lambda k:('P('+str(k)+')',binomial_exact_ratio(n,p,k)),['X=COUNT; BAR HEIGHT=P(X)', 'SHAPE='+binomial_shape(p)],drawing=c.call('STSKETCH','bars',0,n))
     elif kind=='shape':
         c.results('BINOMIAL > SHAPE',[('CENTER',mean),('SHAPE',binomial_shape(p))],['CENTER=np; USE WHOLE SHAPE', 'SYMMETRIC DOES NOT MEAN UNIFORM'])

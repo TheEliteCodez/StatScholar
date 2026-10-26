@@ -35,11 +35,15 @@ def _normal_probability(mean, sd):
       raise ValueError('LOWER VALUE MUST NOT EXCEED UPPER VALUE')
     probability = _normal_interval(low,high,mean,sd)
     label = 'P(%.4f < X < %.4f)' % (low, high)
+  bounds=(low,high) if event=='3' else (value,)
+  lower,upper=('-1E99',str(value)) if event=='1' else (str(value),'1E99') if event=='2' else (str(low),str(high))
+  work=['z=(x-mu)/sigma']+['z=(%g-%g)/%g=%.6f' % (x,mean,sd,(x-mean)/sd) for x in bounds]
+  work+=['normalcdf('+lower+','+upper+','+str(mean)+','+str(sd)+')']
   c.view('NORMAL > INDIVIDUAL PROBABILITY', [
     'X: INDIVIDUAL MEASUREMENT',
     'MEAN mu=%.4f; SD sigma=%.4f' % (mean, sd),
     label,
-    _probability_text(probability)]+c.call('STSKETCH','curve','NORMAL',mean,sd,event,
+    _probability_text(probability)]+work+c.call('STSKETCH','curve','NORMAL',mean,sd,event,
       (low,high) if event=='3' else (value,)))
   raw_count = input('NUMBER OF INDIVIDUALS (ENTER=SKIP): ').strip()
   if raw_count:
@@ -74,7 +78,7 @@ def _normal_percentile(mean, sd):
     'X: INDIVIDUAL MEASUREMENT',
     'MEAN mu=%.4f; SD sigma=%.4f' % (mean, sd),
     'AREA TO LEFT=%.4f (%.2f%%)' % (probability, 100*probability),
-    zanswer]+
+    zanswer,'invNorm(%g,%g,%g)' % (probability,mean,sd)]+
     c.call('STSKETCH','curve','NORMAL',mean,sd,shading,(cutoff,)))
 
 def _normal_axes(mean, sd):
@@ -97,16 +101,15 @@ def normal_menu():
       ('5','USUAL / UNUSUAL VALUES'),
       ('6','DRAW / LABEL x AND z AXES'),
       ('7','SEVERAL VALUES: z / USUAL / AXES'),
-      ('8','CHANGE MEAN / SD')])
+      ('8','CHANGE MEAN / SD'),('9','CRITICAL z* VALUE')])
     if key=='0': return
-    if key=='3':
-      c.call('STNORM','z_menu')
-      continue
+    if key=='9':
+      c.call('STCIIO','zstar_session');continue
     if key=='4':
-      c.call('STNORM','empirical_session')
-      continue
-    if key in ('5','7'):
-      c.call('STNORM','normal_session',None,None,'5' if key=='5' else '8',None,True)
+      params=c.call('STNORM','empirical_session',c.as_ratio(str(mean)) if mean is not None else None,c.as_ratio(str(sd)) if sd is not None else None)
+      if params[0] is not None:
+        mean,sd=[c.number(x) for x in params]
+        if sd<=0: raise ValueError('SD MUST BE POSITIVE')
       continue
     if mean is None or key=='8':
       mean=_number('POPULATION MEAN mu: ')
@@ -114,6 +117,10 @@ def normal_menu():
       if sd<=0:
         mean=sd=None
         raise ValueError('POPULATION SD sigma MUST BE POSITIVE')
+    exact_mean=c.as_ratio(str(mean));exact_sd=c.as_ratio(str(sd))
+    if key=='3': c.call('STNORM','z_menu',exact_mean,exact_sd)
+    elif key in ('5','7'):
+      c.call('STNORM','normal_session',exact_mean,exact_sd,'5' if key=='5' else '8',None,True)
     if key=='1': _normal_probability(mean,sd)
     elif key=='2': _normal_percentile(mean,sd)
     elif key=='6': _normal_axes(mean,sd)

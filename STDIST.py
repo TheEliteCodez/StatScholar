@@ -37,3 +37,6 @@ def normal_probability_plot(values=None):
 
 def t_menu():
     return c.call('STTDIST','t_menu')
+
+def discrete_tools(count,row_at,title,approximate=False):
+    return c.call('STCOUNT4','discrete_tools',count,row_at,title,approximate)
