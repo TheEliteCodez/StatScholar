@@ -34,6 +34,7 @@ def check_table(rows, note, approximate):
     c.view('R01 TABLE', lines)
 
 def discrete_tools(count,row_at,title,approximate=False):
+    from STEFMT import rsum
     order=[]
     for i in range(count):
         x,p=row_at(i)
@@ -45,7 +46,7 @@ def discrete_tools(count,row_at,title,approximate=False):
     starts=[i for i in range(count) if i==0 or c.compare_exact(row_at(order[i])[0],row_at(order[i-1])[0])!=0]
     def row(i):
         low=starts[i];high=starts[i+1] if i+1<len(starts) else len(order)
-        return row_at(order[low])[0],c.rsum(row_at(order[j])[1] for j in range(low,high))
+        return row_at(order[low])[0],rsum(row_at(order[j])[1] for j in range(low,high))
     count=len(starts)
     def cumulative(x):
         return c.rsum(row(i)[1] for i in range(count) if c.compare_exact(row(i)[0],x)<=0)
@@ -69,7 +70,19 @@ def discrete_tools(count,row_at,title,approximate=False):
                 x,p=row(i//3)
                 values=(p,c.rmul(x,p),c.rmul(c.rmul(x,x),p))
                 return ('x='+c.exact_text(x)+' '+('P','xP','x^2P')[i%3],values[i%3])
-            c.paged_results(title+' > WORK TABLE',3*count,cell,note+['mu=SUM(xP); VAR=SUM(x^2P)-mu^2.'])
+            mean=c.rsum(c.rmul(*row(i)) for i in range(count))
+            second=c.rsum(c.rmul(c.rmul(row(i)[0],row(i)[0]),row(i)[1]) for i in range(count))
+            if not approximate and total==(1,1):
+                square=c.rmul(mean,mean)
+                variance=c.radd(second,(-square[0],square[1]))
+                import math
+                work=c.call('STDWK','moments',count,row,mean,variance,math.sqrt(c.number(variance)))
+            else:
+                work=c.call('STWORK','Chain',
+                    c.call('STWORK','sum_work','SUM xP',count,lambda i:'('+c.exact_text(row(i)[0])+'*'+c.exact_text(row(i)[1])+')',mean),
+                    c.call('STWORK','sum_work','SUM x^2P',count,lambda i:'('+c.exact_text(row(i)[0])+'^2*'+c.exact_text(row(i)[1])+')',second),
+                    ['ROUNDED / UNNORMALIZED: THESE ARE WEIGHTED SUMS, NOT EXACT MOMENTS.'])
+            c.paged_results(title+' > WORK TABLE',3*count,cell,c.call('STWORK','Chain',note,work))
         elif key=='5':
             repeats=c.read_int('NUMBER OF REPEATED EXPERIMENTS: ')
             if repeats<0: raise ValueError('REPETITIONS MUST BE NONNEGATIVE')
@@ -93,4 +106,6 @@ def discrete_tools(count,row_at,title,approximate=False):
                 second=c.rsum(c.rmul(c.rmul(row(i)[0],row(i)[0]),row(i)[1]) for i in range(count))
                 variance=c.radd(second,(-c.rmul(mean,mean)[0],c.rmul(mean,mean)[1]))
                 import math
-                c.results(title+' > SUMMARY',[('SUM P',total),('SUM xP / MEAN',mean),('SUM x^2P',second),('VAR',variance),('SD',math.sqrt(c.number(variance)))],note+['mu=SUM(xP); VAR=SUM(x^2P)-mu^2; SD=sqrt(VAR).'])
+                sd=math.sqrt(c.number(variance))
+                c.results(title+' > SUMMARY',[('SUM P',total),('SUM xP / MEAN',mean),('SUM x^2P',second),('VAR',variance),('SD',sd)],
+                          c.call('STWORK','Chain',note,c.call('STDWK','moments',count,row,mean,variance,sd)))

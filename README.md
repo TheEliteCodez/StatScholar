@@ -1,298 +1,303 @@
 # StatScholar
 
-A statistics calculator for the TI-84 Python environment. Run **STAT1**.
-There is one program: the **105 root `ST*.py` files**, totaling **300,992 bytes**.
-No separate build folder or build step is required.
+A statistics calculator and tutor for the TI-84 Evo Python environment. Run
+**STAT1**. Calculators accept your own numbers and show results, formulas and
+worked substitutions where supported, with paper-drawing guidance for relevant
+results.
 
-## Install
+There is one program: **112 root `ST*.py` files, totaling 328,756 source bytes**
+(as checked October 26, 2026). No separate build folder or build step is required.
+
+## Install and run
 
 1. Remove the previous StatScholar modules from the calculator. Overwriting
-   matching files leaves deleted quiz and guide modules taking up space.
-2. Transfer only the 105 root `ST*.py` files together, preserving their names.
-   Do not transfer tests, probes, helper scripts, documentation, or backups.
+   matching names leaves obsolete modules taking up space.
+2. Transfer all 112 current root `ST*.py` files together, preserving their names.
+   Do not transfer tests, helper scripts, documentation or backups.
 3. Restart Python and run **STAT1**.
 
-Python's app-start requirement is free calculator RAM, separate from the
-Python interpreter heap used after STAT1 starts. Source-byte totals do not
-prove that the calculator has enough free RAM to launch Python.
+Python app-start RAM and the interpreter heap available after startup are
+separate constraints. Source-byte totals do not establish either capacity.
+Physical Evo startup, transfer, display, keys and heap usage remain unverified.
 
-## Menus
+For a desktop session, run `python -B STAT1.py` from the repository root.
 
-Existing calculator option numbers are preserved:
+## Home menu
 
-| Home | Calculator |
-| --- | --- |
-| 2 | Binomial: exactly, tails, between, statistics and subsequent parts |
-| 3 | Probability: counts, supplied probabilities, tables, experiments, payoffs and sampling |
-| 4 | Data / statistics: raw lists, frequency tables, comparisons and percent of total |
-| 5 | Normal / z / graphs: normal, uniform and t distributions plus plotting values |
-| 6 | Study / concepts: classification tools, definitions and sampling-distribution concepts |
-| 9 | CLT / sampling distributions |
-| 10 | Sample size |
-| 11 | Confidence intervals / margin of error |
-| 12 | Z-score calculator: individual value or sample mean |
-| 13 | z* critical value from confidence, alpha or areas |
-| 14 | t* critical value from confidence, alpha or areas |
-| 15 | Hypothesis tests: one/two proportions and one/two independent means |
+Enter the displayed option number directly, including two-digit numbers.
+Existing shortcut numbers are preserved; Home 1, 7 and 8 are distribution menus.
 
-**Worked quizzes, practice tests, numbered homework banks, guide-page
-libraries, guide/search indexes and the question wizard have been removed.**
-Their source modules are deleted, rather than hidden behind unused menu entries.
-Numeric percent/frequency tools formerly stored in a quiz module now live in
-`STPCT.py`.
+| Home | Menu | Main tasks |
+| --- | --- | --- |
+| 1 | Normal distribution | Probability; percentile/cutoff; z/find x; empirical rule; usual/unusual; axes; several values; change mean/SD; critical z* |
+| 2 | Binomial | Wording-based events; statistics; model checks; distribution/table tools; without-replacement cross-link |
+| 3 | Probability | Counts; supplied probabilities; experiments; discrete tables; payoffs; conditional events; defective-item boxes |
+| 4 | Data / stats | Raw lists; frequency tables; discrete probability tables; row/column tables; categories; comparisons; percent of total; regression/correlation |
+| 5 | Graphs / data shape | Scatterplot/regression; boxplots; dotplots; histograms; shape/normality; outliers; relative position |
+| 6 | Study / concepts | Classification; definitions/search; rules/formulas; wording-based exam guide |
+| 7 | Uniform distribution | Probability; percentile/cutoff; mean/variance/SD/height; rectangle drawing; change endpoints |
+| 8 | Student t distribution | Critical t* from confidence/df; probability; percentile; other critical-value inputs; drawing/interpretation |
+| 9 | CLT / sampling distributions | Sample-mean and sample-proportion distributions and probabilities; model-dependent exact fallbacks |
+| 10 | Sample size calculator | Proportion or mean planning |
+| 11 | Confidence interval / MOE | One/two groups; margin of error; interval from center and margin |
+| 12 | Z-score calculator | Individual value or sample mean |
+| 13 | Z* critical value | Confidence, alpha or area inputs |
+| 14 | T* critical value | Confidence, alpha or area inputs with df |
+| 15 | Hypothesis testing | One/two proportions; one/two independent means; chi-square goodness of fit/independence; correlation/regression |
 
-Enter a menu number directly, including 10, 11 or 12. In text menus, empty Enter
-advances, minus goes to the previous page, and 0 returns. Physical-key menus
-use Right/Left and Clear where supported.
+Use 0 to return/exit menus. In paged text menus, empty Enter advances and minus
+returns to the previous page. Physical-key navigation uses Right/Left and Clear
+where supported. See [MENU_AUDIT.md](MENU_AUDIT.md) for the detailed menu matrix
+and the scope of its replay evidence.
 
-Calculators with a relevant graph now include **HOW TO DRAW** guidance after
-the results: normal / t / uniform probabilities and percentiles, sampling
-distributions, confidence intervals, empirical-rule regions, discrete
-probability bars, z-score axes, boxplots, dotplots, histograms, QQ plots,
-Venn diagrams and two-dice grids. Scroll onward through the result pages;
-for probability tables, drawing guidance follows the final table page.
-Binomial wording results retain their statistics pages before the drawing
-guide. These are instructions for drawing on paper, using entered values,
-cutoffs and endpoint rules. Transfer the new `STSKETCH.py` with the other
-root files. Physical calculator display and RAM remain unverified.
+Worked quizzes, practice tests, numbered homework banks, guide-page libraries,
+guide/search indexes and the question wizard were removed. Definitions search,
+rules/formulas and the exam guide remain available under Study / concepts.
 
-## Sample size
+## Distributions and probability
 
-Choose **Home 10**, then proportion or mean. Confidence accepts `95%` or `0.95`.
-For a proportion, leave the anticipated proportion blank if unknown; a margin
-of `5%` at 95% confidence gives **385**. Mean margins use the measurement units.
-Sample size rounds upward. A supplied sample SD gives an approximate planning size.
+Normal, Uniform and t probability menus offer below, above and between events.
+Percentile/cutoff menus ask for the wording: **AT MOST / BELOW / LESS THAN**,
+**AT LEAST / ABOVE / MORE THAN**, or **PERCENTILE / AREA TO LEFT**. Enter the
+given percentage directly. An at-least area r is converted to left area 1-r.
+For Uniform(0,20), 30% at least gives a cutoff of 14; 30% at most gives 6.
+Cutoff results show the numerical answer first, then drawing instructions.
+Back/Clear on the answer screen returns without opening the drawing pages.
 
-## Confidence intervals and margin of error
+Normal tasks reuse entered mean and SD, including z/find-x, usual/unusual and
+several-value tools. The empirical-rule task can also work from percentages
+without parameters. Use **CHANGE MEAN / SD** for a different problem. Uniform
+tasks reuse endpoints; use **CHANGE ENDPOINTS** to replace them. Normal outputs
+include boundary z work and matching normalcdf/invNorm commands where relevant;
+Uniform outputs include width/area work and variance. Student t accepts
+fractional degrees of freedom, including Welch df.
 
-Choose **Home 11**. Options 1/2 calculate a proportion interval from success
-counts or a supplied p-hat; option 3 calculates a mean interval. Options 4/5
-compare two groups. Option 6 finds margin of error; option 7 constructs an
-interval from a supplied center and margin. Interval results also show margin
-of error. Confidence accepts percentages or decimals.
+Discrete X/P(X) tables are at **Home 3 > 5** and **Home 4 > 3**.
+Shared table tools for custom discrete, Binomial, Hypergeometric and dice-sum
+models offer probability/bar-height tables, cumulative probabilities, P/xP/x^2P
+work tables, discrete percentiles, expected frequencies and moment summaries.
+Exact moments/cutoffs require probabilities summing exactly to 1; rounded-input
+tables are identified as approximate. A discrete cutoff is the smallest listed
+x whose cumulative probability reaches the requested area; the CDF can jump
+past that area.
 
-## Hypothesis testing
+Dice remain at **Home 3 > 4 > 1**. Defective-item boxes remain at
+**Home 3 > 14**: without replacement uses Hypergeometric, with replacement
+uses Binomial with p=K/N, and a supplied X/P table is another option.
+Bernoulli is covered by Binomial n=1. There are no dedicated Poisson, geometric,
+exponential or F parameter solvers. Chi-square tests are under Home 15.
 
-Choose **Home 15**: 1 one proportion, 2 two proportions, 3 one mean, or 4 two
-independent means. Enter the claim operator, null value where applicable,
-significance alpha, sample data, and the requirement checks. Means accept
-summary statistics or raw data; raw data reuse the calculated sample mean,
-sample SD and n. Two-proportion tests use H0: p1=p2 and the pooled proportion.
-Two-mean tests use Welch standard error and fractional degrees of freedom;
-paired samples require a different procedure and are not supported here.
+## Chi-square and regression
 
-Each test shows nine steps: requirements, H0/H1, point estimate, critical
-values, test statistic, sampling-distribution drawing, p-value, initial
-decision and final conclusion. The review menu opens any step or all nine.
-The claim mapping is `< -> <`, `> -> >`, `!= -> !=`, `<= -> >`, `>= -> <`,
-`= -> !=` for H1. The decision uses unrounded p <= alpha. Conclusions distinguish
-supporting an alternative claim from rejecting an equality/inequality claim.
-Unverified or failed assumptions are displayed; numerical conclusions remain
-conditional on satisfying the requirements. No assumption is inferred from
-sample summaries alone.
+Existing Home option numbers are unchanged. Added routes:
 
-The proportion z checks use null/pooled expected success and failure counts
->=10, not the mean-test n>30 rule. The course's 20*n <= N independence check
-is shown separately for each sample. Small-sample mean tests ask about normal
-shape and strong skew/outliers. Two-sample t degrees of freedom are Welch's
-formula, rather than n-1. See the [NIST two-sample t reference](https://www.itl.nist.gov/div898/handbook/eda/section3/eda353.htm)
-and [Penn State proportion-test reference](https://online.stat.psu.edu/stat200/Lesson09).
+```text
+Home 15: HYPOTHESIS TESTING
+  1 One proportion z
+  2 Two proportions z
+  3 One mean t
+  4 Two independent means t
+  5 Chi-square goodness of fit
+      Expected: 1 equally likely / 2 counts / 3 probabilities
+  6 Chi-square independence
+  7 Correlation / regression
+Home 4: DATA / STATS
+  8 Correlation / regression
+Home 5: GRAPHS / DATA SHAPE
+  1 Scatter / regression
+```
 
-## Source and checks
+Chi-square tests show hypotheses, requirements, expected counts, every cell's
+substituted contribution, the expanded statistic sum, degrees of freedom,
+critical value, right-tail p-value, conclusions and drawing instructions.
+Goodness of fit accepts 2..60 categories and an estimated-parameter df adjustment;
+independence accepts 2..10 rows and columns, using uncorrected Pearson chi-square.
+Low expected counts leave the asymptotic result conditional.
 
-Desktop launch: `python -B STAT1.py`.
-Desktop checks: `python -B -m unittest discover -s tests`.
-Tests cover the remaining calculations, menus, imports and module cleanup.
-They do not establish physical calculator RAM capacity or transfer success.
+Regression accepts 3..100 manually entered pairs or paired TI lists L1-L6 without
+sorting them independently. Enter variable/unit labels and alpha. Work appears
+automatically, followed by: **1 results, 2 scatterplot, 3 prediction, 4 residual,
+5 paired work table**. Outputs include centered sums, slope/intercept, r, r^2,
+two-sided correlation t test and critical r, plus units and interpretation.
+The scatterplot is a small text plot with numeric axis ranges; overlapping
+display cells are marked #. Predictions use the centered line for precision.
+These four modules load on demand; source totals are not peak-heap estimates.
 
-The memory regression suite runs in fresh processes with real module cleanup.
-It checks literal dispatch targets and repeated calculations across all eight
-home categories, including 100-value raw lists, 25-row frequency/probability
-tables, a 10-by-10 table, and 60 categories. Result viewers are closed after
-their first page in these stress runs; separate navigation tests cover paging.
-Weak references check that completed workflows release their topic modules.
-Normal, uniform and Student t menus load separate helpers; normal quantiles and
-t calculations do not import the legacy `STCI` bundle. Raw summaries stream
-observations into the frequency accumulator, and permutations multiply only
-the requested factors instead of allocating two factorials.
+### Conditional events
 
-Physical verification remains required with the calculator's available heap,
-especially for very large exact fractions, trial counts or requested precision.
-Desktop memory measurements cannot certify those device allocations.
+**Home 3 > 12: GIVEN / AND / OR / NOT (A,B)** solves conditional probabilities,
+intersections, inclusive unions, complements, only A/B, neither and exactly one.
+Choose the supplied information: overlap and given-group probability/count;
+a conditional and its given-group probability; or a complete two-event model.
+Complete models provide both conditional directions, complement conditionals,
+Venn regions, a probability contingency table and compound-event queries.
 
-`EVOPROBE.py` is an optional device diagnostic and is not part of the program.
+ASCII labels use `AND / INTERSECTION`, `OR / UNION`, `|` for GIVEN and `NOT A`
+for the complement of A. No symbol entry is needed. Fraction/decimal/percent
+formats and SHOW METHOD are available. Conditioning on a zero-probability group
+is undefined. Independent or mutually exclusive modes require that relationship
+to be explicitly supplied.
 
-The systematic menu walk is `python -B tests/menu_walk.py`. It exercises real
-menu/result renderers and calculations, including shared follow-up menus, and
-writes `MENU_AUDIT.json` with the paths, menu choices, cleanup results and runtime
-source hashes. See [MENU_AUDIT.md](MENU_AUDIT.md) for the checked menu matrix and
-the remaining device verification. Loaded source bytes in that report are not
-Python heap measurements.
+## Data, z-scores and graphs
 
-For actual device readings, optionally transfer `EVOMEM.py` and run **EVOMEM**
-instead of STAT1. Use the normal menus, then exit Home with 0. It reports start,
-minimum observed and final free heap, the menu at the minimum, remaining topic
-modules and any exception. It uses the device's `gc.mem_free` counter; if that
-counter is unavailable, it explicitly records no RAM result. Readings include
-the monitor's overhead and sample checkpoints, so compilation/arithmetic
-transient peaks can be missed. The monitor is not part of the 100 runtime files.
+At **Home 4 > 1**, enter a count for manual raw-data entry, or enter `L1`
+through `L6` at the number-of-values prompt to import a built-in calculator list.
+The raw-list follow-up menu also offers **11: LOAD L1**. The 1..100-value limit
+applies. Session edits do not write back to the calculator list. The bridge uses
+`ti_system.recall_list("1")` for L1; desktop tests simulate it, and physical Evo
+list import remains unverified.
+
+Raw-list and frequency summaries show sample and population SD/variance,
+notation and formulas. Population variance divides by n; sample variance divides
+by n-1. From **DATA > RAW > NEXT > 12: CONFIDENCE INTERVAL: MEAN**, reuse the
+current list's cached x-bar, sample s and n for a one-mean t interval (df=n-1).
+At least two values are required; no data re-entry is needed.
+
+**Home 12** distinguishes individual z=(x-mu)/sigma from sample-mean
+z=(x-bar-mu)/(sigma/sqrt(n)). Enter population sigma directly in sample-mean
+mode. For x-bar=4.08, mu=4, sigma=0.05 and n=16, SE=0.0125 and z=6.4.
+Use Home 9 for sample-mean/proportion probabilities.
+
+Relevant results include **HOW TO DRAW** pages using the entered values:
+curves and shaded areas, intervals, discrete bars, z axes, boxplots, dotplots,
+histograms, QQ plots, Venn diagrams and two-dice grids. These are instructions
+for drawing on paper. Table drawing guidance follows the final table page;
+Binomial wording results retain their statistics pages before the guide.
+
+## Sampling distributions and exact fallbacks
+
+**Home 9** continues from a failed normal-approximation check to an exact method
+when the required model is available. Existing n, p and population N carry over;
+cutoffs remain in sample-mean or sample-proportion units.
+
+- Proportions: exact Binomial for independent trials, or Hypergeometric for a
+  random sample without replacement, using N and exact population success count K.
+- Means: independent Uniform populations with supplied endpoints; an exact
+  discrete population table; or sampling without replacement from the entire
+  entered finite population.
+- A census mean is a point mass. A normal population permits the normal
+  sample-mean calculation even for n below 30.
+
+Mean and SD alone do not determine small-sample probabilities for an unknown
+nonnormal population. Other dependence requires a joint model; t does not replace
+missing normality. Exact proportion cutoffs preserve strict/inclusive endpoints.
+Exact uniform and discrete sample-mean calculations can consume substantially
+more heap and time than an approximation; device capacity remains unmeasured.
+
+## Sample size, intervals and critical values
+
+**Home 10** offers proportion or mean sample size. Confidence accepts `95%` or
+`0.95`. Leave an unknown anticipated proportion blank; 95% confidence and a 5%
+margin give n=385. Mean margins use measurement units. Sample size rounds upward;
+a supplied sample SD gives an approximate planning size.
+
+**Home 11** offers proportion intervals from counts or p-hat (1/2), a mean
+interval (3), two-group comparisons (4/5), margin of error (6), and an interval
+from center and margin (7). Results also show margin of error.
+
+**Home 13/14** offer two-sided confidence, two-sided alpha, right area, left
+area/percentile, one-sided confidence with lower/upper cutoff, and area between
+zero and the cutoff. For t, enter df directly, including fractional df, or derive
+df=n-1 from a one-sample/paired n. Do not use that shortcut for two-sample Welch df.
+For a two-sided 95% interval, z*=1.959964; t* with df=9 is 2.262157. One-sided
+95% z is 1.644854. The t shortcuts also appear in **Home 8**, and z* in **Home 1 > 9**.
+
+After a critical-value result, **ESTIMATE / MARGIN** accepts estimate + SE,
+estimate + margin, or interval endpoints. It shows the recoverable estimate,
+margin, SE and interval/bound with work and drawing guidance. Enter 0 to skip.
+Confidence/area alone cannot determine an estimate or margin.
+
+## Hypothesis testing and study tools
+
+**Home 15** offers one proportion, two proportions, one mean, two independent
+means, chi-square goodness of fit, chi-square independence and correlation/regression.
+Means accept summaries or raw data. Two-proportion tests use pooled p
+under H0: p1=p2; two-mean tests use Welch SE and fractional df. Paired-sample
+testing is not a dedicated procedure here.
+
+The first four tests have nine review steps: requirements, H0/H1, estimate, critical values,
+test statistic, drawing, p-value, decision and conclusion. Decisions use unrounded
+p <= alpha. Requirement prompts distinguish null/pooled expected counts for
+proportions, independence checks and small-sample mean shape/outlier conditions.
+Failed or unverified assumptions leave numerical conclusions conditional.
+
+**Home 6 > 10: RULES / FORMULAS** has 16 reusable rule pages.
+**Home 6 > 11: WHICH FORMULA? EXAM GUIDE** connects wording, notation, formulas,
+assumptions and calculator paths. **Home 6 > 7 > 5** searches definitions,
+including sampling distributions, SE, p/p-hat, critical values and hypothesis
+terms. Search accepts `dist` or `distr` for distribution.
+
+## Worked calculations
+
+Results now include their mathematical work automatically before the answer-format
+menu. Option 5 remains available to review the method. Paginated tables show the
+assembled work after their final rows. Back/Clear still leaves the result viewer.
+
+Confidence intervals and margin-of-error tools show substituted standard errors,
+critical-value products and both endpoint calculations. Hypothesis tests show
+null/pooled SE substitutions, Welch's expanded df and the numerical distribution-tail
+calculation. Binomial work expands exact, cumulative, interval and complement events
+with actual n, p, q and integer cutoffs, retaining the TI commands.
+
+Raw and frequency summaries include expanded sums and a work table for x, f,
+x-mean, squared deviations and weighted squared deviations. Discrete distributions
+assemble xP and x^2P sums, variance and SD. CLT boundaries, money tools, count-based
+probabilities, percentage conversions and nCr/nPr identities also show their inputs
+in the arithmetic. Existing sample-size, uniform, normal and z-score work is retained.
+
+Long expansions are replayable sequences generated one line at a time. No n+1
+probability list, expanded frequency population or large factorial is allocated to
+display a derivation. Source size and desktop replay still do not certify device heap.
+
+Focused checks: `python -B -m unittest discover -s tests -p test_worked_substitutions.py`.
+
+## Desktop checks and device diagnostics
+
+Run from the repository root:
+
+```text
+python -B -m unittest discover -s tests
+python -B tests/distribution_walk.py
+python -B tests/hypothesis_walk.py
+python -B tests/advanced_walk.py
+python -B tests/menu_walk.py
+```
+
+The unit suite checks calculations, menus, imports and cleanup. The focused
+distribution walk reports its scoped menu/path coverage without writing the
+full audit. The full menu walk regenerates `MENU_AUDIT.json` and
+`MENU_AUDIT.md`, including source hashes, exercised choices and cleanup results.
+Inspect failures, uncovered choices and unclassified menu sites before treating
+an audit as complete. Deterministic fixtures do not cover every possible input
+or sequence of prior selections.
+
+Memory regression tests use fresh desktop processes and real module cleanup,
+including large-list/table cases and weak-reference checks. Source bytes and
+desktop timings do not measure the calculator heap or prove device performance.
+Compare audit source hashes with the current runtime before using report counts
+as current evidence.
+
+Optional device diagnostics are separate from the 112 runtime files:
+
+- [EVOPROBE.py](EVOPROBE.py): device diagnostic probe.
+- [EVOMEM.py](EVOMEM.py): run EVOMEM instead of STAT1, use normal menus, then
+  exit Home with 0. It reports start/minimum/final free heap, the menu at the
+  minimum, remaining topics and exceptions using `gc.mem_free`. Without that
+  counter it reports no RAM result. Monitor overhead is included, and checkpoint
+  sampling can miss transient compilation/arithmetic peaks.
+
+## Workspace layout
+
+- Root `ST*.py`: the single calculator program; transfer these together.
+- `tests/`: desktop regression tests, menu replays and report generators.
+- Root `MENU_AUDIT.*` and `HYPOTHESIS_AUDIT.*`: active audit reports; regenerate
+  them with `python -B tests/menu_walk.py` and `python -B tests/hypothesis_walk.py`.
+- Root `EVOMEM.py` and `EVOPROBE.py`: optional device diagnostics.
+
+The active audit Markdown reports are included alongside the README so its
+report links work in a checkout.
 
 ## License
 
 Copyright (c) 2026 Gregory King. See [LICENSE](LICENSE) for the StatScholar
 Free Use / No Sale license terms.
-
-Choose **Home 12: Z-SCORE CALCULATOR**, then **1: INDIVIDUAL VALUE x**
-or **2: SAMPLE MEAN x-bar**. Individual mode takes x, mean and SD. Sample-mean
-mode takes x-bar, population mu, population sigma and sample size n, computes
-SE=sigma/sqrt(n), then z=(x-bar-mu)/SE. Do not pre-divide sigma in that mode.
-For x-bar=4.08, mu=4, sigma=0.05 and n=16, SE=0.0125 and z=6.4. Results
-include the inputs, formulas, substituted work and axis drawing guidance.
-Home 9 remains the full sampling-distribution probability workflow.
-
-## Sampling probabilities when the normal checks fail
-
-Home 9 now continues from a failed normal-approximation check into an exact
-method when the needed model is available. Existing n, p and population N
-carry over. Cutoffs remain in sample-mean or sample-proportion units.
-
-- Proportions: exact binomial for independent trials, or hypergeometric for
-  a random sample without replacement. The latter uses N and the exact
-  population success count K (inferred from N*p when integral).
-- Means: exact calculations for independent uniform populations (enter a,b),
-  an exact discrete population probability table, or a random sample without
-  replacement from the entire entered finite population. Endpoint / table
-  inputs define the exact model; their resulting center and SD are shown.
-- A census mean is a point mass at the population mean. A normal population
-  still permits the normal sample-mean calculation for n below 30.
-- Mean and SD alone do not determine a small-sample probability for an unknown
-  nonnormal population. Other dependence needs a joint model; t is not a
-  substitute for missing normality. The calculator explains these limits.
-
-Exact proportion cutoffs are converted to counts without rounding, preserving
-strict inequalities and included interval endpoints. Uniform sample-mean
-probabilities use exact rational arithmetic for the sum-of-uniforms CDF;
-discrete means combine all possible sample sums. These finite distributions
-can use substantially more calculator heap than an approximation. Desktop
-checks do not establish on-device RAM or execution time. Include the new
-`STCLTF.py` when transferring the current root runtime.
-
-Definitions search (Home 6 > 7 > 5) includes sample mean, sample proportion,
-population mean/proportion, sample/population SD, sampling distribution,
-standard error, point estimate and the central limit theorem.
-
-Raw-list and frequency summaries show both sample SD/variance and population
-SD/variance together. Scroll past the results for mu / x-bar and sigma / s
-notation, the sum of squared deviations, and the SD formulas. Population
-sigma uses n in the denominator; sample s uses n-1.
-
-Choose **Home 13: Z* CRITICAL VALUE** or **Home 14: T* CRITICAL VALUE**.
-Both offer: (1) two-sided confidence, (2) two-sided alpha, (3) area to the
-right, (4) area to the left / percentile, (5) one-sided confidence with
-lower/upper cutoff selection, and (6) area between zero and the cutoff.
-Enter probabilities as decimals or percentages. For t, enter df directly
-(including fractional Welch df), or enter n for a one-sample / paired test
-so df=n-1. Do not use that n-1 shortcut for a two-sample problem.
-
-For a two-sided 95% interval, choose option 1 and enter `95%` or `0.95`:
-z*=1.959964; t* with df=9 is 2.262157. A one-sided 95% z cutoff is
-1.644854 instead. Output shows the signed cutoff or symmetric pair, the
-converted left area, equivalent invNorm/invT input, and drawing guidance.
-Home 5 > 10 retains confidence + df as option 1 and adds other inputs as
-option 4.
-
-**Home 6 > 10: RULES / FORMULAS** contains 16 reusable rule pages covering
-empirical / range / IQR rules, independence and CLT conditions, proportions,
-z versus t, critical-value tails, binomial requirements, probability rules,
-discrete versus continuous events, population versus sample SD, confidence
-intervals, sample size, rounding, LLN and significance decisions. Include
-the new lazily loaded `STRULE.py` in the root runtime transfer.
-
-After a z*/t* result, the optional **ESTIMATE / MARGIN** menu accepts a point
-estimate plus standard error, a point estimate plus margin of error, or
-two-sided interval endpoints. Enter 0 to skip. Results show the estimate,
-margin, SE when recoverable, formulas with substitutions, interval or
-one-sided bound, and number-line drawing guidance. Endpoints give the
-midpoint estimate and half-width margin; estimate + SE gives E=|critical|*SE.
-Confidence/area inputs alone cannot determine the estimate or margin.
-
-**Home 6 > 11: WHICH FORMULA? EXAM GUIDE** gives exam wording, notation,
-formula, assumptions and a calculator path for sample means, sample sums,
-sample proportions, mean/proportion intervals and sample sizes. It also
-covers individual normal values, binomial/hypergeometric counts, paired
-differences, two-group intervals, critical values and interval endpoints.
-Sample sums use Home 9 > 2 after dividing total cutoffs by n. Known-sigma
-mean intervals use Home 11 > 6 > 2 to get E, then Home 11 > 7 > 2 for ends.
-
-Definitions now explicitly identify p, p-hat, mu_xbar, mu_phat and SE, with
-mean/SD of sampling distributions. Related entries cover margin of error,
-confidence level, critical value, alpha, df, n/N, sample sums, variance,
-unbiased estimation, normal/discrete uniform distributions, percentiles and
-hypothesis terminology. Search accepts `dist` or `distr` for distribution.
-
-For **Home 4 > 1: RAW LIST OF NUMBERS**, enter `L1` at the number-of-values
-prompt to read the calculator's built-in L1 list. `L2` through `L6` also work.
-Or choose **11: LOAD L1** from the raw-list follow-up menu. Entering a count
-still starts manual entry. Imported data feed the existing summaries,
-z-scores and graph tools; edits within the session do not write back to L1.
-The existing 1..100-value limit applies. The TI bridge uses
-`ti_system.recall_list("1")` for built-in L1, not the custom-list name "L1".
-Desktop tests simulate this bridge; physical Evo behavior remains unverified.
-
-Raw-list arithmetic keeps its exact-arithmetic helpers loaded for the duration
-of reading/calculating, then releases them with the topic. A fresh 30-value
-descriptive-statistics desktop profile fell from 336 explicit collections to
-6 (0.2434s to 0.0220s in the measured runs). Exact sample/population results
-and topic cleanup are checked at 30 and 100 values. These timings are desktop
-evidence; actual calculator speed must be measured on the device.
-
-From **DATA > RAW > NEXT**, choose **12: CONFIDENCE INTERVAL: MEAN** to use
-the current manual or imported list directly. Enter the confidence level;
-the one-mean t interval reuses cached x-bar, sample s and n, with df=n-1.
-No list re-entry or repeated descriptive calculation is required. Sample s
-is used even if the summary display is set to population mode. Results
-include SE, t*, margin, endpoints and drawing guidance; the optional
-reference-mean check follows. The list needs at least two sample values.
-
-Normal, uniform and t percentiles display a short answer screen first, with
-the numerical cutoff at the top. Drawing pages repeat the cutoff. Back/Clear
-on the answer screen returns instead of opening the drawing instructions.
-
-Normal, uniform and t percentile/cutoff solvers first ask the question wording:
-**AT MOST / BELOW / LESS THAN**, **AT LEAST / ABOVE / MORE THAN**, or
-**PERCENTILE / AREA TO LEFT**. Enter the given percentage without manually
-complementing it. At-least converts right area r to left area 1-r, shows
-that calculation and shades the right tail. For Uniform(0,20), 30% at least
-means a 14.0000-minute cutoff; 30% at most means 6.0000 minutes.
-
-Main menu **1 NORMAL DISTRIBUTION** opens probability, percentile/cutoff,
-z-score/find x, empirical rule, usual/unusual values, labeled axes, and
-several-value tools. Main menu **7 UNIFORM DISTRIBUTION** opens probability,
-percentile/cutoff, mean/SD/height, and rectangle drawing tools. Choose the task
-before entering distribution parameters. Normal probability/cutoff/axes share
-entered mean and SD; Uniform tasks share endpoints. Use CHANGE MEAN / SD or
-CHANGE ENDPOINTS to start a different problem. Z/usual/several-value tools
-collect their own inputs; empirical-rule percentages can be used without them.
-
-Main menu **5 GRAPHS / DATA SHAPE** retains boxplots, dotplots, histograms,
-shape/normality, outliers, relative position, and Student t. Sample-mean and
-sample-proportion workflows remain under **9 CLT / SAMPLING DISTRIBUTIONS**.
-
-### Conditional probability and event notation
-
-Home **3 Probability > 12 GIVEN / AND / OR / NOT (A,B)** solves
-P(A|B), P(B|A), intersections (A ? B / AND), unions (A ? B / inclusive OR),
-complements, only A/B, neither, and exactly one. Choose the supplied information:
-just overlap plus given-group probability/count for a conditional answer;
-a conditional and its given-group probability for an intersection; or P(A),
-P(B), and an intersection, union, or conditional for a complete two-event model.
-Independent and mutually exclusive modes require those relationships to be
-explicitly given. Complete models provide both conditional directions,
-complement conditionals, Venn regions, a probability contingency table, and a
-menu for P(event) or P(event | another event), including compound events.
-
-The calculator uses ASCII labels: `AND / INTERSECTION` means ?,
-`OR / UNION` means ?, `|` means GIVEN, and `NOT A` means A? or A?.
-No symbol entry is needed. Answer pages offer fraction/decimal/percent formats;
-SHOW METHOD supplies formulas and substitutions. Conditioning on a zero-probability
-group is reported as undefined. No independence assumption is made by default.

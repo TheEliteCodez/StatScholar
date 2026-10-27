@@ -1,4 +1,5 @@
 import STCORE as c
+from STWORK import Chain
 def _answer_text(value, style="D", places=4):
     if isinstance(value, str):
         return value
@@ -34,7 +35,8 @@ def results(title, answers, steps=None, default_places=4, drawing=()):
         lines = []
         for label, value in answers:
             lines.append(label + '=' + _answer_text(value, style, places))
-        if c.view(title, lines+list(drawing)) in ('back', 'exit'): return
+        content=Chain(lines,('WORK / FORMULA',) if steps else (),steps or (),drawing)
+        if c.view(title, content) in ('back', 'exit'): return
         key = c.menu('ANSWER FORMAT', [('1', 'DONE / NEXT PART'), ('2', 'DECIMAL PLACES'), ('3', 'REDUCED FRACTIONS'), ('4', 'PERCENT PLACES'), ('5', 'SHOW METHOD')])
         if key in ('0', '1'):
             return
@@ -58,7 +60,10 @@ def paged_results(title, count, row_at, steps=None, drawing=()):
         for i in range(start, end):
             label, value = row_at(i)
             lines.append(label + '=' + _answer_text(value, style, places))
-        navigation = c.view(title, ['ROWS ' + str(start + 1) + '..' + str(end) + '/' + str(count)] + lines + (list(drawing) if end==count else []))
+        content=Chain(['ROWS ' + str(start + 1) + '..' + str(end) + '/' + str(count)]+lines,
+                      ('WORK / FORMULA',) if steps and end==count else (),
+                      steps if steps and end==count else (),drawing if end==count else ())
+        navigation = c.view(title, content)
         if navigation == 'exit': return
         if navigation == 'back':
             if start == 0: return

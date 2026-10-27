@@ -9,8 +9,10 @@ ROOT = Path(__file__).resolve().parent.parent
 class TrimmedProgram(unittest.TestCase):
     def test_single_program_and_removed_files(self):
         modules = list(ROOT.glob('ST*.py'))
-        self.assertLess(sum(p.stat().st_size for p in modules), 305000)
-        self.assertLessEqual(len(modules), 105)
+        # Four lazy-loaded chi-square/regression modules added to the root program.
+        # This is an inventory budget, not a measurement of calculator heap use.
+        self.assertLess(sum(p.stat().st_size for p in modules), 335000)
+        self.assertLessEqual(len(modules), 112)
         self.assertFalse((ROOT / 'calculator').exists())
         self.assertFalse((ROOT / 'build_calculator.py').exists())
         for pattern in ('STQUIZ*.py', 'STQ[1-5].py', 'STPRE*.py', 'STPT*.py',

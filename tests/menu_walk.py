@@ -40,9 +40,14 @@ class Walker:
         self.replacement='Y'
         self.search='sample'
         self.large=False
+        self.small_clt=False
 
     def profile(self, frame, event, arg):
         if event != 'call' or frame.f_globals.get('__name__') not in self.sizes:
+            return
+        # Observe helper imports, not every scalar operation while paging work.
+        if (frame.f_globals.get('__name__') in ('STWORK','STDWK','STEFMT','STEXACT')
+                and frame.f_code.co_name!='<module>'):
             return
         names = tuple(n for n in sys.modules if n in self.sizes)
         for name in names:
@@ -77,6 +82,11 @@ class Walker:
             # measured without exception traceback frames retaining modules.
             default='1' if title in ('RANDOM / INDEPENDENT SAMPLE',
                                     'POPULATION APPROXIMATELY NORMAL?') else '0'
+            if (title.startswith('CLAIM ABOUT ') or title.endswith(' MEAN INPUT')
+                    or title in ('SRS / RANDOM INDEPENDENT SAMPLE(S)?',
+                                 'TWO GROUPS INDEPENDENT?', 'INDEPENDENT GROUPS (NOT PAIRED)?')
+                    or 'NORMAL, NO STRONG SKEW / OUTLIERS?' in title):
+                default='1'
             if title=='TABLE PAGE / FORMAT' and frame.f_locals['end']<frame.f_locals['count']:
                 default='N'
             self.path.append(default)
@@ -124,9 +134,17 @@ class Walker:
         if self.reads > 600:
             raise AssertionError(('Input did not progress',prompt))
         p=prompt.upper()
+        if 'PARAMETERS ESTIMATED' in p: return '0'
+        if 'NUMBER OF PAIRS' in p: return '100' if self.large else '5'
+        if p.startswith('OBSERVED COUNT '): return '20'
+        if p.startswith('EXPECTED COUNT '): return '20'
+        if p.startswith('PROBABILITY ') and p.endswith(': '): return '1/60' if self.large else '.5'
+        if p.startswith('X') and p[1:-2].isdigit(): return p[1:-2]
+        if p.startswith('Y') and p[1:-2].isdigit(): return str(2*int(p[1:-2])+int(p[1:-2])%2)
         if p == '> ': return 'N'  # Definition pages: visit every page.
         if 'ENTER=' in p or 'ENTER IF' in p: return ''
         if p=='Y/N: ': return self.replacement
+        if self.small_clt and p=='SAMPLE SIZE N: ': return '2'
         if p in ('RIGHT-TAIL AREA: ','LEFT-TAIL AREA: ','AREA FROM 0 TO CUTOFF: '): return '.25'
         if 'COUNT IN GIVEN GROUP' in p: return '50'
         if p=='VALUE IN H0: ': return '.4'
@@ -134,7 +152,7 @@ class Walker:
         if 'CONFIDENCE' in p: return '95%'
         if 'SEARCH TERM' in p: return self.search
         if 'EVENT (BACK' in p: return 'EVEN'
-        if 'NAME' in p or 'PERSPECTIVE' in p: return 'GROUP'
+        if 'NAME' in p or 'PERSPECTIVE' in p or 'VARIABLE / UNITS' in p: return 'GROUP'
         if 'POPULATION N' in p or 'TOTAL OBJECTS' in p or 'POPULATION TOTAL' in p or 'TOTAL IN BOX' in p: return '100'
         if 'TARGET OBJECTS' in p or 'DEFECTIVE' in p or 'TARGET COUNT' in p or 'TARGET GROUP' in p: return '40'
         if 'TOTAL PEOPLE' in p or 'TOTAL TICKETS' in p or p=='TOTAL: ': return '100'
@@ -212,7 +230,8 @@ class Walker:
                 error=(error or '')+'\nModule objects retained: '+str(retained)
             record={'path':self.path,'peak_loaded_source_bytes':self.peak_bytes,
                     'peak_modules':self.peak_modules,'error':error,
-                    'fixture':{'large':self.large,'replacement':self.replacement,'search':self.search}}
+                    'fixture':{'large':self.large,'replacement':self.replacement,'search':self.search,
+                               'small_clt':self.small_clt}}
             self.runs.append(record)
             if error: self.failures.append(record)
         for identity,entry in self.menus.items():
@@ -243,6 +262,10 @@ if __name__=='__main__':
     walker.queue=[['4',key] for key in ('1','2','3','4','5')]+[['2','full']]+[
         ['4','1','0','5','4',method] for method in ('1','2','3')]+[
         ['4','1','0','6'], ['4','1','0','10','1','1']]
+    result=walker.run()
+    walker.small_clt=True
+    walker.large=False
+    walker.queue=[['9','2','2','2']]
     result=walker.run()
     result['runtime_sha256']={p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                               for p in sorted(ROOT.glob('ST*.py'))}

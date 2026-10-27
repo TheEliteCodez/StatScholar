@@ -43,7 +43,7 @@ def wording_session(first=None,n=None,p=None):
         answer=c.call('STBMATH','binomial_exact_event',n,p,event)
         words,math_text,command,why=c.call('STBW2','translation',n,p,event)
         while True:
-            lines=['ANSWER='+c.answer_text(answer,style,places),math_text,'RIGHT: STATS / USUAL / z' if c.HAS_KEYS else 'ENTER: STATS / USUAL / z']
+            lines=c.call('STWORK','Chain',['ANSWER='+c.answer_text(answer,style,places),math_text,'RIGHT: STATS / USUAL / z' if c.HAS_KEYS else 'ENTER: STATS / USUAL / z'],c.call('STBNWK','work',n,p,event,answer))
             c.call('STBINFO','show_answer',n,p,event,answer,'BINOMIAL > '+WORDS[event[0]],lines,threshold,cache)
             lines=None
             key=c.menu('BINOMIAL > SAME n,p',[('1','NEXT PART, SAME n,p'),('2','SHOW WHY'),('3','TRANSLATION / FORMULA'),('4','CHANGE n,p'),('5','ANSWER FORMAT'),('6','IS THIS EVENT UNUSUAL?'),('7','MEAN / SD / VAR / USUAL')])

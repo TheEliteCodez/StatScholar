@@ -40,7 +40,7 @@ class TestTwoDistributionTools(unittest.TestCase):
         output, _ = flow(clt.clt_menu, [
             '2', 'lumber width', '4', '.05', '16', '1', '', '1',
             '2', '4.08', '0'])
-        self.assertIn('z=(cutoff-mean)/SE=6.4000', output)
+        self.assertIn('z=(cutoff-mean)/SE=(4.08-4)/0.0125=6.4000', output)
         self.assertIn('P(ABOVE)=%.6e' % probability, output)
 
     def test_normal_cutoff_from_left_tail_percentile(self):

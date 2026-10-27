@@ -9,6 +9,7 @@ def one(mean,sd,n,null):
     se=sd/math.sqrt(n)
     if se==0: raise ValueError('SAMPLE SE=0; t TEST IS UNDEFINED')
     return {'estimate':mean,'se':se,'ts':(mean-null)/se,'df':n-1,
+            'se_work':c.call('STWORK','mean_se',sd,n,se)+['df=n-1=%d-1=%d' % (n,n-1)],
             'formula':'t=(x-bar-mu0)/(s/sqrt(n))',
             'inputs':['x-bar=%.8g; s=%.8g; n=%d' % (mean,sd,n)],'checks':[]}
 
@@ -19,6 +20,7 @@ def two(mean1,sd1,n1,mean2,sd2,n2,null=0):
     se=math.sqrt(a+b)
     degrees=(a+b)**2/(a*a/(n1-1)+b*b/(n2-1))
     return {'estimate':mean1-mean2,'se':se,'ts':(mean1-mean2-null)/se,'df':degrees,
+            'se_work':c.call('STWORK','mean_two',sd1,n1,sd2,n2,se,degrees),
             'formula':'t=((x1-bar-x2-bar)-d0)/sqrt(s1^2/n1+s2^2/n2)',
             'inputs':['GROUP 1: x-bar=%.8g; s=%.8g; n=%d' % (mean1,sd1,n1),
                       'GROUP 2: x-bar=%.8g; s=%.8g; n=%d' % (mean2,sd2,n2),

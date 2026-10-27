@@ -1,0 +1,805 @@
+{
+  "menus": {
+    "STHOME.py:quick_main | STAT1": {
+      "options": {
+        "1": "NORMAL DISTRIBUTION",
+        "2": "BINOMIAL",
+        "3": "PROBABILITY",
+        "4": "DATA / STATS",
+        "5": "GRAPHS / DATA SHAPE",
+        "6": "STUDY / CONCEPTS",
+        "7": "UNIFORM DISTRIBUTION",
+        "8": "STUDENT t DISTRIBUTION",
+        "9": "CLT / SAMPLING DISTRIBUTIONS",
+        "10": "SAMPLE SIZE CALCULATOR",
+        "11": "CONFIDENCE INTERVAL / MOE",
+        "12": "Z-SCORE CALCULATOR",
+        "13": "Z* CRITICAL VALUE",
+        "14": "T* CRITICAL VALUE",
+        "15": "HYPOTHESIS TESTING"
+      },
+      "passed": [],
+      "site": "STHOME.py:quick_main"
+    },
+    "STHYP.py:menu | HYPOTHESIS TESTING": {
+      "options": {
+        "1": "ONE PROPORTION z TEST",
+        "2": "TWO PROPORTIONS z TEST",
+        "3": "ONE MEAN t TEST",
+        "4": "TWO INDEPENDENT MEANS t TEST",
+        "5": "CHI-SQUARE GOODNESS OF FIT",
+        "6": "CHI-SQUARE INDEPENDENCE",
+        "7": "CORRELATION / REGRESSION"
+      },
+      "passed": [
+        "5",
+        "6",
+        "7"
+      ],
+      "site": "STHYP.py:menu"
+    },
+    "STHYIO.py:check | RANDOM INDEPENDENT OBSERVATIONS?": {
+      "options": {
+        "1": "YES / GIVEN",
+        "2": "NO",
+        "3": "NOT GIVEN / UNSURE"
+      },
+      "passed": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "site": "STHYIO.py:check"
+    },
+    "STREGIO.py:read_pairs | PAIRED DATA INPUT": {
+      "options": {
+        "1": "ENTER x,y PAIRS",
+        "2": "TI LISTS L1-L6 (KEEP PAIRS)"
+      },
+      "passed": [
+        "0",
+        "1",
+        "2"
+      ],
+      "site": "STREGIO.py:read_pairs"
+    },
+    "STTASKS.py:data_tasks | DATA / STATISTICS": {
+      "options": {
+        "1": "RAW LIST OF NUMBERS",
+        "2": "VALUE + FREQUENCY",
+        "3": "DISCRETE DISTR: x / P(x)",
+        "4": "ROW / COLUMN TABLE",
+        "5": "CATEGORY COUNTS",
+        "6": "COMPARE TWO DATA SETS",
+        "7": "PERCENT OF TOTAL",
+        "8": "CORRELATION / REGRESSION"
+      },
+      "passed": [
+        "8"
+      ],
+      "site": "STTASKS.py:data_tasks"
+    },
+    "STTASKS.py:graph_tasks | GRAPHS / DATA SHAPE": {
+      "options": {
+        "1": "SCATTER / REGRESSION",
+        "2": "BOXPLOT",
+        "3": "DOTPLOT",
+        "4": "HISTOGRAM",
+        "5": "INTERPRET SHAPE / NORMALITY",
+        "6": "OUTLIERS",
+        "7": "COMPARE RELATIVE POSITION"
+      },
+      "passed": [
+        "1"
+      ],
+      "site": "STTASKS.py:graph_tasks"
+    },
+    "STCHI.py:session | EXPECTED FREQUENCIES": {
+      "options": {
+        "1": "ALL EQUALLY LIKELY",
+        "2": "GIVEN EXPECTED COUNTS",
+        "3": "GIVEN PROBABILITIES"
+      },
+      "passed": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "site": "STCHI.py:session"
+    },
+    "STREGIO.py:session | REGRESSION / CORRELATION": {
+      "options": {
+        "1": "ALL WORK / RESULTS",
+        "2": "SCATTERPLOT / AXES",
+        "3": "PREDICT y FROM x",
+        "4": "RESIDUAL: OBSERVED - PREDICTED",
+        "5": "PAIRED WORK TABLE"
+      },
+      "passed": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "site": "STREGIO.py:session"
+    }
+  },
+  "runs": [
+    {
+      "path": [
+        "15",
+        "5",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "6",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 15495,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "4",
+        "8",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16950,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STTASKS",
+        "STREGIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "5",
+        "1",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16950,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STTASKS",
+        "STREGIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "1",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "2",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "3",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "2",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 15495,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "1",
+        "1"
+      ],
+      "peak_loaded_source_bytes": 19789,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STCHIM",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "1",
+        "2"
+      ],
+      "peak_loaded_source_bytes": 19789,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STCHIM",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "1",
+        "3"
+      ],
+      "peak_loaded_source_bytes": 19789,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STCHIM",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "5",
+        "1",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 16328,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STCHI",
+        "STHYIO",
+        "STVMENU"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "1",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "2",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "3",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "4",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "5",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    },
+    {
+      "path": [
+        "15",
+        "7",
+        "1",
+        "0"
+      ],
+      "peak_loaded_source_bytes": 20248,
+      "peak_modules": [
+        "STCORE",
+        "STAT1",
+        "STHOME",
+        "STHYP",
+        "STREGIO",
+        "STREG",
+        "STTCRIT",
+        "STZCRIT"
+      ],
+      "error": null,
+      "fixture": {
+        "large": true,
+        "replacement": "Y",
+        "search": "sample",
+        "small_clt": false
+      }
+    }
+  ],
+  "failures": [],
+  "scope": "60-category GOF, 10x10 independence, 100 paired values; real calculations/viewers, sys.modules and weakref cleanup. Desktop fixtures; not calculator heap proof.",
+  "uncovered": {},
+  "runtime_sha256": {
+    "STAT1.py": "ccf5748c56115a85697f151e533c6372ae8574ce6c0af4764193869c60affdea",
+    "STBEXTRA.py": "acb333879d4a739cb936cb9aa92227c05615c1c224fae45f11cf08396ee6ff6b",
+    "STBHELP.py": "b9dd54595d8813c416db016a4b6d1ef7f76523d61bae335de656ce919ae343e2",
+    "STBINFO.py": "0e6cc903bd3af87bf486fcffb24258ea8e9162323fad9dee15ceab54d0e0a959",
+    "STBINFO2.py": "620bf9325503c36b1241ee7e6f569088b50fc26958c62a6fcb56eee1af762d68",
+    "STBINFO5.py": "c5873d25bb0cece422c411e9b1306a0149c04c3ab0fec094178b70b22636fbec",
+    "STBINFO7.py": "7a1dcf040085fbf2a1ef5f0185e9870c522936106b3999ece4d216725a1a0ee0",
+    "STBINFO9.py": "d14c09c131d5d6007b1a0917398c5348618b370e27ab797c0ecb2c30d47315e1",
+    "STBINOM.py": "6a290c96a127f46dc892a7a03e2109c4bc2b46177b221573fa040bddd018d34d",
+    "STBINOM1.py": "b76de849eb994f1bac0eaa07338c63cd5d5c2c6cbd5d5e439b289aa727648bc4",
+    "STBINOM2.py": "58c5376b076440c8b411308aaa07cfc6e999fe87d5ec674b407d21aec2c7b2e1",
+    "STBMATH.py": "2a1c510c715b99f706a436fac5fe8bca738336f93e8526d87d8f731c2646753a",
+    "STBNWK.py": "92d26417a51e311d39f30468991d9dfcdf2c1eef707c768247a6a28d8b52a510",
+    "STBW2.py": "e3f4dffcc65b73d892e9b17a675ae147875a3938b5909e4aa9f1c2e8c5bad8ea",
+    "STBWE.py": "f923fb9be1d2a3f5d3db7ce0733c059e4bbfebf0e0f663ef53a3cf72633c1bd2",
+    "STBWORD.py": "11b867e4aba0a393c870c300208e4c2c9c68c1fd204ab07dea8adceda99bfdda",
+    "STCHI.py": "f52cb83374d4b4a899481261f7385b316c3817519ab6890e71d37d42bd7b926a",
+    "STCHIM.py": "3383df14d4f02fdb39d42046b8f60e696289bf0c21de0f47c0d0143ef12a0158",
+    "STCI.py": "4f843bf9ae379cfdf8b8e547ce40490bc6d435c2d8bff563adba907608b8f45f",
+    "STCIIO.py": "05fd3f701cc3ea8e391d5657f8df75147144c54f0e66e969a57a192af2bf336e",
+    "STCIMEAN.py": "8ffb8bd3702e9291fff94991366d379f5c807b6219800a0bec5d83aa71b7d684",
+    "STCIMENU.py": "5dea0e8ec6852e84b27c74ed689cc66eb6f52ab413aa63e05abb2fed3eed464b",
+    "STCIMOE.py": "ad7fdfff4cc50a2b55c66eb25fd6356d523ca348232d6f69c81d7dac6709acd9",
+    "STCINUM.py": "53ce631b4c401d7c21a2c2e219b83906fb16abd33249732a4b9be1401df04a3c",
+    "STCIPROP.py": "c26190249ae1f96c88c90bc012c570d782187949c094f4b7ec60e3042e2d43df",
+    "STCLT.py": "8fd53dbd595eccaf518c678da1fba6886a5148017f430752a4ad7ab4e813338b",
+    "STCLT1.py": "2a117da3348c2778320b25e09db4fe7eddd48a22fbae83046ec62adb6c73fe8c",
+    "STCLT2.py": "ee2d24d055e5588d65a84f51ca3ba4648b09bb62b8052a6b78ad6759c050ff3d",
+    "STCLTC.py": "8e48f21253a0a8e090e9ac5ad3322ca74e5eb83ea08dac2a9af8094312ec5cf4",
+    "STCLTF.py": "93147df19f39ab3d7e65af0e922d94049e189dd9f684b742b432bf3912f3b180",
+    "STCLTM.py": "fd36a47663f629ad300b97cb0a5faa42fed45cf2cc50cf7026013d51de3454d6",
+    "STCLTR.py": "7d91827b3df46e32de53e893b38faedfec9407cef5380322898ee07a703ad80f",
+    "STCOMB.py": "20af5374cd30d2cf4bdce8eb4ad0f7a0ef36a6c5353e79a47ba02ae4c84a9941",
+    "STCORE.py": "dd17c5b993fe15fd4c8d57e5e150aa94673a36449c4bed22941635c6bab5eb7b",
+    "STCOUNT.py": "742e8d29335d85be068f4fde9ff516f625fbc6169e89783a9b0a249fc8bb67eb",
+    "STCOUNT2.py": "69e7ce054071967817385735372cabede60195ba173f4cea6f7d326ca2c587d7",
+    "STCOUNT3.py": "87fedcc0a45891d41cd1380ceb3fefb00e7248daef1cd5800bff79f17e11a078",
+    "STCOUNT4.py": "755785d60007cbfe291f10af64545dea45c3c1364b610d1e5e36e99ecd61eb3f",
+    "STCOUNT5.py": "00cdf33e6214c7e2b43b06c2f6196a32869e6675bb3276a66fb498d9f44e63af",
+    "STCOUNT6.py": "e50f42e14eeac79ea0ef70b9427d242ea24fd666befc4cbea21937e0c8ece194",
+    "STDATA.py": "e282ebe57125ebc6c82f9e7f1d5d67ac3a58079a21bd2f315bec4fc223aba17d",
+    "STDATA2.py": "14eeaaf905facbe471c12429f24bd3f276659f05ff802833a91bb80ba3891995",
+    "STDATA3.py": "df5757403b6d09681f6b6a2f9e991634a73c562ccf0f7dabd9aca406982c07ce",
+    "STDEFS.py": "8c5878a919581344188a53336cd650846a105ee5a3a492188447016c9a1a55d2",
+    "STDESC.py": "75b60d7e0c25ee7e9337e3f33ab2e3178416a78ab9c93a9cba093307706e67f5",
+    "STDESC1.py": "4132ab6a5e91fb6d8beeaddfeb89143455d53d7981258103a01ff4626d23ebe6",
+    "STDESC2.py": "6ebb310e01357b9b53236697062a6843b49f20ddfd1a77ab205ea283376908b0",
+    "STDICE.py": "68d8e48c6d94be534fa58c8c4dc5bb9dca85b02ede728700d515206845bd6fb3",
+    "STDICE2.py": "b153e285d0928f255696141ff6bb826e46e03f282137a9199be63255492ae1da",
+    "STDIST.py": "ed8ecad5e54322023689e7338c4663f136c72edc08a9f27c43c085a9da87454f",
+    "STDMATH.py": "2ef6928c4e19b879679282eaab312d2132ddf83f3de46d0496b5de2acffe27ad",
+    "STDMATH1.py": "37e95a8d56f02bdc1f264bc78a52d0635940cd75098114a4a3e2eb51d288577b",
+    "STDMATH2.py": "4887695ced8c6493ce38bb3f28b15b110231d27aff30c4fe989dbc049a0e695a",
+    "STDWK.py": "6a5b0867b0d3de470f52f4a8697c7a6fc840fbe82494c07250e0c28d6b660fda",
+    "STEFMT.py": "3871b632fa0ca5b5c9b0b851b437e4d00eb773524a542bbacd6aa2eec7bf64b0",
+    "STEVENT.py": "583b18c63a237f5ecd17712d5c21ab2544956f719b6c7f35cb03cbe25c93504b",
+    "STEXACT.py": "8db8dc4b5b91a1e5c344181f8b7eb5ac18acc7dcfe8d4b444c52d22a629e505f",
+    "STEXPER.py": "9b1ba0bc4c14efb4803aec22bb6578b0a6ab7a924d6c8c3d5f6ec8249f1396ce",
+    "STEXPER1.py": "3d64e5bf0ef9eeb4e9a0644bd6393b4bc3297bc710d29aed62787734a94c116b",
+    "STEXPER2.py": "3b962e22c1619e628c0c17a44ef2cf1b2eb1962d9d0f9c43538cc41b3c0df4c1",
+    "STEXPER4.py": "47ae669a2eb2a319f59fe8addb89802bc2d4ac3ee5331c169b4fdf532dc00e2a",
+    "STFINITE.py": "1cf974d7a42909c36a9694eb5fa2618491da9e82e42c619a12bfb194086c082a",
+    "STGRAPH.py": "931764a739cceeb2f79bc34be329d65d6a3c1498c3aa7e93cfefcf3e7b3660c0",
+    "STHIST.py": "c5cb3ecb1c84e4da5e34ac97656697c565d595f1ac17f123807cda03f54b8b2b",
+    "STHIST2.py": "b6e0607bda56a365c480bddcdcead146e028192c5437ae8bd3147f9278980ed9",
+    "STHOME.py": "dc67f1e3a8ede795f57ce7115d357c78760a58854fc150989b88ccfb239d4e06",
+    "STHYIO.py": "7a7e49a8728229e88714ba570814e455be046e5734d9fbeda57501d1e29d311b",
+    "STHYME.py": "8ef47cb5264573da8b299696ad41e72f814fde69d82e7b883797be40262860dd",
+    "STHYP.py": "4a2614b127d713048d582a33fc5b3c52240ca7ddad723d766a465edf07f8b585",
+    "STHYPR.py": "7d1198a41c472b17f3adf731ef18cd4949eac5b4775262ee736fd017ef8c7307",
+    "STHYRES.py": "2778df641a0618d13e215dc4c3459438e1a969aca5b1322bf3bc641a50113772",
+    "STMDICE.py": "4c8b8588c4b1e7a3860fd0bb6e0fff104b54278470659d93ab018f02eb713116",
+    "STMDICE2.py": "8dde6679d6bd265008c6390f312cf3978ceb1cf55a2eab92bea3ce0b1e269fe2",
+    "STNDIST.py": "7ed5e65134e709bb003e73e598370b6bad7488c218b7df4e2914ba71e42bd69b",
+    "STNORM.py": "6ad578228ba60107a19db4911cb6488b04adbcc48bf64b6bac8447b18be8048a",
+    "STNORM1.py": "13686120dca0d18a46c85249e9c958d8101e0f33cbfc71a08e2ee27e7bbffd7d",
+    "STNORM2.py": "8863e6397f47c98002263e4957c90e04d5f154a0ff7e773e063dd6355308dc1a",
+    "STNORM3.py": "751659bc50a0037cbb85351f15bb9f816e00a82fbdbb097d3b9be55b8f6b7786",
+    "STNORM4.py": "99c2f8d55fffbcb6bf0a14ddfee80df49c01fc449ae6ffa1f8f8249b5e8aa23f",
+    "STPAGE.py": "6c38bdc56707f556bbd1c285e0949e187f2bf33a45e4c5788b894abf0eae7f31",
+    "STPCT.py": "9d480576e0074e1b2804a404b85d5a16389059154e98fdbc5c0409d0140b6a76",
+    "STPROB.py": "038dfc67fd56567e31bced71138d55df8375b71008dc2f5369fe21cd52fc48f9",
+    "STPROB1.py": "320086fb0b46e62967331dae3a4d32efabea99887ea6b71dac0503f7e197cbbd",
+    "STPROB3.py": "eeefea43b79e785890384fa0cc9981741a0e21276e0b6e31c25aeaf2954f523a",
+    "STPROB4.py": "4ff01b8f9b0a874ab41a289f4321f30c175855e24d16ea8b5a3fb90825cf200e",
+    "STPROBM.py": "96b6a7c425b00db026e068b28a5e7153e5d098fe2d466389e8116462a7f9fb17",
+    "STREG.py": "60c6cd05e873299afa9acab38fc5442ba7b30502fe7a53fbc05f9c5e33f54f68",
+    "STREGIO.py": "4eb71d9c53f23929aa0e197a0134e1a51868a1f691ccedbc08f5c0a4ab1b51aa",
+    "STRULE.py": "d3edddef15a30069f2c2cb23dd5945df54a4dec533c22569c0e09ad450b1c086",
+    "STSAMP1.py": "5e99107a5338ae090641ac28f2ff61bcc5417431d8f26f6edef6112bdb15bc1c",
+    "STSAMP2.py": "b87eac46de9ce6bf58d12897784b64c5d8a9b46f6273086df4bc27119e3180ba",
+    "STSAMPLE.py": "c4da789552b04a6424345de7140318d33b89f25715291827a87326edabfe6e60",
+    "STSIZE.py": "9effd4eb950d4f196ca6664e4d747946f11aafd6ad9b24554157089b8fc3c18c",
+    "STSKETCH.py": "e8316c837dda8b687f014b2097844b20d38662cccae6211766394bdf698717ca",
+    "STSTU1.py": "ff969944f1391cc87c0167f7667c8ce7a3af4121a77733ba9cbb9c26f9f8fb33",
+    "STSTU2.py": "5a8b7d6bf52d4a79a533296b26ffdc9e390e7701291f70c4b25aae4ccf36b9a5",
+    "STSTUDY.py": "9e13525cfa06e7a5d8a21ead58c03d5b982f808f4c1d9210f5b721f80347f6c5",
+    "STTASKS.py": "fa6151df5827ae60daffd0273e4ec54533e11cee6eff7371c8970dcad9757554",
+    "STTCRIT.py": "2d81d0cafc052b65b07afb4eb5154c3323338c15c669fe2bcdb3b0f3be09bf49",
+    "STTDIST.py": "037924254f4402b7d4afc492a6bdc4e9efb30b81aea203443be08276221c08f6",
+    "STTPROB.py": "7c1bd472446e37cc24cb782ede8b57f527d7bcca32b0181ef2801a824a0b352f",
+    "STUNIF.py": "08f1506eaa1d34f1101413ebd2dcaa48644c71e941c83ed567654968cc869fbb",
+    "STVCP.py": "a850d25de460bf68e6aca86009b770fb9c2399abf02cce43d3b82fdf2facecae",
+    "STVDISP.py": "4c7e2c7ccf52fb5d3d019af24599ba245a393ed49ad5992f5a74b4d73ed131bb",
+    "STVENN.py": "269e15ea38517bc8352ee345dca1e7bd8ed68126b53b86eb4fb85f98ec5e51fd",
+    "STVENN2.py": "de7310c1b20d41e031b5c301b29b8c9c472829f919be3d973f54943fd6663b1c",
+    "STVIN.py": "ed325f409172eda4bcaa6d0c7a576aa63b2800c616cce218aacb1fce9eb3935e",
+    "STVMENU.py": "bc84d98e5ce86489809615fb1d325933679a4e45fe6f3fc35057f75528b5cbc5",
+    "STVRES.py": "5137cbee0868b6ef1a3694ab1cff32753f983edab21274d0c9987e043dc3779a",
+    "STWORK.py": "4a6fb5f79a149a1d47ed2bd9eff3470e56706b1b5d30e2c6a93e58f692c2c5c8",
+    "STZCRIT.py": "4bdd7929a9ba26853062da97ddaedd008458aece2d32d2a8d76754195721ad00",
+    "STZLIST.py": "b08207cb5c25a5061cdede141c58f4869acbd09b249b96756212df274edd055e"
+  }
+}

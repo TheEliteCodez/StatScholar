@@ -11,6 +11,7 @@ def one(x,n,p0):
     estimate=x/n
     se=math.sqrt(p0*(1-p0)/n)
     return {'estimate':estimate,'se':se,'ts':(estimate-p0)/se,'df':None,
+            'se_work':c.call('STWORK','prop_se',p0,n,se,'p0'),
             'formula':'z=(p-hat-p0)/sqrt(p0*(1-p0)/n)',
             'inputs':['x=%d; n=%d; p0=%.6g' % (x,n,p0)],
             'checks':['n*p0=%.4f >= 10: %s' % (n*p0,'PASS' if n*p0>=10 else 'FAIL'),
@@ -26,6 +27,9 @@ def two(x1,n1,x2,n2):
         checks+=['GROUP %d: n*p-pool=%.4f; n*q-pool=%.4f: %s' %
                  (i+1,n*pooled,n*(1-pooled),'PASS' if min(n*pooled,n*(1-pooled))>=10 else 'FAIL')]
     return {'estimate':x1/n1-x2/n2,'se':se,'ts':(x1/n1-x2/n2)/se,'df':None,
+            'se_work':['p-pool=(%d+%d)/(%d+%d)=%.10g' % (x1,x2,n1,n2,pooled),
+                       'SE=sqrt(p-pool*(1-p-pool)*(1/n1+1/n2))',
+                       'SE=sqrt(%.10g*(1-%.10g)*(1/%d+1/%d))=%.10g' % (pooled,pooled,n1,n2,se)],
             'formula':'z=(p1-hat-p2-hat)/sqrt(p-pool*q-pool*(1/n1+1/n2))',
             'inputs':['x1/n1=%d/%d; x2/n2=%d/%d' % (x1,n1,x2,n2),
                       'p-pool=(x1+x2)/(n1+n2)=%.8g' % pooled], 'checks':checks}

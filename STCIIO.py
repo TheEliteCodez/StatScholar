@@ -2,7 +2,7 @@ from STSIZE import _read_number, _read_confidence
 import STCORE as c
 def _show_result(title, estimate, se, critical, interval, confidence, df=None,
                  warning=None, estimate_label='ESTIMATE', parameter='POPULATION VALUE',
-                 critical_label='CRITICAL VALUE', input_summary=()):
+                 critical_label='CRITICAL VALUE', input_summary=(), work=()):
     lines = list(input_summary)
     lines.extend(['CONFIDENCE='+('%.1f' % (100*confidence))+'%',
              'ALPHA='+('%.4f' % (1-confidence)),
@@ -12,6 +12,9 @@ def _show_result(title, estimate, se, critical, interval, confidence, df=None,
              'MARGIN OF ERROR='+('%.4f' % (critical*se))])
     if df is not None:
         lines.append('DF='+('%.2f' % df))
+    lines.extend(work)
+    lines.extend(['E='+critical_label+'*SE=%.10g*%.10g=%.10g' % (critical,se,critical*se)])
+    lines.extend(c.call('STWORK','endpoints',estimate,critical*se,interval))
     lines.extend(['INTERVAL=('+('%.4f' % interval[0])+', '+('%.4f' % interval[1])+')',
                   'INTERPRETATION: '+parameter+' IS ESTIMATED WITH THIS INTERVAL.'])
     if warning:

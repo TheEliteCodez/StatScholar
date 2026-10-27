@@ -1,6 +1,9 @@
-# Publish only the root README; keep other documents local.
+# Publish the README and active audit reports; ignore other local notes.
 *.[mM][dD]
 !/README.md
+!/MENU_AUDIT.md
+!/HYPOTHESIS_AUDIT.md
+!/ADVANCED_AUDIT.md
 *.txt
 
 # Generated and local Python files.

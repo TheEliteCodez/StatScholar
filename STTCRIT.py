@@ -42,7 +42,7 @@ def _beta_fraction(a, b, x):
         dval = 1/dval
         delta = dval*cval
         result *= delta
-        if abs(delta-1) < 3e-7:
+        if abs(delta-1) < 1e-12:
             break
     return result
 def _regularized_beta(x, a, b):

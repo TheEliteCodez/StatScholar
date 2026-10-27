@@ -11,6 +11,7 @@ def inference(ts,alpha,alternative,degrees=None):
         left=c.call('STTCRIT','t_cdf',ts,degrees)
         right=c.call('STTCRIT','t_sf',ts,degrees)
         quantile=lambda area:c.call('STTCRIT','t_quantile',area,degrees)
+    if ts==0: left=right=.5
     if alternative=='<': probability=left;critical=(quantile(alpha),)
     elif alternative=='>': probability=right;critical=(quantile(1-alpha),)
     else:
@@ -66,12 +67,30 @@ def step(index,setup,result,probability,critical,reject):
         lines.append('REJECT TO THE '+('LEFT OF CV' if alt=='<' else 'RIGHT OF CV' if alt=='>' else 'OUTSIDE THE TWO CVs'))
         return lines
     if index==5:
-        return [result['formula'],'SE UNDER H0=%.8g' % result['se'],
+        return result.get('se_work',[])+[result['formula'],'SE UNDER H0=%.8g' % result['se'],
                 'TS=(%.8g-%.8g)/%.8g=%.8g' % (result['estimate'],null,result['se'],result['ts']),
                 'TI TEST: '+result['command']]
     if index==6: return drawing(setup,result,critical)
     if index==7:
+        ts=result['ts'];df=result['df']
+        if df is None:
+            lower='normalcdf(-9999,%.10g,0,1)' % ts
+            upper='normalcdf(%.10g,9999,0,1)' % ts
+            exact_lower='Phi(%.10g)' % ts
+            exact_upper='SF_z(%.10g)' % ts
+        else:
+            lower='tcdf(-9999,%.10g,%.10g)' % (ts,df)
+            upper='tcdf(%.10g,9999,%.10g)' % (ts,df)
+            exact_lower='F_t(%.10g; df=%.10g)' % (ts,df)
+            exact_upper='SF_t(%.10g; df=%.10g)' % (ts,df)
+        expression=lower if alt=='<' else upper if alt=='>' else '2*'+(lower if ts<0 else upper)
+        exact=exact_lower if alt=='<' else exact_upper if alt=='>' else '2*'+(exact_lower if ts<0 else exact_upper)
         return ['ASSUME H0 IS TRUE: PROBABILITY OF A RESULT AS OR MORE EXTREME IN H1 DIRECTION.',
+                'p='+exact+'=%.10g' % probability,
+                'TI APPROX: '+expression,
+                'TWO TAILS: p=2*%.10g=%.10g' % (probability/2,probability) if alt=='!=' else 'ONE TAIL: p=%.10g' % probability,
+                'Phi / F_t = LEFT CDF; SF = UPPER TAIL = 1-CDF.',
+                '9999 IS A TI INFINITY APPROXIMATION; ENGINE USES THE FULL DISTRIBUTION TAIL.',
                 'p-VALUE=%.10g' % probability,
                 'LEFT: CDF(TS); RIGHT: SURVIVAL(TS); TWO: 2*SMALLER TAIL.',
                 'USE normalcdf FOR z; tcdf WITH df FOR t.',

@@ -10,7 +10,8 @@ def _one_proportion():
     _show_result('ONE-PROPORTION z INTERVAL',estimate,se,critical,interval,confidence,
                  warning=warning,estimate_label='p-hat',
                  parameter='POPULATION PROPORTION p',critical_label='z*',
-                 input_summary=['INPUT CHECK: x=%d WITH EVENT; n=%d TOTAL' % (x,n)])
+                 input_summary=['INPUT CHECK: x=%d WITH EVENT; n=%d TOTAL' % (x,n)],
+                 work=['p-hat=x/n=%d/%d=%.10g' % (x,n,estimate)]+c.call('STWORK','prop_se',estimate,n,se))
 def _one_proportion_estimate():
     context=input('EVENT / GROUP LABEL (ENTER=SKIP): ').strip()
     estimate=_read_number('SAMPLE PROPORTION p-hat (DECIMAL OR PERCENT): ')
@@ -26,7 +27,8 @@ def _one_proportion_estimate():
                  parameter='POPULATION PROPORTION p',critical_label='z*',
                  input_summary=[
                      'INPUT CHECK: p-hat=%.4f; n=%d TOTAL' % (estimate,n),
-                     'CONTEXT: '+(context or 'population proportion')])
+                     'CONTEXT: '+(context or 'population proportion')],
+                 work=c.call('STWORK','prop_se',estimate,n,se))
 def _two_proportions():
     x1 = c.read_int('GROUP 1 NUMBER WITH EVENT (x1): ')
     n1 = c.read_int('GROUP 1 TOTAL SAMPLED (n1): ')
@@ -39,4 +41,6 @@ def _two_proportions():
                  warning=warning,estimate_label='p1-hat - p2-hat',
                  parameter='GROUP 1 - GROUP 2 PROPORTION DIFFERENCE',critical_label='z*',
                  input_summary=['INPUT CHECK: GROUP 1 %d/%d; GROUP 2 %d/%d' %
-                                (x1,n1,x2,n2),'INTERVAL DIRECTION: p1 - p2'])
+                                (x1,n1,x2,n2),'INTERVAL DIRECTION: p1 - p2'],
+                 work=['PE=x1/n1-x2/n2=%d/%d-%d/%d=%.10g' % (x1,n1,x2,n2,estimate)]+
+                      c.call('STWORK','prop_two',x1/n1,n1,x2/n2,n2,se))

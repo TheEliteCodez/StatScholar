@@ -31,7 +31,7 @@ def capture(function,answers):
     def read(prompt=""):
         prompts.append(prompt)
         return next(pending)
-    with patch.object(builtins,"input",read),patch.object(s,"view",lambda t,l:outputs.append((t,l))),contextlib.redirect_stdout(io.StringIO()):
+    with patch.object(builtins,"input",read),patch.object(s,"view",lambda t,l:outputs.append((t,list(l)))),contextlib.redirect_stdout(io.StringIO()):
         function()
     remaining=list(pending)
     if remaining: raise AssertionError("Unused inputs: "+repr(remaining))

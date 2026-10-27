@@ -58,6 +58,8 @@ class Hypothesis(unittest.TestCase):
             self.assertEqual(len(critical),2 if alt=='!=' else 1)
         p,_,_=output.inference(2,.05,'>')
         self.assertTrue(output.inference(2,p,'>')[2])
+        self.assertEqual(output.inference(0,.5,'>')[0],.5)
+        self.assertTrue(output.inference(0,.5,'>')[2])
         self.assertLess(output.inference(8,.05,'>')[0],1e-14)
 
     def test_conclusions_distinguish_claims_from_alternatives(self):

@@ -17,7 +17,7 @@ def _event_probability(mean,se,sketch=None):
             return ('P(BELOW)',1.0 if mean < bound else 0.0,
                     'BOUNDARY z: DNE (SD=0)')
         z = (bound-mean)/se
-        return ('P(BELOW)',normal_cdf(z),'z=(cutoff-mean)/SE=%.4f' % z)
+        return ('P(BELOW)',normal_cdf(z),'z=(cutoff-mean)/SE=(%.10g-%.10g)/%.10g=%.4f' % (bound,mean,se,z))
     if event == '2':
         bound = _read_number('CUTOFF VALUE: ')
         if sketch is not None:
@@ -26,7 +26,7 @@ def _event_probability(mean,se,sketch=None):
             return ('P(ABOVE)',1.0 if mean > bound else 0.0,
                     'BOUNDARY z: DNE (SD=0)')
         z = (bound-mean)/se
-        return ('P(ABOVE)',normal_sf(z),'z=(cutoff-mean)/SE=%.4f' % z)
+        return ('P(ABOVE)',normal_sf(z),'z=(cutoff-mean)/SE=(%.10g-%.10g)/%.10g=%.4f' % (bound,mean,se,z))
     low = _read_number('LOWER VALUE: ')
     high = _read_number('UPPER VALUE: ')
     if low > high:
@@ -40,7 +40,7 @@ def _event_probability(mean,se,sketch=None):
     zlow,zhigh = (low-mean)/se,(high-mean)/se
     probability = normal_interval(zlow,zhigh)
     return ('P(BETWEEN)',probability,
-            'z lower=%.4f; z upper=%.4f' % (zlow,zhigh))
+            'z lower=(%.10g-%.10g)/%.10g=%.4f; z upper=(%.10g-%.10g)/%.10g=%.4f' % (low,mean,se,zlow,high,mean,se,zhigh))
 
 def _result(title,statistic,mean,se,n,conditions,distribution,context,
             probability_allowed,find_probability,input_label,population_sd=None,fallback=None):

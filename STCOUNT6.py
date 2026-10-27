@@ -8,7 +8,10 @@ def win_loss_session():
     p = c.ratio(chance[0] ** trials, chance[1] ** trials)
     rows = [((-abs(loss[0]), loss[1]), c.radd((1, 1), (-p[0], p[1]))), (win, p)]
     mean, var, sd = c.call('STCOUNT', 'distribution_moments', rows)
-    c.results('P05/R08 WIN OR LOSE', [('P(LOSE)', rows[0][1]), ('P(WIN)', p), ('E(PROFIT)', mean), ('SD', sd)], ['INDEPENDENT TRIES', 'P(WIN)=p^n', 'USE NET PAYOFFS AS GIVEN', 'NO EXTRA FEE SUBTRACTED'])
+    c.results('P05/R08 WIN OR LOSE', [('P(LOSE)', rows[0][1]), ('P(WIN)', p), ('E(PROFIT)', mean), ('SD', sd)],
+              c.call('STWORK','Chain',['P(WIN)=(%s)^%d=%s' % (c.exact_text(chance),trials,c.exact_text(p)),
+                     'P(LOSE)=1-%s=%s' % (c.exact_text(p),c.exact_text(rows[0][1]))],
+                     c.call('STDWK','moments',len(rows),lambda i:rows[i],mean,var,sd)))
     c.call('STCOUNT', 'distribution_session', rows)
 def payoff_tasks():
     key = c.menu('GAME PAYOFFS', [('1', 'PRIZES / NET + P TABLE'), ('2', 'ALL GUESSES MUST WIN')])
@@ -36,10 +39,16 @@ def solver_sample_space():
 def solver_ncr():
     n = c.read_int('n: ')
     r = c.read_int('r: ')
-    c.results('C03', [('ANSWER', (ncr(n, r), 1))], [str(n) + ' ncr ' + str(r)])
+    answer=ncr(n,r)
+    work=['nCr=n!/(r!*(n-r)!)',
+          'C(%d,%d)=%d!/(%d!*%d!)=%d' % (n,r,n,r,n-r,answer)] if 0<=r<=n else ['INVALID n,r: COUNT=0']
+    c.results('C03', [('ANSWER', (answer, 1))],work)
 def solver_npr():
     n = c.read_int('n: ')
     r = c.read_int('r: ')
-    c.results('C04', [('ANSWER', (npr(n, r), 1))], [str(n) + ' npr ' + str(r)])
+    answer=npr(n,r)
+    work=['nPr=n!/(n-r)!',
+          'P(%d,%d)=%d!/%d!=%d' % (n,r,n,n-r,answer)] if 0<=r<=n else ['INVALID n,r: COUNT=0']
+    c.results('C04', [('ANSWER', (answer, 1))],work)
 def solver_expected():
     c.call('STCOUNT', 'distribution_session')

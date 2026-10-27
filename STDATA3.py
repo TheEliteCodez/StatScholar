@@ -12,8 +12,8 @@ def compare_session(a=None, boxes=False):
             c.call('STGRAPH','boxplot_data',a,'GRAPH > BOX A')
             c.call('STGRAPH','boxplot_data',b,'GRAPH > BOX B')
         elif show:
-            c.call('STDATA','summary_results',sa,'DATA > COMPARE > A',population)
-            c.call('STDATA','summary_results',sb,'DATA > COMPARE > B',population)
+            c.call('STDATA','summary_results',sa,'DATA > COMPARE > A',population,a)
+            c.call('STDATA','summary_results',sb,'DATA > COMPARE > B',population,b)
             for title, keys in [('CENTERS',('MEAN','MEDIAN')),('SPREAD',(('POPULATION SD','POPULATION VARIANCE','IQR','RANGE') if population else ('SAMPLE SD Sx','SAMPLE VARIANCE s^2','IQR','RANGE')))]:
                 c.results('DATA > COMPARE > '+title, [(name+' '+label,stats[label]) for label in keys for name,stats in [('A',sa),('B',sb)]], ['COMPARE EACH MEASURE IN CONTEXT'])
         key=c.menu('DATA > COMPARE', [('1','SHOW AGAIN'),('2','CHANGE SET A'),('3','CHANGE SET B'),('4','SIDE-BY-SIDE BOXPLOTS'),('5','COMPARE CENTERS / SPREAD'),('6','USUAL / UNUSUAL BOTH SETS'),('7','SAMPLE / POPULATION')])
@@ -35,7 +35,7 @@ def frequency_data_session():
     rows=c.call('STDMATH','read_frequency_rows')
     population=False
     stats=c.call('STDMATH','weighted_stats',rows)
-    c.call('STDATA','summary_results',stats,'DATA > FREQUENCY',population)
+    c.call('STDATA','summary_results',stats,'DATA > FREQUENCY',population,None,rows)
     while True:
         key=c.menu('DATA > FREQUENCY > NEXT',[('1','FULL SUMMARY / FENCES'),('2','HISTOGRAM / GROUP CLASSES'),('3','CHANGE DATA'),('4','RELATIVE / CUM / EVENT'),('5','Z-SCORE A VALUE'),('6','USUAL / UNUSUAL'),('7','EDIT ONE ROW'),('8','SAMPLE / POPULATION'),('9','CHECK ALL VALUES')])
         if key=='0': return
@@ -43,7 +43,7 @@ def frequency_data_session():
         if key=='7': rows=c.call('STDMATH','edit_frequency',rows)
         if key in ('3','7'): stats=c.call('STDMATH','weighted_stats',rows)
         if key=='8': population=c.call('STDATA','choose_population',population)
-        if key in ('1','3','7','8'): c.call('STDATA','summary_results',stats,'DATA > FREQUENCY',population)
+        if key in ('1','3','7','8'): c.call('STDATA','summary_results',stats,'DATA > FREQUENCY',population,None,rows)
         elif key=='2': c.call('STHIST','histogram_session',None,False,rows)
         elif key=='4': c.call('STPCT','frequency_tools',rows)
         elif key in ('5','6'): c.call('STDATA','data_normal',stats,'1' if key=='5' else '5',population)

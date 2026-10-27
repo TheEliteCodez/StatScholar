@@ -38,7 +38,7 @@ class CentralLimitTheorem(unittest.TestCase):
         self.assertIn('INPUT CHECK: n=36; mu=100.0000; SE=2.5000',output)
         self.assertIn('APPROXIMATELY NORMAL BY CLT',output)
         self.assertIn('SE=sigma/sqrt(n)=15.0000/sqrt(36)=2.5000',output)
-        self.assertIn('z=(cutoff-mean)/SE=2.0000',output)
+        self.assertIn('z=(cutoff-mean)/SE=(105-100)/2.5=2.0000',output)
         self.assertIn('P(ABOVE)=0.022750',output)
 
     def test_sample_proportion_distribution_and_between_probability(self):
@@ -47,7 +47,7 @@ class CentralLimitTheorem(unittest.TestCase):
         self.assertIn('CLT > SAMPLE PROPORTION',output)
         self.assertIn('INPUT CHECK: n=100; p=0.2000; SE=0.0400',output)
         self.assertIn('SUCCESS / FAILURE: PASS: np=20.00 AND n(1-p)=80.00 >= 10',output)
-        self.assertIn('z lower=-1.2500; z upper=1.2500',output)
+        self.assertIn('z lower=(0.15-0.2)/0.04=-1.2500; z upper=(0.25-0.2)/0.04=1.2500',output)
         self.assertIn('P(BETWEEN)=0.788700',output)
 
     def test_small_n_unknown_shape_does_not_offer_normal_probability(self):

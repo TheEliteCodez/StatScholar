@@ -33,7 +33,9 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
                 c.view('ROUNDED TABLE / TOTAL', note + ['EXACT MOMENTS REQUIRE KNOWN P SUMMING TO 1.', 'OPTION 8 MARKS ROUNDED INPUT.', 'OPTION 6: BINOMIAL ONLY IF JUSTIFIED.'])
                 continue
             mean, var, sd = c.call('STCOUNT', 'distribution_moments', rows)
-            c.results('R02/R03', [('mu', mean), ('VAR', var), ('sigma', sd)], note + ['mu=SUM(x*P(x))', 'VAR=SUM(x^2*P)-mu^2', 'SD=SQRT(VAR)'],drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0])))
+            c.results('R02/R03', [('mu', mean), ('VAR', var), ('sigma', sd)],
+                      c.call('STWORK','Chain',note,c.call('STDWK','moments',len(rows),lambda i:rows[i],mean,var,sd)),
+                      drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0])))
         elif key == '5':
             c.call('STCOUNT4', 'check_table', rows, note, approximate)
         else:

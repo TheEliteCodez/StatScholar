@@ -19,6 +19,10 @@ def event_bounds(n, event):
             floor_ratio(b) if op[-1] == ']' else ceil_ratio(b) - 1)
 def translation(n, p, event):
     op, a, b = event
+    if op=='!=':
+        k=floor_ratio(a)
+        command='1-binompdf(%d,%s,%s)' % (n,c.exact_text(p),c.exact_text(a)) if c.compare_exact(a,k)==0 and 0<=k<=n else '1'
+        return ('NOT EQUAL '+c.exact_text(a),'P(X != '+c.exact_text(a)+')',command,'REMOVE THE EXACT POINT FROM THE WHOLE DISTRIBUTION.')
     text = c.exact_text(a)
     words = WORDS[op] + ' ' + text
     if op in ('[]', '()', '[)', '(]'): words += ' TO ' + c.exact_text(b)

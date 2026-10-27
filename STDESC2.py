@@ -1,4 +1,5 @@
 import STCORE
+from STWORK import num
 def frequency_stats(rows):
     counts = {}
     for x, f in rows:
@@ -36,10 +37,14 @@ def frequency_session(rows=None):
     counts = {}
     for x, f in rows:
         counts[x] = counts.get(x, 0) + f
-    cumulative = 0
-    details = []
-    for x in STCORE.exact_sorted(counts):
-        f = counts[x]
-        cumulative += f
-        details += ['x=' + STCORE.exact_text(x) + ' f=' + str(f) + ' xf=' + STCORE.exact_text(STCORE.rmul(x, (f, 1))), 'CUMULATIVE f=' + str(cumulative), 'RELATIVE f=' + STCORE.answer_text(STCORE.ratio(f, n))]
-    STCORE.results('F05/F06/F07/F03', [('MEAN', mean), ('MEDIAN', median), ('MODE', mode)], ['n=SUM(f)=' + str(n), 'SUM(x*f)=' + STCORE.exact_text(w), 'MEAN=SUM(x*f)/n', 'MIDDLE POS=' + str(pos[0]) + ',' + str(pos[1]), 'MODE=VALUE WITH MOST f', '2 MODES: COMMA; >2: DNE', 'EQUAL COUNTS: NO MODE', '1-VAR: VALUES L1, FREQ L2'] + details)
+    ordered=STCORE.exact_sorted(counts)
+    def detail(i):
+        at,part=divmod(i,3);x=ordered[at];f=counts[x]
+        cumulative=sum(counts[ordered[j]] for j in range(at+1))
+        if part==0: return 'x='+num(x)+' f='+str(f)
+        if part==1: return 'CUMULATIVE f='+str(cumulative)
+        return 'RELATIVE f=%d/%d=%.10g' % (f,n,f/n)
+    stats=STCORE.call('STDMATH','weighted_stats',rows)
+    STCORE.results('F05/F06/F07/F03', [('MEAN', mean), ('MEDIAN', median), ('MODE', mode)],
+                   STCORE.call('STWORK','Chain',['n=SUM(f)='+str(n),'MIDDLE POS='+str(pos[0])+','+str(pos[1])],
+                               STCORE.call('STDWK','descriptive',stats,None,rows),STCORE.call('STWORK','Lines',3*len(ordered),detail)))

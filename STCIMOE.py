@@ -30,6 +30,10 @@ def _margin_error():
         values=['p-hat='+('%.4f' % estimate),
                 'STANDARD ERROR='+('%.4f' % se),
                 'MARGIN OF ERROR='+('%.4f' % margin)]
+    values+=c.call('STWORK','mean_se',sigma,n,se,'sigma') if key=='2' else c.call('STWORK','prop_se',estimate,n,se)
+    if key=='2': values+=['z MARGIN; USING SAMPLE s IN PLACE OF sigma IS APPROXIMATE.']
+    if key=='1': values+=['p-hat=x/n=%d/%d=%.10g' % (successes,n,estimate)]
+    values+=['E=z*SE=%.10g*%.10g=%.10g' % (critical,se,margin)]
     _show_zstar('MARGIN OF ERROR',confidence,critical,values)
 def _interval_from_estimate_and_margin():
     kind=c.menu('GIVEN POINT ESTIMATE + MARGIN OF ERROR',[
@@ -47,6 +51,7 @@ def _interval_from_estimate_and_margin():
     lines=['POINT ESTIMATE='+('%.4f' % estimate),
            'MARGIN OF ERROR E=%.4f' % margin,
            'INTERVAL=(%.4f, %.4f)' % (low,high)]
+    lines+=c.call('STWORK','endpoints',estimate,margin,(low,high))
     if kind == '1':
         lines.append('PROPORTION BOUNDS '+(
             'EXTEND OUTSIDE [0,1]; NOT CLAMPED.' if low < 0 or high > 1

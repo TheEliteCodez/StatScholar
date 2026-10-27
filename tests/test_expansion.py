@@ -157,7 +157,7 @@ class Expansion(unittest.TestCase):
             self.assertEqual(prob.probability_class(c.as_ratio(p)),want)
         out,_=flow(binom.binomial_session,['25','.03','1','7','5','1','0'])
         self.assertIn('P=0.5330',out)
-        self.assertIn('1-binomcdf(n,p,0)',out)
+        self.assertIn('1-binomcdf(25,0.03,0)',out)
         out,_=flow(prob.supplied_session,['.6','.4','.2','1'])
         self.assertIn('P(NOT A)=0.4000',out);self.assertIn('P(NOT B)=0.6000',out)
 

@@ -27,7 +27,17 @@ def two_way_session():
         answers = [('P(ROW)', c.ratio(a, total)), ('P(COLUMN)', c.ratio(b, total)), ('P(BOTH)', c.ratio(both, total)), ('P(OR)', c.ratio(a + b - both, total)), ('P(NOT ROW)', c.ratio(total - a, total)), ('P(NOT COLUMN)', c.ratio(total - b, total))]
         answers += [('ROW GIVEN COLUMN', c.ratio(both, b) if b else 'UNDEFINED'), ('COLUMN GIVEN ROW', c.ratio(both, a) if a else 'UNDEFINED')]
         answers += [('INDEPENDENT', 'YES' if both*total==a*b else 'NO'), ('TWO COLUMN REPLACED', c.ratio(b*b,total*total)), ('TWO COLUMN NOT REPLACED', c.ratio(b*(b-1),total*(total-1)) if total>1 else 'UNDEFINED'), ('TWO ROW REPLACED', c.ratio(a*a,total*total)), ('TWO ROW NOT REPLACED', c.ratio(a*(a-1),total*(total-1)) if total>1 else 'UNDEFINED')]
-        c.results('P14/P12/P07', answers, ['TOTAL=' + str(total), 'ROW '+rl[int(r)-1]+'=' + str(a), 'COLUMN '+cl[int(cc)-1]+'=' + str(b), 'BOTH=' + str(both), 'GIVEN: DIVIDE BY GIVEN', 'OTHERS: DIVIDE BY TOTAL'],drawing=c.call('STSKETCH','venn',total,a,b,both)+['A=SELECTED ROW; B=SELECTED COLUMN.'])
+        work=[]
+        for label,numerator,denominator in [('P(ROW)',a,total),('P(COLUMN)',b,total),
+                ('P(BOTH)',both,total),('P(OR)',a+b-both,total),('P(NOT ROW)',total-a,total),
+                ('P(NOT COLUMN)',total-b,total),('ROW GIVEN COLUMN',both,b),('COLUMN GIVEN ROW',both,a)]:
+            work+=c.call('STWORK','ratio_work',label,numerator,denominator)
+        work+=['OR=(%d+%d-%d)/%d' % (a,b,both,total),
+               'INDEPENDENCE: BOTH*TOTAL=%d*%d=%d; ROW*COLUMN=%d*%d=%d' % (both,total,both*total,a,b,a*b)]
+        for label,count in [('ROW',a),('COLUMN',b)]:
+            work+=['TWO '+label+' REPLACED=(%d/%d)^2=%s' % (count,total,c.exact_text(c.ratio(count*count,total*total))),
+                   'TWO '+label+' NOT REPLACED=(%d/%d)*(%d/%d)=%s' % (count,total,count-1,total-1,c.exact_text(c.ratio(count*(count-1),total*(total-1))) if total>1 else 'UNDEFINED')]
+        c.results('P14/P12/P07', answers,work,drawing=c.call('STSKETCH','venn',total,a,b,both)+['A=SELECTED ROW; B=SELECTED COLUMN.'])
 def read_two_way():
     c.heading('P14 TWO-WAY COUNTS')
     nr = c.read_size('ROW COUNT (NO TOTAL): ', 10)

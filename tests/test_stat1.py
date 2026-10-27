@@ -173,7 +173,7 @@ class Workflow(unittest.TestCase):
             prompts.append(prompt)
             try:return next(pending)
             except StopIteration:raise AssertionError('Unexpected prompt: '+prompt)
-        with patch.object(builtins,'input',read),patch.object(s,'view',lambda title,lines:outputs.append((title,lines))),contextlib.redirect_stdout(io.StringIO()):
+        with patch.object(builtins,'input',read),patch.object(s,'view',lambda title,lines:outputs.append((title,list(lines)))),contextlib.redirect_stdout(io.StringIO()):
             fun()
         self.assertEqual(list(pending),[],'Unused scripted inputs')
         return outputs,prompts

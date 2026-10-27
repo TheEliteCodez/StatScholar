@@ -50,12 +50,13 @@ class BinomialFollowup(unittest.TestCase):
 
     def test_answer_next_page_stats_previous_page_answer(self):
         # Real viewer, physical arrows. No data re-entry to see the second page.
-        with patch.object(c,'HAS_KEYS',True),patch.object(c,'KEY_STYLE','ce'),patch.object(c,'ti_wait_key',side_effect=[1,2,9,9],create=True),patch('builtins.input',side_effect=['10','.05','1']) as entry,contextlib.redirect_stdout(io.StringIO()) as output:
+        with patch.object(c,'HAS_KEYS',True),patch.object(c,'KEY_STYLE','ce'),patch.object(c,'ti_wait_key',side_effect=[1,1,2,9,9],create=True),patch('builtins.input',side_effect=['10','.05','1']) as entry,contextlib.redirect_stdout(io.StringIO()) as output:
             wording.wording_session('=')
         text=output.getvalue()
         self.assertEqual(entry.call_count,3)
         self.assertEqual(text.count('ANSWER=0.3151'),2)
-        self.assertIn('1-7/7',text)
+        self.assertIn('1-7/9',text)
+        self.assertIn('C(10,1)*(0.05)^1*(0.95)^9',text)
         self.assertIn('MEAN=0.5000',text)
         self.assertIn('MAX USUAL=1.8784',text)
 

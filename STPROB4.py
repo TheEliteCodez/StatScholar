@@ -13,7 +13,8 @@ def category_session():
         if key == '0':
             return
         if key=='T':
-            c.paged_results('CATEGORY PROPORTIONS',len(labels),lambda i:(labels[i],c.ratio(counts[i],total)));continue
+            work=c.call('STWORK','Lines',len(labels),lambda i:'P(%s)=%d/%d=%.10g; PERCENT=(%d/%d)*100=%.10g%%' % (labels[i],counts[i],total,counts[i]/total,counts[i],total,100*counts[i]/total))
+            c.paged_results('CATEGORY PROPORTIONS',len(labels),lambda i:(labels[i],c.ratio(counts[i],total)),work);continue
         if key=='C':
             i=c.read_size('CATEGORY NUMBER: ',len(labels))-1
             labels[i]=input('CATEGORY NAME: ');counts[i]=c.read_int('COUNT: ');total=sum(counts);continue
@@ -24,8 +25,12 @@ def category_session():
             target = c.read_exact('EXPECTED PROBABILITY: ')
             estimate = c.ratio(counts[selected], total)
             delta = c.radd(estimate, (-target[0], target[1]))
-            c.results('F02 COMPARE', [('ESTIMATED P', estimate), ('EXPECTED P', target), ('DIFFERENCE (PERCENT POINTS)', c.rmul(delta, (100, 1)))], ['ESTIMATE=COUNT/TOTAL', 'USE CLASS RULE FOR CLOSE'])
+            c.results('F02 COMPARE', [('ESTIMATED P', estimate), ('EXPECTED P', target), ('DIFFERENCE (PERCENT POINTS)', c.rmul(delta, (100, 1)))],
+                      c.call('STWORK','ratio_work','ESTIMATED P',counts[selected],total)+[
+                      'DIFFERENCE=(%s-%s)*100=%s PERCENT POINTS' % (c.exact_text(estimate),c.exact_text(target),c.exact_text(c.rmul(delta,(100,1))))])
             continue
         i = int(key) - 1
         selected = i
-        c.results('F02 / P01 / P02', [('P(' + labels[i] + ')', c.ratio(counts[i], total)), ('P(NOT)', c.ratio(total - counts[i], total))], ['CATEGORY COUNT / TOTAL', str(counts[i]) + '/' + str(total), 'LONG-RUN PROPORTION', 'ESTIMATES PROBABILITY'])
+        c.results('F02 / P01 / P02', [('P(' + labels[i] + ')', c.ratio(counts[i], total)), ('P(NOT)', c.ratio(total - counts[i], total))],
+                  c.call('STWORK','ratio_work','P('+labels[i]+')',counts[i],total)+
+                  c.call('STWORK','ratio_work','P(NOT)',total-counts[i],total))

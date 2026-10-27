@@ -1,6 +1,6 @@
 import STCORE as c
 SUMMARY_KEYS = ('n', 'SUM', 'MEAN', 'SAMPLE SD Sx', 'SAMPLE VARIANCE s^2', 'MIN', 'Q1', 'MEDIAN', 'Q3', 'MAX', 'MODE', 'RANGE', 'IQR', 'MIDRANGE')
-def summary_results(stats, title='DATA > RAW > SUMMARY', population=False):
+def summary_results(stats, title='DATA > RAW > SUMMARY', population=False, values=None, rows=None):
     keys=list(SUMMARY_KEYS)
     if population:
         keys[3:5]=['POPULATION SD','POPULATION VARIANCE']
@@ -14,7 +14,8 @@ def summary_results(stats, title='DATA > RAW > SUMMARY', population=False):
         answers.extend([('MIN USUAL',c.radd(stats['MEAN'],(-distance[0],distance[1]))),('MAX USUAL',c.radd(stats['MEAN'],distance))])
     c.results(title,answers,['MEAN=SUM/n','VAR=SUM((x-MEAN)^2)/'+('n' if population else '(n-1)'),
         'QUARTILES: MEDIANS OF HALVES','ODD n: OMIT CENTER FROM HALVES','MODE: >2 MODES OR NO PEAK = DNE',
-        'IQR OUTLIERS AND 2-SD UNUSUAL ARE DIFFERENT'],drawing=[
+        'IQR OUTLIERS AND 2-SD UNUSUAL ARE DIFFERENT']+
+        c.call('STWORK','Chain',c.call('STDWK','descriptive',stats,values,rows)),drawing=[
         'POPULATION: mu=MEAN; sigma=POPULATION SD.',
         'SAMPLE: x-bar=MEAN; s=SAMPLE SD Sx.',
         'SUM SQUARED DEVIATIONS='+c.exact_text(c.rmul(stats['POPULATION VARIANCE'],(stats['n'],1))),

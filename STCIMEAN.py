@@ -24,7 +24,7 @@ def _one_mean(stats=None):
                  warning=warning,estimate_label='x-bar',
                  parameter='POPULATION MEAN mu',critical_label='t*',
                  input_summary=['INPUT CHECK: x-bar=%.4f; s=%.4f; n=%d' %
-                                (mean,sd,n)])
+                                (mean,sd,n)],work=c.call('STWORK','mean_se',sd,n,se))
     raw_reference=input('REFERENCE POPULATION MEAN (ENTER=SKIP): ').strip()
     if raw_reference:
         reference=c.number(c.as_ratio(raw_reference))
@@ -52,4 +52,6 @@ def _two_means():
                                 (mean1,sd1,n1),
                                 'GROUP 2 x-bar=%.4f, s=%.4f, n=%d' %
                                 (mean2,sd2,n2),
-                                'INTERVAL DIRECTION: GROUP 1 - GROUP 2'])
+                                'INTERVAL DIRECTION: GROUP 1 - GROUP 2'],
+                 work=['PE=x-bar1-x-bar2=%.10g-%.10g=%.10g' % (mean1,mean2,estimate)]+
+                      c.call('STWORK','mean_two',sd1,n1,sd2,n2,se,degrees))

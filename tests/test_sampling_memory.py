@@ -41,7 +41,7 @@ def guarded(name,*args,**kwargs):
  if name in ('STCOUNT','STBMATH'): raise AssertionError('Unneeded heavy import: '+name)
  return original(name,*args,**kwargs)
 builtins.__import__=guarded
-STCORE.view=lambda title,lines:print(title,lines)
+STCORE.view=lambda title,lines:print(title,list(lines))
 for repeat in range(3):
  answers=iter(['2','N','N','3','8','5','2','5','1','2','1','1','1','1','1','0','0','0'])
  builtins.input=lambda prompt='':next(answers)
