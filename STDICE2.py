@@ -33,7 +33,7 @@ def dice_session(word=None):
             n=2
             continue
         if key=='4':
-            STCORE.call('STPAGE','text_pages','TWO DICE > 36 OUTCOMES','FIRST,SECOND: '+', '.join('('+str(a)+','+str(b)+')' for a in range(1,7) for b in range(1,7)))
+            STCORE.call('STGDIAG','dice')
             continue
         if key=='5':
             STCORE.call('STDICE','solver_multi_dice',n);continue
@@ -43,7 +43,7 @@ def dice_session(word=None):
         if key in ('2','3') and second is None: continue
         join='OR' if key=='3' else 'AND'
         p=STCORE.call('STDICE','pair_probability',first,second,join)
-        STCORE.results('DICE > '+join if second else 'DICE > EVENT',[('P',p),('FRACTION',STCORE.answer_text(p,'F')),('SUCCESSFUL',STCORE.number(STCORE.rmul(p,(36,1)))),('TOTAL',36)],['ORDERED PAIRS: FIRST,SECOND','AND: BOTH CONDITIONS HOLD','OR: EITHER; COUNT OVERLAP ONCE','FIRST/SECOND DISTINGUISHED'],drawing=['HOW TO DRAW: TWO-DICE GRID','6 ROWS FOR FIRST DIE 1..6.','6 COLUMNS FOR SECOND DIE 1..6.','EACH CELL IS AN ORDERED PAIR.','MARK CELLS SATISFYING THE EVENT.','AND: BOTH; OR: EITHER ONCE.','P=MARKED CELLS / 36.'])
+        STCORE.results('DICE > '+join if second else 'DICE > EVENT',[('P',p),('FRACTION',STCORE.answer_text(p,'F')),('SUCCESSFUL',STCORE.number(STCORE.rmul(p,(36,1)))),('TOTAL',36)],['ORDERED PAIRS: FIRST,SECOND','AND: BOTH CONDITIONS HOLD','OR: EITHER; COUNT OVERLAP ONCE','FIRST/SECOND DISTINGUISHED'],drawing=['HOW TO DRAW: TWO-DICE GRID','6 ROWS FOR FIRST DIE 1..6.','6 COLUMNS FOR SECOND DIE 1..6.','EACH CELL IS AN ORDERED PAIR.','MARK CELLS SATISFYING THE EVENT.','AND: BOTH; OR: EITHER ONCE.','P=MARKED CELLS / 36.'],graph=('STGDIAG','dice',(first,second,join)))
         show=STCORE.menu('DICE > NEXT',[('1','ANOTHER EVENT'),('2','LIST MATCHING OUTCOMES')])
         if show=='0': return
         if show=='2':

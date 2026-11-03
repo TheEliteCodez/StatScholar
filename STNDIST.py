@@ -88,7 +88,7 @@ def _normal_axes(mean, sd):
   for z in range(-3, 4):
     lines.append('z=%+d  x=%.4f' % (z, mean+z*sd))
   lines.append('LABEL BOTH x AND z AXES; SHADE THE REQUESTED AREA.')
-  c.view('NORMAL > DRAW / LABEL', lines)
+  c.call('STGCURV','show','NORMAL',mean,sd)
 
 def normal_menu():
   mean=sd=None
@@ -156,7 +156,9 @@ def normal_probability_plot(values=None):
     '3':'RANK/(n+1) NORMAL SCORES; USE THE CONVENTION THAT MATCHES THE PROVIDED PLOT.'
   }[method]
   method_name={'1':'BLOM','2':'HAZEN','3':'RANK'}[method]
+  graph=('STGQQ','show',(values,method))
+  if c.ON_TI: c.show_graph(graph)
   c.paged_results('QQ PLOT > '+method_name+' ORDERED PAIRS',n,row_at,[
     formula,
     'PLOT ORDERED x AGAINST NORMAL z QUANTILES.',
-    'ASSESS LINEARITY AND OUTLIERS YOURSELF; NO AUTOMATIC NORMALITY VERDICT.'],drawing=['HOW TO DRAW: NORMAL QQ PLOT','HORIZONTAL AXIS: NORMAL z.','VERTICAL AXIS: ORDERED x.','PLOT EACH (z,x) TABLE PAIR.','NEAR A LINE: NORMAL IS PLAUSIBLE.'])
+    'ASSESS LINEARITY AND OUTLIERS YOURSELF; NO AUTOMATIC NORMALITY VERDICT.'],drawing=['HOW TO DRAW: NORMAL QQ PLOT','HORIZONTAL AXIS: NORMAL z.','VERTICAL AXIS: ORDERED x.','PLOT EACH (z,x) TABLE PAIR.','NEAR A LINE: NORMAL IS PLAUSIBLE.'],graph=graph)

@@ -43,7 +43,7 @@ def shape_session():
     STCORE.view('B12 GRAPH MATCH', lines)
     for p in candidates:
         if STCORE.yesno('SHOW TABLE FOR p=' + STCORE.exact_text(p) + '?'):
-            STCORE.paged_results('B12 BAR HEIGHTS', n + 1, lambda k: ('P(' + str(k) + ')', binomial_exact_ratio(n, p, k)))
+            STCORE.paged_results('B12 BAR HEIGHTS', n + 1, lambda k: ('P(' + str(k) + ')', binomial_exact_ratio(n, p, k)),graph=('STGBARS','show',(('binomial',n,p),None,'BINOMIAL SHAPE')))
 def binomial_conditions():
     conditions = [('IS THE NUMBER OF TRIALS FIXED?', 'FIXED NUMBER OF TRIALS NEEDED'), ('IS EACH RESULT SUCCESS OR NOT?', 'NEED TWO RESULT CATEGORIES'), ('IS THE CHANCE THE SAME EACH TIME?', 'SUCCESS CHANCE MUST STAY SAME'), ('ARE TRIALS INDEPENDENT OR APPROX SO?', 'DEPENDENT TRIALS NOT BINOMIAL')]
     for prompt, reason in conditions:

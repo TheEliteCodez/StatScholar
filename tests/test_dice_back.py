@@ -62,7 +62,7 @@ class DiceBack(unittest.TestCase):
 
     def test_table_page_controls_left_at_first_page_returns(self):
         output,_=self.run_keys(lambda:c.paged_results('TABLE',9,lambda i:('ROW '+str(i),i)),[45,24])
-        self.assertIn('LEFT BACK',output)
+        self.assertIn('LEFT = BACK',output)
 
 
 if __name__=='__main__': unittest.main()

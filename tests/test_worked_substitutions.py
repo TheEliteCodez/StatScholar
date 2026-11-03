@@ -147,9 +147,9 @@ class WorkedSubstitutions(unittest.TestCase):
         pages=[]
         with patch.object(c,'view',side_effect=lambda title,lines:pages.append(list(lines))), \
              patch.object(c,'menu',side_effect=['N','0']):
-            c.paged_results('TABLE',8,lambda i:('ROW '+str(i),i),['TOTAL=0+1+2+3+4+5+6+7=28'])
-        self.assertNotIn('TOTAL=0+1+2+3+4+5+6+7=28',pages[0])
-        self.assertIn('TOTAL=0+1+2+3+4+5+6+7=28',pages[1])
+            c.paged_results('TABLE',9,lambda i:('ROW '+str(i),i),['TOTAL=0+1+2+3+4+5+6+7+8=36'])
+        self.assertNotIn('TOTAL=0+1+2+3+4+5+6+7+8=36',pages[0])
+        self.assertIn('TOTAL=0+1+2+3+4+5+6+7+8=36',pages[1])
 
 
 if __name__=='__main__': unittest.main()

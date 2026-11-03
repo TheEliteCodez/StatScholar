@@ -108,7 +108,7 @@ class DrawingPages(unittest.TestCase):
             views.append(lines)
         with patch.object(c,'view',side_effect=view), \
              patch.object(c,'menu',side_effect=['N','P','0']):
-            STVRES.paged_results('TABLE',8,lambda i:(str(i),i),
+            STVRES.paged_results('TABLE',9,lambda i:(str(i),i),
                                  drawing=['HOW TO DRAW: TEST'])
         self.assertNotIn('HOW TO DRAW: TEST',views[0])
         self.assertIn('HOW TO DRAW: TEST',views[1])

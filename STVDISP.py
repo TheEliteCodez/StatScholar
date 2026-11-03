@@ -1,9 +1,8 @@
 import STCORE as c
-def view(title, lines):
+def view(title, lines, graph=False, top=0):
     if len(lines) == 0:
         lines = ('NO CONTENT',)
     count = sum((1 for line in c.wrapped_lines(lines)))
-    top = 0
     max_top = max(0, count - c.VIEW_LINES)
     while True:
         c.cls()
@@ -15,12 +14,13 @@ def view(title, lines):
                 break
             if i >= top:
                 print(line)
-        if c.HAS_KEYS:
-            print('UP/DN SCROLL RIGHT NEXT')
-            print('LEFT BACK  CLEAR BACK' if top == 0 else 'LEFT PREV  CLEAR BACK')
+        if graph: print('6 SHOW GRAPH  < BACK  > NEXT')
+        elif c.HAS_KEYS:
+            print('LEFT = BACK  RIGHT = NEXT')
         else:
             print('ENTER NEXT  - PREV  0 BACK')
         k = c.wait_key()
+        if k=='6' and graph: return ('graph',top)
         if k in ('up', 'u'):
             if top > 0:
                 top -= 1

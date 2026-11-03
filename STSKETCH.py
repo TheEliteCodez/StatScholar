@@ -1,6 +1,6 @@
 import STCORE as c
 
-def curve(kind,center,spread,event=None,bounds=()):
+def curve(kind,center,spread,event=None,bounds=(),label=None):
     lines=['HOW TO DRAW: '+kind]
     if kind=='UNIFORM':
         lines+=['RECTANGLE FROM %.4f TO %.4f' % (center,spread),
@@ -21,10 +21,10 @@ def curve(kind,center,spread,event=None,bounds=()):
                       '2':'SHADE RIGHT OF CUTOFF.',
                       '3':'SHADE BETWEEN CUTOFFS.',
                       'outside':'SHADE BOTH OUTSIDE TAILS.'}[event])
-    return lines
+    return c.call('STGATT','attach',lines,'STGCURV','show',(kind,center,spread,event,bounds,label))
 
-def confidence(estimate,low,high,level,critical,kind):
-    return ['HOW TO DRAW: CONFIDENCE INTERVAL',
+def confidence(estimate,low,high,level,critical,kind,label='ESTIMATE'):
+    lines=['HOW TO DRAW: CONFIDENCE INTERVAL',
             'DRAW A HORIZONTAL NUMBER LINE.',
             'LEFT END=%.4f' % low,'CENTER ESTIMATE=%.4f' % estimate,
             'RIGHT END=%.4f' % high,'CONNECT ENDPOINTS; MARK CENTER.',
@@ -33,6 +33,7 @@ def confidence(estimate,low,high,level,critical,kind):
             'BELL CENTER=0; MARK +/-%.4f' % critical,
             'SHADE MIDDLE AREA=%.4f' % level,
             'EACH OUTSIDE TAIL=%.4f' % ((1-level)/2)]
+    return c.call('STGATT','attach',lines,'STGINTR','show',(estimate,low,high,level,label))
 
 def bars(low,high,event=None):
     lines=['HOW TO DRAW: PROBABILITY BARS',
@@ -51,7 +52,7 @@ def bars(low,high,event=None):
     return lines
 
 def position(mean,sd,x):
-    return ['HOW TO DRAW: x / z AXES',
+    lines=['HOW TO DRAW: x / z AXES',
             'DRAW ALIGNED NUMBER LINES.',
             'x CENTER='+c.exact_text(mean)+'; z CENTER=0',
             'x TICK SPACING='+c.exact_text(sd)+'; z SPACING=1',
@@ -59,9 +60,10 @@ def position(mean,sd,x):
             'MARK ITS z DIRECTLY BELOW.',
             'BELL CURVE ONLY IF NORMAL.',
             'A z-SCORE ALONE IS NOT AN AREA.']
+    return c.call('STGATT','attach',lines,'STGCURV','show',('POSITION',c.number(mean),c.number(sd),None,(c.number(x),)))
 
 def venn(total,a,b,both):
-    return ['HOW TO DRAW: VENN',
+    lines=['HOW TO DRAW: VENN',
             'RECTANGLE TOTAL='+str(total),
             'DRAW OVERLAPPING CIRCLES A, B.',
             'OVERLAP='+str(both),'A ONLY='+str(a-both),
@@ -70,3 +72,4 @@ def venn(total,a,b,both):
             'AND: SHADE ONLY OVERLAP.',
             'GIVEN A: USE A AS TOTAL.',
             'GIVEN B: USE B AS TOTAL.']
+    return c.call('STGATT','attach',lines,'STGDIAG','venn',(total,a,b,both))

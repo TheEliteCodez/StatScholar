@@ -99,4 +99,10 @@ def _result(title,statistic,mean,se,n,conditions,distribution,context,
                       'USE SAME AXIS SCALE TO COMPARE.',
                       'NORMAL POPULATION: BOTH BELLS.',
                       'CLT ALONE DOES NOT MAKE X NORMAL.'])
-    c.view(title,lines)
+    graph=None
+    if se==0 or (probability_allowed and 'NOT' not in distribution):
+        bounds=tuple(float(x.split(': ')[1]) for x in sketch if x.startswith(('MARK CUTOFF:','MARK LOWER:','MARK UPPER:')))
+        shading=('3' if len(bounds)==2 else '1' if event[0]=='P(BELOW)' else '2') if find_probability else None
+        graph=('STGCURV','show',('NORMAL',mean,se,shading,bounds,statistic,probability if find_probability else None))
+    if graph: c.view(title,c.graph_lines(lines,graph))
+    else: c.view(title,lines)

@@ -9,6 +9,7 @@ from unittest.mock import patch
 import STCORE as c
 import STHYRES as output
 import STHTPLOT as graph
+import STGPEN as pen
 
 
 class Plot(types.ModuleType):
@@ -77,7 +78,7 @@ class HypothesisGraph(unittest.TestCase):
                 setup,result=self.setup_values(alt,df)
                 p,cv,reject=output.inference(2,.05,alt,df)
                 plt=Plot()
-                with patch.dict(sys.modules,ti_plotlib=plt),patch.object(graph,'ink',wraps=graph.ink) as ink,patch.object(graph,'tag',wraps=graph.tag) as tags:
+                with patch.dict(sys.modules,ti_plotlib=plt),patch.object(pen,'ink',wraps=pen.ink) as shared_ink,patch.object(graph,'ink',wraps=graph.ink) as ink,patch.object(graph,'tag',wraps=graph.tag) as tags:
                     self.assertTrue(graph.show(setup,result,p,cv))
                 extent=max(3.5,2.7,max(abs(v) for v in cv)+.7)
                 blue=[points for rgb,points in plt.fills if rgb==graph.BLUE]
@@ -85,7 +86,7 @@ class HypothesisGraph(unittest.TestCase):
                 for points in blue:
                     score=(points[0]-8)*2*extent/303-extent
                     self.assertTrue(graph.shaded(score+(-1e-10 if alt=='<' else 1e-10 if alt=='>' else 0),2-1e-9 if alt=='!=' else 2,alt))
-                labels=[call.args[1] for call in ink.call_args_list]
+                labels=[call.args[1] for call in ink.call_args_list+shared_ink.call_args_list]
                 self.assertIn('TS=2',labels)
                 self.assertIn('H0=%.5g' % setup['null'],labels)
                 self.assertIn('%.5g' % result['estimate'],labels)
@@ -104,7 +105,7 @@ class HypothesisGraph(unittest.TestCase):
         for alt in ('<','>','!='):
             setup,result=self.setup_values(alt,9);result['ts']=.3
             p,cv,reject=output.inference(.3,.05,alt,9);plt=Plot()
-            with patch.dict(sys.modules,ti_plotlib=plt),patch.object(graph,'ink',wraps=graph.ink) as ink:
+            with patch.dict(sys.modules,ti_plotlib=plt),patch.object(pen,'ink',wraps=pen.ink) as shared_ink,patch.object(graph,'ink',wraps=graph.ink) as ink:
                 graph.show(setup,result,p,cv,'alpha')
             extent=max(3.5,max(abs(v) for v in cv)+.7)
             boundary=cv[0] if alt=='<' else cv[-1]
@@ -113,7 +114,7 @@ class HypothesisGraph(unittest.TestCase):
                 self.assertEqual(rgb,graph.RED)
                 score=(points[0]-8)*2*extent/303-extent
                 self.assertTrue(graph.shaded(score+(-1e-9 if alt=='<' else 1e-9 if alt=='>' else 0),boundary-1e-9 if alt=='!=' else boundary,alt))
-            labels=[call.args[1] for call in ink.call_args_list]
+            labels=[call.args[1] for call in ink.call_args_list+shared_ink.call_args_list]
             self.assertIn(('alpha/2' if alt=='!=' else 'alpha')+'=%.4g' % (.025 if alt=='!=' else .05),labels)
             self.assertIn('FAIL TO REJECT H0',' '.join(args[1] for args in plt.text))
 
@@ -123,10 +124,10 @@ class HypothesisGraph(unittest.TestCase):
             result={'ts':ts,'df':9 if parameter.startswith('mu') else None,'se':se,'estimate':null+ts*se}
             cv=(1.833113,);plt=Plot()
             self.assertAlmostEqual(graph.original(setup,result,ts),result['estimate'])
-            with patch.dict(sys.modules,ti_plotlib=plt),patch.object(graph,'ink',wraps=graph.ink) as ink:
+            with patch.dict(sys.modules,ti_plotlib=plt),patch.object(pen,'ink',wraps=pen.ink) as shared_ink,patch.object(graph,'ink',wraps=graph.ink) as ink:
                 graph.show(setup,result,.068177,cv)
             extent=max(3.5,abs(ts)+.7,cv[0]+.7)
-            labels=[call.args[1] for call in ink.call_args_list]
+            labels=[call.args[1] for call in ink.call_args_list+shared_ink.call_args_list]
             self.assertIn(symbol,labels)
             self.assertIn('H0=%.5g' % null,labels)
             self.assertIn('%.5g' % (null+cv[0]*se),labels)

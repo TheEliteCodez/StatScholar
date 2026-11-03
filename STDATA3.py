@@ -8,6 +8,7 @@ def compare_session(a=None, boxes=False):
     population=False
     while True:
         if show and boxes:
+            c.call('STGBOX','compare',a,b)
             c.results('GRAPH > SAME SCALE', [('AXIS MIN',c.call('STDMATH','min_exact',a[0],b[0])),('AXIS MAX',c.call('STDMATH','max_exact',a[-1],b[-1]))], ['USE SAME AXIS AND TICK SPACING'])
             c.call('STGRAPH','boxplot_data',a,'GRAPH > BOX A')
             c.call('STGRAPH','boxplot_data',b,'GRAPH > BOX B')

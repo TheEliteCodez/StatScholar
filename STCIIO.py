@@ -19,7 +19,7 @@ def _show_result(title, estimate, se, critical, interval, confidence, df=None,
                   'INTERPRETATION: '+parameter+' IS ESTIMATED WITH THIS INTERVAL.'])
     if warning:
         lines.append(warning)
-    lines+=c.call('STSKETCH','confidence',estimate,interval[0],interval[1],
+    lines=lines+c.call('STSKETCH','confidence',estimate,interval[0],interval[1],
                   confidence,critical,'t' if df is not None else 'z')
     c.view(title,lines)
 def zstar_session():
@@ -70,7 +70,7 @@ def critical_session(kind,first=None,direct_df=False):
         bounds=(value,); shading='2' if key=='3' or (key=='5' and side=='2') else '1'
         if key=='6': bounds=(min(0,value),max(0,value)); shading='3'
     if key=='5': details+=['ONE-SIDED alpha=%.6f; SHADE THAT TAIL.' % (1-area)]
-    details+=c.call('STSKETCH','curve','t' if kind=='t' else 'NORMAL',0,degrees,shading,bounds)
+    details=details+c.call('STSKETCH','curve','t' if kind=='t' else 'NORMAL',0,degrees,shading,bounds,kind)
     c.view(kind.upper()+'* CRITICAL VALUE',details)
     estimate_work(value,key,side)
 
@@ -128,11 +128,12 @@ def estimate_work(critical,method,side):
                 '(%.6f-%.6f, %.6f+%.6f)' % (estimate,margin,estimate,margin),
                 'ENDS=(%.6f, %.6f)' % (low,high),
                 'DRAW NUMBER LINE; MARK BOTH ENDS AND THE CENTER.']
-    c.view('POINT ESTIMATE / MARGIN / WORK',lines)
+    graph=('STGINTR','show',(estimate,bound if side=='2' else estimate, bound if side=='1' else estimate,None,'ESTIMATE','upper' if side=='1' else 'lower')) if method=='5' else ('STGINTR','show',(estimate,low,high,None))
+    c.view('POINT ESTIMATE / MARGIN / WORK',c.graph_lines(lines,graph))
 
 def _show_zstar(title, confidence, critical, values):
     lines = ['CONFIDENCE='+('%.2f' % (100*confidence))+'%',
              'z*='+('%.4f' % critical)]
     lines.extend(values)
-    lines+=c.call('STSKETCH','curve','NORMAL',0,1,'3',(-critical,critical))
+    lines=lines+c.call('STSKETCH','curve','NORMAL',0,1,'3',(-critical,critical),'z')
     c.view(title,lines)

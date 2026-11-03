@@ -228,7 +228,7 @@ print('PASS')
              contextlib.redirect_stdout(io.StringIO()) as out:
             STCORE.view('ARROW CHECK',[str(k) for k in range(10)])
         self.assertEqual(reader.call_count,7)
-        for page in ['1-7/10','2-8/10','3-9/10']:self.assertIn(page,out.getvalue())
+        for page in ['1-8/10','2-9/10','3-10/10']:self.assertIn(page,out.getvalue())
         for code in [105,45]:
             with patch.object(STCORE,'HAS_KEYS',True),patch.object(STCORE,'KEY_STYLE','scan'), \
                  patch.object(STCORE,'get_key',return_value=code,create=True):
@@ -239,7 +239,7 @@ print('PASS')
         run=subprocess.run([sys.executable,'-B','-c',code],input='',text=True,capture_output=True,
                            cwd=Path(__file__).resolve().parent.parent,timeout=10)
         self.assertEqual(run.returncode,0,run.stderr)
-        self.assertIn('2-8/10',run.stdout)
+        self.assertIn('2-9/10',run.stdout)
 
 
     def test_full_binomial_pages_and_format_reuse(self):
@@ -247,15 +247,15 @@ print('PASS')
         import STCORE,STBINOM
         out,_=capture(lambda:STCORE.paged_results('B11',149,
                 lambda k:('P('+str(k)+')',STBINOM.binomial_exact_ratio(148,(1,4),k))),
-                ['N']*21+['0'])
-        self.assertEqual(len(out),22)
+                ['N']*((149-1)//STCORE.VIEW_LINES)+['0'])
+        self.assertEqual(len(out),(149+STCORE.VIEW_LINES-1)//STCORE.VIEW_LINES)
         seen=[]
         for title,lines in out:
             rows=[line for line in lines if line.startswith('P(')]
-            self.assertLessEqual(len(rows),7)
+            self.assertLessEqual(len(rows),STCORE.VIEW_LINES)
             seen.extend(int(line.split(')')[0][2:]) for line in rows)
         self.assertEqual(seen,list(range(149)))
-        self.assertIn('ROWS 148..149/149',str(out[-1]))
+        self.assertIn('ROWS 145..149/149',str(out[-1]))
         out,prompts=capture(STBINOM.binomial_session,
                            ['8','25%','3','3','N','P','2','6','N','4','2','0','0'])
         self.assertIn('P(0)=6561/65536',str(out))
@@ -265,7 +265,7 @@ print('PASS')
         self.assertEqual(prompts.count('HOW MANY TRIALS n: '),1)
         # B12 uses the same bounded viewer for its optional bar table.
         out,_=capture(s.shape_session,['148','1','.25','Y','N','0'])
-        self.assertIn('ROWS 8..14/149',str(out))
+        self.assertIn('ROWS 9..16/149',str(out))
 
     def test_large_dice_against_independent_convolution(self):
         import STDICE
@@ -301,7 +301,7 @@ print('PASS')
         # Long lines may wrap beyond 100 display lines without a wrapping list.
         with patch.object(STCORE,'wait_key',return_value='b'),contextlib.redirect_stdout(io.StringIO()) as output:
             STCORE.view('LONG',['x'*3300])
-        self.assertIn('1-7/110',output.getvalue())
+        self.assertIn('1-8/110',output.getvalue())
 
     def test_runtime_has_no_test_only_binomial_or_guide_fixture(self):
         import ast

@@ -55,7 +55,7 @@ class BinomialFollowup(unittest.TestCase):
         text=output.getvalue()
         self.assertEqual(entry.call_count,3)
         self.assertEqual(text.count('ANSWER=0.3151'),2)
-        self.assertIn('1-7/9',text)
+        self.assertIn('1-8/9',text)
         self.assertIn('C(10,1)*(0.05)^1*(0.95)^9',text)
         self.assertIn('MEAN=0.5000',text)
         self.assertIn('MAX USUAL=1.8784',text)

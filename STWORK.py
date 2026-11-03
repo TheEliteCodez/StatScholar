@@ -21,6 +21,11 @@ class Lines:
 
 class Chain:
     def __init__(self,*parts): self.parts=parts
+    @property
+    def graph(self):
+        for part in self.parts:
+            graph=getattr(part,'graph',None)
+            if graph: return graph
     def __radd__(self,other): return Chain(other,self)
     def __add__(self,other): return Chain(self,other)
     def __len__(self): return sum(len(part) for part in self.parts)

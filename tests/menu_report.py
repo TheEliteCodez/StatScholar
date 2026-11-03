@@ -16,6 +16,12 @@ for name in ('_check_assumption','_read_mean_group','choose_confidence_method',
     DORMANT['STCI.py:'+name]='Legacy CI bundle; current Home CI menu uses STCIMENU and smaller helpers.'
 
 
+FOCUSED={
+    'STGDIAG.py:venn':'Active optional graph selector; choices 1-7 rendered in test_graph_expansion.py, and event/conditional routes in test_graph_routes.py.',
+    'STGINFER.py:chi':'Active optional graph selector; rejection and p-value choices rendered from both real chi-square input routes in test_graph_routes.py.',
+}
+
+
 def render(result):
     seen={m['site'] for m in result['menus'].values()}
     unobserved={}
@@ -26,9 +32,9 @@ def render(result):
                    and isinstance(n.func,ast.Attribute) and n.func.attr in ('menu','choice_pages')]
             site=path.name+':'+function.name
             if calls and site not in seen:
-                unobserved[site]=DORMANT.get(site,'UNCLASSIFIED: further checking required.')
+                unobserved[site]=DORMANT.get(site,FOCUSED.get(site,'UNCLASSIFIED: further checking required.'))
     result['menu_sites_outside_observed_walk']=unobserved
-    result['unclassified_menu_sites']=[name for name in unobserved if name not in DORMANT]
+    result['unclassified_menu_sites']=[name for name in unobserved if name not in DORMANT and name not in FOCUSED]
     choices=sum(len(m['options']) for m in result['menus'].values())
     peak=max(result['runs'],key=lambda r:r['peak_loaded_source_bytes'])
     lines=[
@@ -58,8 +64,8 @@ def render(result):
         title=identity.split(' | ',1)[1].replace('|','/')
         options='; '.join(str(key)+' '+label.replace('|','/') for key,label in menu['options'].items())
         lines.append('| '+title+' (`'+menu['site']+'`) | '+options+' |')
-    lines += ['', '## Menu code outside the current Home tree', '',
-              'These source functions were reviewed separately from the exposed menu tree. They are retained compatibility/legacy paths or conditional selectors, not additional options advertised in Home.', '',
+    lines += ['', '## Menu code outside the observed text-menu walk', '',
+              'These source functions were reviewed separately from the exposed menu tree. These include retained compatibility/legacy paths and active optional graph selectors. Active graph selectors are tested separately by the named renderer/route suites; they are not classified as dormant.', '',
               '| Source function | Scope |','| --- | --- |']
     lines += ['| `'+name+'` | '+reason+' |' for name,reason in sorted(unobserved.items())]
     (ROOT/'MENU_AUDIT.md').write_text('\n'.join(lines)+'\n')

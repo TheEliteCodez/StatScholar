@@ -36,7 +36,7 @@ def frequency_tools(rows=None):
             if event:
                 total=sum(f for x,f in rows)
                 matching=sum(f for x,f in rows if c.event_match(x,*event))
-                c.results('FREQUENCY BETWEEN',[('PROPORTION',c.ratio(matching,total))],c.call('STWORK','ratio_work','PROPORTION',matching,total))
+                c.results('FREQUENCY BETWEEN',[('PROPORTION',c.ratio(matching,total))],c.call('STWORK','ratio_work','PROPORTION',matching,total),graph=('STGBARS','show',(('rows',[(x,c.ratio(f,total)) for x,f in rows]),event,'FREQUENCY EVENT')))
         else:
             op={'2':'=','3':'<=','4':'>=','5':'<','6':'>'}[key]
             cutoff=c.read_exact('CATEGORY / VALUE CUTOFF: ')
@@ -44,4 +44,4 @@ def frequency_tools(rows=None):
             total=sum(f for x,f in rows)
             matching=probability[0]*total//probability[1]
             c.results('FREQUENCY > X'+op+c.exact_text(cutoff),[('PROPORTION',probability)],
-                      c.call('STWORK','ratio_work','PROPORTION',matching,total))
+                      c.call('STWORK','ratio_work','PROPORTION',matching,total),graph=('STGBARS','show',(('rows',[(x,c.ratio(f,total)) for x,f in rows]),(op,cutoff,0),'FREQUENCY EVENT')))

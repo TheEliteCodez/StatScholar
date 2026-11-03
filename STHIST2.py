@@ -13,7 +13,9 @@ def histogram_session(values=None,group_first=False,rows=None):
         if key=='3':
             import STCOUNT
             rows,approx=STCOUNT.read_distribution()
-            STCORE.paged_results('GRAPH > PROB HISTOGRAM',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(x)', 'LABEL x AXIS AND PROBABILITY', 'APPROX: ROUNDED P' if approx else 'USE EQUAL-WIDTH BARS'],drawing=['HOW TO DRAW: PROBABILITY BARS','x AXIS=VALUES; y AXIS=P(X).','HEIGHTS FROM THIS TABLE.'])
+            graph=('STGBARS','show',(('rows',rows),None,'PROBABILITY HISTOGRAM'))
+            if STCORE.ON_TI: STCORE.show_graph(graph)
+            STCORE.paged_results('GRAPH > PROB HISTOGRAM',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(x)', 'LABEL x AXIS AND PROBABILITY', 'APPROX: ROUNDED P' if approx else 'USE EQUAL-WIDTH BARS'],drawing=['HOW TO DRAW: PROBABILITY BARS','x AXIS=VALUES; y AXIS=P(X).','HEIGHTS FROM THIS TABLE.'],graph=graph)
             continue
         if key=='2': rows=read_frequency_rows()
         elif saved_rows is not None: rows=saved_rows
@@ -25,7 +27,9 @@ def histogram_session(values=None,group_first=False,rows=None):
         saved_rows=rows
         if key!='4':
             total=sum(f for x,f in rows)
-            STCORE.paged_results('GRAPH > FREQUENCIES',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=FREQUENCY','NUMERIC AXIS; BARS TOUCH', 'USE GROUP INTO CLASSES FOR BINS'],drawing=['HOW TO DRAW: HISTOGRAM','x AXIS=VALUES; y AXIS=COUNT.','NUMERIC SPACING; HEIGHT=f.','FOR CLASSES, DRAW TOUCHING BARS.'])
+            graph=('STGDATA','show',(rows,'histogram','FREQUENCY HISTOGRAM'))
+            if STCORE.ON_TI: STCORE.show_graph(graph)
+            STCORE.paged_results('GRAPH > FREQUENCIES',len(rows),lambda i:(STCORE.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=FREQUENCY','NUMERIC AXIS; BARS TOUCH', 'USE GROUP INTO CLASSES FOR BINS'],drawing=['HOW TO DRAW: HISTOGRAM','x AXIS=VALUES; y AXIS=COUNT.','NUMERIC SPACING; HEIGHT=f.','FOR CLASSES, DRAW TOUCHING BARS.'],graph=graph)
             continue
         mode=STCORE.menu('GRAPH > CLASS METHOD',[('1','NUMBER OF CLASSES'),('2','CLASS WIDTH')])
         if mode=='0': continue
@@ -55,6 +59,10 @@ def histogram_session(values=None,group_first=False,rows=None):
             if unit[0]:
                 half=STCORE.rdiv(unit,(2,1))
                 lines.append('BOUNDARIES '+STCORE.exact_text(sub(low,half))+' TO '+STCORE.exact_text(sub(edge,half)))
-        STCORE.view('GRAPH > GROUPED TABLE',lines+['CONTINUOUS: [LOW,HIGH)', 'FINAL CONTINUOUS BIN INCLUDES HIGH', 'DRAW TOUCHING BARS; HEIGHT=f'])
+        half=STCORE.rdiv(unit,(2,1)) if unit[0] else (0,1)
+        bins=[(sub(lo,half),sub(hi,half),f) for lo,hi,f,rel,cum in grouped]
+        graph=('STGDATA','show',(bins,'classes','GROUPED HISTOGRAM'))
+        if STCORE.ON_TI: STCORE.show_graph(graph)
+        STCORE.view('GRAPH > GROUPED TABLE',STCORE.graph_lines(lines+['CONTINUOUS: [LOW,HIGH)', 'FINAL CONTINUOUS BIN INCLUDES HIGH', 'DRAW TOUCHING BARS; HEIGHT=f'],graph))
 def group_session():
     histogram_session(group_first=True)

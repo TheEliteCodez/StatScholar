@@ -56,7 +56,7 @@ def _interval_from_estimate_and_margin():
         lines.append('PROPORTION BOUNDS '+(
             'EXTEND OUTSIDE [0,1]; NOT CLAMPED.' if low < 0 or high > 1
             else 'ARE WITHIN [0,1].'))
-    c.view('INTERVAL FROM ESTIMATE +/- E',lines+[
+    c.view('INTERVAL FROM ESTIMATE +/- E',c.graph_lines(lines+[
         'HOW TO DRAW: INTERVAL', 'DRAW A HORIZONTAL NUMBER LINE.',
         'MARK LEFT=%.4f; RIGHT=%.4f' % (low,high),
-        'CONNECT ENDS; CENTER=%.4f' % estimate])
+        'CONNECT ENDS; CENTER=%.4f' % estimate],('STGINTR','show',(estimate,low,high,None,'p-hat' if kind=='1' else 'x-bar'))))

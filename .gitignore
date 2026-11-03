@@ -16,3 +16,11 @@ venv/
 *.zip
 .DS_Store
 Thumbs.db
+
+# Active graph implementation plan and physical acceptance worksheet.
+!/roadmap.md
+!/GRAPH_TECHNICAL_PLAN.md
+!/TI_GRAPH_TEST_CHECKLIST.md
+
+# Local verbose graph test output; committed summaries retain the results.
+/artifacts/graph_*.log

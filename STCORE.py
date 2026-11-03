@@ -25,7 +25,7 @@ def read_raw_key():
         elif raw != _LAST_RAW:
             _LAST_RAW = raw
             return raw
-VIEW_LINES = 7
+VIEW_LINES = 8
 def cls():
     print("\n" * 18)
 def heading(text):
@@ -69,6 +69,7 @@ def wait_key():
         while True:
             raw = read_raw_key()
             key = normalize_key(raw)
+            if raw in ((148,248,175) if KEY_STYLE=='ce' else (84,)) or raw=='6': return '6'
             if key in ("up","down","left","right","enter","esc","u","d","b"):
                 return key
     key = input("ENTER NEXT, - PREV, 0 BACK: ").strip().lower()
@@ -84,8 +85,23 @@ def wrapped_lines(lines):
             yield line[:cut]
             line = line[cut:].lstrip()
         yield line
-def view(title, lines):
-    return call('STVDISP','view',title,lines)
+def view(title, lines, graph=None):
+    graph=graph or getattr(lines,'graph',None)
+    top=0
+    while True:
+        action=call('STVDISP','view',title,lines,bool(graph),top)
+        if not isinstance(action,tuple): return action
+        top=action[1]
+        show_graph(graph)
+
+def graph_lines(lines,graph):
+    return call('STGATT','attach',lines,*graph) if graph else lines
+
+def show_graph(graph):
+    if graph:
+        module,function,args=graph
+        return call(module,function,*args)
+
 def fmt(x):
     return call('STEFMT', 'fmt', x)
 def gcd(a, b):
@@ -122,8 +138,8 @@ def answer_text(value, style="D", places=4):
     return call('STEFMT', 'answer_text', value, style, places)
 def menu(title, items, shortcuts=(), other_shortcuts=(), page_size=5):
     return call('STVMENU', 'menu', title, items, shortcuts, other_shortcuts, page_size)
-def results(title, answers, steps=None, default_places=4, drawing=()):
-    return call('STVRES','results',title,answers,steps,default_places,drawing)
+def results(title, answers, steps=None, default_places=4, drawing=(), graph=None):
+    return call('STVRES','results',title,answers,steps,default_places,drawing,graph)
 def event_match(x, op, a, b=0):
     return call('STEXACT', 'event_match', x, op, a, b)
 def event_input(binomial=False):
@@ -159,7 +175,7 @@ MAX_ROWS = 25
 MAX_OUTCOMES = 60
 def read_size(prompt, maximum, minimum=1):
     return call('STEVENT', 'read_size', prompt, maximum, minimum)
-def paged_results(title, count, row_at, steps=None, drawing=()):
-    return call('STVRES','paged_results',title,count,row_at,steps,drawing)
+def paged_results(title, count, row_at, steps=None, drawing=(), graph=None):
+    return call('STVRES','paged_results',title,count,row_at,steps,drawing,graph)
 def choice_pages(title, pages):
     return call('STVCP','choice_pages',title,pages)

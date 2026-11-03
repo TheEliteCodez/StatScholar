@@ -74,7 +74,7 @@ def session(test=True):
             'ZERO IS '+('INSIDE' if bounds[0]<=0<=bounds[1] else 'OUTSIDE')+' THIS INTERVAL.',
             'CI IS TWO-SIDED; COMPARE ITS CONFIDENCE LEVEL WITH THE TEST TAILS.',
             'THIS INTERVAL ESTIMATES THE AVERAGE DIFFERENCE FOR THE POPULATION OF PAIRS.']+
-            c.call('STSKETCH','confidence',mean,bounds[0],bounds[1],confidence,critical,'t'))
+            c.call('STSKETCH','confidence',mean,bounds[0],bounds[1],confidence,critical,'t','d-bar'))
     summary();table()
     if not test or hypothesis()!='back': ci()
     while True:
@@ -85,4 +85,4 @@ def session(test=True):
         elif key=='2': table()
         elif key=='4': ci()
         elif key=='3' and test: hypothesis()
-        else: c.call('STGRAPH','boxplot_data',c.exact_sorted(differences),'PAIRED DIFFERENCE BOXPLOT')
+        else: c.call('STGRAPH','boxplot_data',c.exact_sorted(differences),'PAIRED DIFFERENCE BOXPLOT',True)

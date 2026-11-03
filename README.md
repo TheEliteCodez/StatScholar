@@ -2,17 +2,17 @@
 
 A general-purpose introductory college statistics calculator for the TI-84 Evo Python environment. Run
 **STAT1**. Calculators accept your own numbers and show results, formulas and
-worked substitutions where supported, with paper-drawing guidance for relevant
-results.
+worked substitutions where supported, with optional full-screen graphs and
+paper-drawing guidance for relevant results.
 
-There is one program: **118 root `ST*.py` files, totaling 321,606 source bytes**
-(as checked October 30, 2026). No separate build folder or build step is required.
+There is one program: **130 root `ST*.py` files, totaling 352,352 source bytes**
+(as checked November 2, 2026). No separate build folder or build step is required.
 
 ## Install and run
 
 1. Remove the previous StatScholar modules from the calculator. Overwriting
    matching names leaves obsolete modules taking up space.
-2. Transfer all 118 current root `ST*.py` files together, preserving their names.
+2. Transfer all 130 current root `ST*.py` files together, preserving their names.
    Do not transfer tests, helper scripts, documentation or backups.
 3. Restart Python and run **STAT1**.
 
@@ -358,3 +358,36 @@ so the text renderer does not remain resident while `STHTPLOT.py` imports.
 Fresh-process checks exercise the real viewer and verify renderer reclamation
 before graph loading, plus Back/Continue navigation. Physical heap behavior
 still requires an on-calculator retry.
+
+## Optional graph expansion
+
+[Roadmap and phase status](roadmap.md) ? [Technical plan](GRAPH_TECHNICAL_PLAN.md) ? [Exact physical TI test cases](TI_GRAPH_TEST_CHECKLIST.md)
+
+On relevant text results, **6 SHOW GRAPH** opens the plot only when selected.
+Left/Clear returns to the same text scroll position; Right/Enter advances graph
+pages and returns after the last page. Graph-specific menu choices open their
+plot directly. Numerical work and existing input reuse remain available.
+
+| Home route | New graph output |
+| --- | --- |
+| 1 Normal | Probability/percentile shading, original x and z axes, empirical-rule areas |
+| 2 Binomial | Event bars, distribution shape/tables, paged discrete CDF |
+| 3 Probability | Entered discrete distributions, hypergeometric bars, Venn event/conditional regions, ordered two-dice grids |
+| 4 Data | Category charts, reused raw-data plots and QQ plots |
+| 5 Graphs | Boxplots/comparisons, dotplots, histograms, scatter, fitted line and residual plots |
+| 7 Uniform | Probability rectangles and cutoff shading |
+| 8 Student t | Probability/percentile/critical-value curves with df |
+| 9 Sampling | Sample-mean/proportion curves, exact discrete fallbacks and exact uniform sample means |
+| 11 Intervals | Mean/proportion/paired intervals, given-center/margin diagrams and one-sided bounds |
+| 12 z-score | Position axes without assuming a normal density |
+| 13-14 Critical values | Central-confidence and tail-area views |
+| 15 Inference | Existing z/t graphs retained; new chi-square and correlation test graphs |
+
+The graph helpers load lazily, share the original hypothesis drawing primitives,
+and stream curve points. Discrete table tools reuse row accessors rather than
+building a second probability table. Wide bars page 16 outcomes at a time with
+one vertical scale; category bars page 12 at a time with separate name keys.
+
+`python -B tests/render_graph_gallery.py` creates desktop previews from the real
+calculator drawing calls. These are not device screenshots. All physical TI
+startup, heap, visual and key acceptance remains pending the checklist run.

@@ -18,9 +18,9 @@ def parameter_results(kind,n,p):
     if kind=='tables':
         c.call('STDIST','discrete_tools',n+1,lambda k:((k,1),binomial_exact_ratio(n,p,k)),'BINOMIAL')
     elif kind=='full':
-        c.paged_results('BINOMIAL > DISTRIBUTION',n+1,lambda k:('P('+str(k)+')',binomial_exact_ratio(n,p,k)),['X=COUNT; BAR HEIGHT=P(X)', 'SHAPE='+binomial_shape(p)],drawing=c.call('STSKETCH','bars',0,n))
+        c.paged_results('BINOMIAL > DISTRIBUTION',n+1,lambda k:('P('+str(k)+')',binomial_exact_ratio(n,p,k)),['X=COUNT; BAR HEIGHT=P(X)', 'SHAPE='+binomial_shape(p)],drawing=c.call('STGATT','attach',c.call('STSKETCH','bars',0,n),'STGBARS','show',(('binomial',n,p),None,'BINOMIAL')))
     elif kind=='shape':
-        c.results('BINOMIAL > SHAPE',[('CENTER',mean),('SHAPE',binomial_shape(p))],['CENTER=np; USE WHOLE SHAPE', 'SYMMETRIC DOES NOT MEAN UNIFORM'])
+        c.results('BINOMIAL > SHAPE',[('CENTER',mean),('SHAPE',binomial_shape(p))],['CENTER=np; USE WHOLE SHAPE', 'SYMMETRIC DOES NOT MEAN UNIFORM'],graph=('STGBARS','show',(('binomial',n,p),None,'BINOMIAL SHAPE')))
     elif kind=='model':
         c.results('BINOMIAL > DEFINE',[('n',n),('p',p),('X','COUNT OF TARGET OUTCOMES')],['SUCCESS=OUTCOME COUNTED, NOT NECESSARILY GOOD', 'FIXED n; TWO OUTCOMES; SAME p; INDEPENDENT'])
     else:

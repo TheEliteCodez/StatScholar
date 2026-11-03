@@ -15,7 +15,7 @@ def empirical_session(mean=None,sd=None):
             if low not in marks or high not in marks or low>high: raise ValueError('USE ORDERED INTEGER z -3..3')
             answers=[('APPROX PERCENT',c.as_ratio(str(marks[high]-marks[low])))]
             if mean is not None: answers += [('LOW x',c.call('STNORM','x_value',(low,1),mean,sd)),('HIGH x',c.call('STNORM','x_value',(high,1),mean,sd))]
-            c.results('EMPIRICAL > BETWEEN',answers,['APPROX NORMAL ONLY','OPTION 8 ENTERS MEAN / SD'],drawing=c.call('STSKETCH','curve','NORMAL',0,1,'3',(low,high))+['AXIS ABOVE IS z, IN SD UNITS.']);continue
+            c.results('EMPIRICAL > BETWEEN',answers,['APPROX NORMAL ONLY','OPTION 8 ENTERS MEAN / SD'],drawing=c.call('STSKETCH','curve','NORMAL',0,1,'3',(low,high),'z')+['AXIS ABOVE IS z, IN SD UNITS.']);continue
         k=(int(key)-1)%3+1
         region='within' if int(key)<=3 else 'outside'
         if key=='7':
@@ -32,5 +32,5 @@ def empirical_session(mean=None,sd=None):
                 answers += [('LOW x',c.call('STNORM','x_value',(-k,1),mean,sd)),('HIGH x',c.call('STNORM','x_value',(k,1),mean,sd))]
         drawing=c.call('STSKETCH','curve','NORMAL',0,1,
             side if region=='tail' else '3' if region=='within' else 'outside',
-            ((-k if side=='1' else k),) if region=='tail' else (-k,k))
+            ((-k if side=='1' else k),) if region=='tail' else (-k,k),'z')
         c.results('GRAPH > EMPIRICAL ANSWER',answers,['PERCENT UNITS, NOT PROBABILITY', 'APPROX NORMAL / BELL-SHAPED ONLY', 'OPTION 8 ENTERS MEAN / SD','68 / 95 / 99.7 WITHIN', 'OUTSIDE=100-WITHIN', 'ONE TAIL=OUTSIDE/2'],drawing=drawing+['AXIS ABOVE IS z, IN SD UNITS.'])

@@ -28,7 +28,7 @@ def t_menu():
         elif key=='5':
             degrees=c.read_number('DEGREES OF FREEDOM df: ')
             if degrees<=0: raise ValueError('df MUST BE POSITIVE')
-            c.view('DRAW / INTERPRET t',c.call('STSKETCH','curve','t',0,degrees)+['LARGER df: CLOSER TO STANDARD NORMAL.', 'USE THE t CUTOFFS FOR YOUR df.'])
+            c.call('STGCURV','show','t',0,degrees)
         else:
             degrees = c.read_number('DEGREES OF FREEDOM df: ')
             request=c.call('STDIST','cutoff_request')

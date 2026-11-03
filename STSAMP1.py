@@ -18,7 +18,7 @@ def show_distribution(total,targets,draws,summary=False):
     work=['C(K,k)*C(N-K,n-k)/C(N,n)','N='+str(total)+' K='+str(targets)+' n='+str(draws),'E(X)=n*K/N','WITHOUT REPLACEMENT']
     if draws==2:
         work+=['EXACTLY ONE IN TWO:','D THEN G + G THEN D',str(targets)+'/'+str(total)+' * '+str(total-targets)+'/'+str(total-1)+' + '+str(total-targets)+'/'+str(total)+' * '+str(targets)+'/'+str(total-1)]
-    c.paged_results('R07 DISTRIBUTION',count+(1 if summary else 0),row,work,drawing=c.call('STSKETCH','bars',low,low+count-1))
+    c.paged_results('R07 DISTRIBUTION',count+(1 if summary else 0),row,work,drawing=c.call('STSKETCH','bars',low,low+count-1),graph=('STGBARS','show',(('hyper',total,targets,draws),None,'HYPERGEOMETRIC')))
 def event_probability(total,targets,draws,event):
     low=max(0,draws-(total-targets))
     high=min(draws,targets)

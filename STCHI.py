@@ -57,4 +57,4 @@ def session(table=False):
     lines=c.call('STWORK','Lines',len(observed),row)
     addition=c.call('STWORK','sum_work','chi-square',len(observed),
         lambda i:'(%g-%g)^2/%g' % (observed[i],expected[i],expected[i]),ts)
-    c.view('CHI-SQUARE TEST',c.call('STWORK','Chain',prefix,lines,addition,drawing))
+    c.view('CHI-SQUARE TEST',c.graph_lines(c.call('STWORK','Chain',prefix,lines,addition,drawing),('STGINFER','chi',(ts,df,alpha,probability,cv))))

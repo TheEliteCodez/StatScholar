@@ -29,11 +29,17 @@ def session():
     first=True
     while True:
         key='1' if first else c.menu('REGRESSION / CORRELATION',[('1','ALL WORK / RESULTS'),('2','SCATTERPLOT / AXES'),
-            ('3','PREDICT y FROM x'),('4','RESIDUAL: OBSERVED - PREDICTED'),('5','PAIRED WORK TABLE')])
+            ('3','PREDICT y FROM x'),('4','RESIDUAL: OBSERVED - PREDICTED'),('5','PAIRED WORK TABLE'),('6','FITTED LINE GRAPH'),('7','RESIDUAL GRAPH'),('8','TEST DISTRIBUTION GRAPH')])
         first=False
         if key=='0': return
-        if key=='2':
-            c.view('SCATTERPLOT',['x: '+xlabel,'y: '+ylabel]+c.call('STREG','scatter',points))
+        if key in ('2','6','7'):
+            if not c.call('STGSCAT','show',points,xlabel,ylabel,(result['intercept'],result['slope']) if key!='2' else None,key=='7'):
+                c.view('SCATTERPLOT',['x: '+xlabel,'y: '+ylabel]+c.call('STREG','scatter',points))
+        elif key=='8':
+            if result['r'] is None: c.view('NO CORRELATION INFERENCE',['CONSTANT y: CORRELATION UNDEFINED.'])
+            else:
+                critical=c.call('STTCRIT','t_quantile',1-alpha/2,result['df'])
+                c.call('STGINFER','correlation',result['ts'],result['df'],alpha,result['p'],critical)
         elif key in ('3','4'):
             x=c.read_number('x TO PREDICT: ');predicted=c.call('STREG','predict',result,x)
             lines=['yhat=ybar+b*(x-xbar)','yhat=%.10g+%.10g*(%.10g-%.10g)=%.10g' % (result['my'],result['slope'],x,result['mx'],predicted),

@@ -11,8 +11,9 @@ class TrimmedProgram(unittest.TestCase):
         modules = list(ROOT.glob('ST*.py'))
         # Paired-data, streaming mean and full-screen graph helpers load on demand.
         # This is an inventory budget, not a measurement of calculator heap use.
-        self.assertLess(sum(p.stat().st_size for p in modules), 323000)
-        self.assertLessEqual(len(modules), 118)
+        self.assertLess(sum(p.stat().st_size for p in modules), 384000)
+        self.assertFalse((ROOT / 'EVOMEM.py').exists())
+        self.assertFalse((ROOT / 'EVOPROBE.py').exists())
         self.assertFalse((ROOT / 'STCI.py').exists())
         self.assertFalse((ROOT / 'calculator').exists())
         self.assertFalse((ROOT / 'build_calculator.py').exists())

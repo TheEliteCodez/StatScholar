@@ -14,7 +14,7 @@ def category_session():
             return
         if key=='T':
             work=c.call('STWORK','Lines',len(labels),lambda i:'P(%s)=%d/%d=%.10g; PERCENT=(%d/%d)*100=%.10g%%' % (labels[i],counts[i],total,counts[i]/total,counts[i],total,100*counts[i]/total))
-            c.paged_results('CATEGORY PROPORTIONS',len(labels),lambda i:(labels[i],c.ratio(counts[i],total)),work);continue
+            c.paged_results('CATEGORY PROPORTIONS',len(labels),lambda i:(labels[i],c.ratio(counts[i],total)),work,graph=('STGDATA','show',(list(zip(labels,counts)),'category','CATEGORY COUNTS',selected)));continue
         if key=='C':
             i=c.read_size('CATEGORY NUMBER: ',len(labels))-1
             labels[i]=input('CATEGORY NAME: ');counts[i]=c.read_int('COUNT: ');total=sum(counts);continue
@@ -33,4 +33,4 @@ def category_session():
         selected = i
         c.results('F02 / P01 / P02', [('P(' + labels[i] + ')', c.ratio(counts[i], total)), ('P(NOT)', c.ratio(total - counts[i], total))],
                   c.call('STWORK','ratio_work','P('+labels[i]+')',counts[i],total)+
-                  c.call('STWORK','ratio_work','P(NOT)',total-counts[i],total))
+                  c.call('STWORK','ratio_work','P(NOT)',total-counts[i],total),graph=('STGDATA','show',(list(zip(labels,counts)),'category','CATEGORY COUNTS',selected)))

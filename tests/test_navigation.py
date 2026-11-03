@@ -51,8 +51,8 @@ assert not set(STCORE.topic_modules()).intersection(sys.modules)
             self.assertTrue(all(call.args==(0,) for call in reader.call_args_list))
         with patch.object(c,'HAS_KEYS',True),patch.object(c,'KEY_STYLE','scan'),patch.object(c,'_LAST_RAW',None),patch.object(c,'get_key',side_effect=[26,26,0,24,24,0,45],create=True),contextlib.redirect_stdout(io.StringIO()) as output:
             c.view('ARROWS',[str(i) for i in range(20)])
-        self.assertIn('8-14/20',output.getvalue())
-        self.assertEqual(output.getvalue().count('1-7/20'),2)
+        self.assertIn('9-16/20',output.getvalue())
+        self.assertEqual(output.getvalue().count('1-8/20'),2)
 
     def test_wait_key_only_device_keeps_native_input(self):
         code="""
@@ -79,8 +79,8 @@ assert not set(STCORE.topic_modules()).intersection(sys.modules)
         self.assertIn('6 ITEM 6',output.getvalue())
         with patch.object(c,'HAS_KEYS',False),patch('builtins.input',side_effect=['','-','0']),contextlib.redirect_stdout(io.StringIO()) as output:
             c.view('PAGES',[str(i) for i in range(20)])
-        self.assertIn('8-14/20',output.getvalue())
-        self.assertEqual(output.getvalue().count('1-7/20'),2)
+        self.assertIn('9-16/20',output.getvalue())
+        self.assertEqual(output.getvalue().count('1-8/20'),2)
 
     def test_alpha_locked_digits_and_shifted_arrows(self):
         # TI's green (ALPHA) keypad codes, including theta on the 3 key.

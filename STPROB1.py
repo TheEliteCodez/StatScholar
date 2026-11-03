@@ -90,7 +90,7 @@ def _report(a,b,both,work):
                 'P(A|B)=P(A AND B)/P(B)',
                 c.exact_text(both)+'/'+c.exact_text(b)+'='+c.answer_text(_given(both,b),'F'),
                 'P(B|A)=P(A AND B)/P(A)',
-                'NOT E=1-P(E); NEITHER=1-P(A OR B)'])
+                'NOT E=1-P(E); NEITHER=1-P(A OR B)'],graph=('STGDIAG','venn',(1,c.number(a),c.number(b),c.number(both))))
         elif key=='2':
             target=_event()
             if target is None: continue
@@ -112,9 +112,9 @@ def _report(a,b,both,work):
                     'GIVEN GROUP='+c.exact_text(denominator),
                     c.exact_text(numerator)+'/'+c.exact_text(denominator),
                     'RESTRICT TO GIVEN GROUP; DIVIDE BY ITS AREA.']
-            c.results('EVENT ANSWER',[(label,answer)],work+formula)
+            c.results('EVENT ANSWER',[(label,answer)],work+formula,graph=('STGDIAG','venn',(1,c.number(a),c.number(b),c.number(both),None,target[1],group[1] if how=='2' else None)))
         elif key=='3':
-            c.view('VENN / TWO-WAY PROBABILITIES',work+[
+            c.view('VENN / TWO-WAY PROBABILITIES',c.graph_lines(work+[
                 'A ONLY='+c.exact_text(parts[1]),'BOTH='+c.exact_text(parts[0]),
                 'B ONLY='+c.exact_text(parts[2]),'NEITHER='+c.exact_text(parts[3]),
                 'TABLE COLUMNS: B, NOT B, TOTAL',
@@ -123,7 +123,7 @@ def _report(a,b,both,work):
                 'TOTAL: '+', '.join(c.exact_text(x) for x in (b,_subtract((1,1),b),(1,1)))]+
                 ['DRAW TWO CIRCLES IN A RECTANGLE OF AREA 1.',
                  'BOTH IN OVERLAP; NEITHER OUTSIDE CIRCLES.',
-                 'LABEL REMAINING REGIONS A ONLY AND B ONLY.'])
+                 'LABEL REMAINING REGIONS A ONLY AND B ONLY.'],('STGDIAG','venn',(1,c.number(a),c.number(b),c.number(both)))))
         else:
             product=c.rmul(a,b)
             c.results('EVENT RELATIONSHIPS',[

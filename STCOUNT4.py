@@ -26,7 +26,7 @@ def rounded_distribution_session():
     rows,approximate=c.call('STCOUNT', 'read_distribution', True)
     c.call('STCOUNT', 'distribution_session', rows, approximate)
 def heights_page(rows, approximate):
-    c.paged_results('APPROXIMATE HEIGHTS' if approximate else 'PROBABILITY HISTOGRAM',len(rows),lambda i:('x='+c.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(X)', 'INCLUDE EVERY X, INCLUDING ZERO', 'NUMERIC x AXIS; PROBABILITY y AXIS', 'APPROXIMATE HEIGHTS: ROUNDED TABLE' if approximate else 'USE EQUAL-WIDTH BARS'])
+    c.paged_results('APPROXIMATE HEIGHTS' if approximate else 'PROBABILITY HISTOGRAM',len(rows),lambda i:('x='+c.exact_text(rows[i][0]),rows[i][1]),['BAR HEIGHT=P(X)', 'INCLUDE EVERY X, INCLUDING ZERO', 'NUMERIC x AXIS; PROBABILITY y AXIS', 'APPROXIMATE HEIGHTS: ROUNDED TABLE' if approximate else 'USE EQUAL-WIDTH BARS'],graph=('STGBARS','show',(('rows',rows),None,'PROBABILITY BARS')))
 def check_table(rows, note, approximate):
     valid = all((c.compare_exact(p, 0) >= 0 and c.compare_exact(p, 1) <= 0 for x, p in rows)) and c.rsum([p for x, p in rows]) == (1, 1)
     lines = note + ['VALID=' + ('UNKNOWN (ROUNDED)' if approximate else str(valid))]
@@ -62,9 +62,9 @@ def discrete_tools(count,row_at,title,approximate=False):
             ('5','EXPECTED FREQUENCIES'),('6','MEAN / VAR / SD / SUMS')])
         if key=='0': return
         if key=='1':
-            c.paged_results(title+' > P(x)',count,lambda i:('x='+c.exact_text(row(i)[0]),row(i)[1]),note,drawing=drawing)
+            c.paged_results(title+' > P(x)',count,lambda i:('x='+c.exact_text(row(i)[0]),row(i)[1]),note,drawing=drawing,graph=('STGBARS','show',(('accessor',count,row),None,title+(' APPROX' if approximate else ''),key=='2')))
         elif key=='2':
-            c.paged_results(title+' > CDF',count,lambda i:('P(X<='+c.exact_text(row(i)[0])+')',cumulative(row(i)[0])),note,drawing=drawing)
+            c.paged_results(title+' > CDF',count,lambda i:('P(X<='+c.exact_text(row(i)[0])+')',cumulative(row(i)[0])),note,drawing=drawing,graph=('STGBARS','show',(('accessor',count,row),None,title+(' APPROX' if approximate else ''),key=='2')))
         elif key=='3':
             def cell(i):
                 x,p=row(i//3)

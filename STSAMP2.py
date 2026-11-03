@@ -25,7 +25,7 @@ def sample_tasks(total,targets,draws,word=None):
             c.call('STDIST','discrete_tools',min(draws,targets)-low+1,lambda i:((low+i,1),c.call('STSAMPLE','probability',total,targets,draws,low+i)),'HYPERGEOMETRIC')
         elif key=='2':
             mean,var,sd=c.call('STSAMPLE','moments',total,targets,draws)
-            c.results('R02/R03',[('mu',mean),('VAR',var),('sigma',sd)],['mu=n*K/N','VAR=n*(K/N)*(1-K/N)*(N-n)/(N-1)','SD=SQRT(VAR)'],drawing=c.call('STSKETCH','bars',max(0,draws-(total-targets)),min(draws,targets)))
+            c.results('R02/R03',[('mu',mean),('VAR',var),('sigma',sd)],['mu=n*K/N','VAR=n*(K/N)*(1-K/N)*(N-n)/(N-1)','SD=SQRT(VAR)'],drawing=c.call('STSKETCH','bars',max(0,draws-(total-targets)),min(draws,targets)),graph=('STGBARS','show',(('hyper',total,targets,draws),None,'HYPERGEOMETRIC')))
         else:
             if word:
                 event=c.call('STBWE','read_event',word)
@@ -40,7 +40,7 @@ def sample_tasks(total,targets,draws,word=None):
                 'N=%d K=%d n=%d' % (total,targets,draws),
                 'P=SUM(C(K,k)*C(N-K,n-k))/C(N,n)',
                 'EVENT: X '+event[0]+' '+c.exact_text(event[1])+(' TO '+c.exact_text(event[2]) if event[0] in ('[]','()','[)','(]') else ''),
-                'ADD MATCHING EXACT PROBABILITIES'],drawing=c.call('STSKETCH','bars',max(0,draws-(total-targets)),min(draws,targets),event))
+                'ADD MATCHING EXACT PROBABILITIES'],drawing=c.call('STSKETCH','bars',max(0,draws-(total-targets)),min(draws,targets),event),graph=('STGBARS','show',(('hyper',total,targets,draws),event,'HYPERGEOMETRIC')))
 def box_session():
     key=c.menu('DEFECTIVE ITEMS / BOX',[('1','NO REPLACE / HYPERGEOMETRIC'),('2','REPLACE AFTER EACH DRAW'),('3','ALREADY GIVEN X / P TABLE')])
     if key=='1': sample_session()

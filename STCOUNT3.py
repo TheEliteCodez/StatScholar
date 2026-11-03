@@ -35,7 +35,7 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
             mean, var, sd = c.call('STCOUNT', 'distribution_moments', rows)
             c.results('R02/R03', [('mu', mean), ('VAR', var), ('sigma', sd)],
                       c.call('STWORK','Chain',note,c.call('STDWK','moments',len(rows),lambda i:rows[i],mean,var,sd)),
-                      drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0])))
+                      drawing=c.call('STGATT','attach',c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0])),'STGBARS','show',(('rows',rows),None,'DISCRETE DISTRIBUTION')))
         elif key == '5':
             c.call('STCOUNT4', 'check_table', rows, note, approximate)
         else:
@@ -54,4 +54,4 @@ def distribution_session(rows=None, approximate=False, source=None, first_word=N
                 c.call('STCOUNT', 'unusual_result', p)
             else:
                 selected = [c.exact_text(x) for x, q in rows if c.event_match(x, *ev)]
-                c.results('R04 TABLE EVENT', [('P APPROX' if approximate else 'P', p)], note + (['P=1-P(0)' if counts_only else 'P(X>=1)=1-P(X<1)'] if key == '3' else ['ADD MATCHING ROWS']) + ['ROWS: ' + ','.join(selected)],drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0]),('>=',1,0) if key=='3' else ev))
+                c.results('R04 TABLE EVENT', [('P APPROX' if approximate else 'P', p)], note + (['P=1-P(0)' if counts_only else 'P(X>=1)=1-P(X<1)'] if key == '3' else ['ADD MATCHING ROWS']) + ['ROWS: ' + ','.join(selected)],drawing=c.call('STSKETCH','bars',c.exact_text(rows[0][0]),c.exact_text(rows[-1][0]),('>=',1,0) if key=='3' else ev),graph=('STGBARS','show',(('rows',rows),('>=',1,0) if key=='3' else ev,'DISCRETE EVENT')))

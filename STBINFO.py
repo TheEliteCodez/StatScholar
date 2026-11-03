@@ -13,7 +13,7 @@ def show_answer(n, p, event, answer, title, first_page=None, threshold=(1, 20), 
                 if sketch_index is None: sketch_index=index
                 if index != sketch_index: return
                 page=c.call('STSKETCH','bars',0,n,event)
-        action = c.view(title, page)
+        action = c.view(title,c.graph_lines(page,('STGBARS','show',(('binomial',n,p),event,'BINOMIAL'))))
         if action == 'exit': return
         if action == 'back':
             if index == 0: return

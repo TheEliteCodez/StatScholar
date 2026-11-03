@@ -17,10 +17,10 @@ def design(random,population):
         ('1','INDEPENDENT / WITH REPLACEMENT'),
         ('2','RANDOM WITHOUT REPLACEMENT'),('3','NOT KNOWN / OTHER DEPENDENCE')])
 
-def show(title,probability,event,lines):
+def show(title,probability,event,lines,graph=None):
     c.results(title,[('P',probability)],drawing=lines+[
         'REQUESTED EVENT: '+event[0]+' '+c.exact_text(event[1])+
-        (' TO '+c.exact_text(event[2]) if event[0]=='[]' else '')])
+        (' TO '+c.exact_text(event[2]) if event[0]=='[]' else '')],graph=graph)
 
 def proportion_fallback(p,n,random,population):
     model=design(random,population)
@@ -51,7 +51,7 @@ def proportion_fallback(p,n,random,population):
         probability=c.call('STBMATH','binomial_exact_event',n,p,counts)
         low,high=0,n
     show('EXACT SAMPLE PROPORTION',probability,event,model_lines+
-         c.call('STSKETCH','bars',low,high,counts)+['COUNT AXIS X; p-hat=X/n.'])
+         c.call('STSKETCH','bars',low,high,counts)+['COUNT AXIS X; p-hat=X/n.'],('STGBARS','show',(('hyper',population,targets,n) if model=='2' else ('binomial',n,p),counts,'EXACT SAMPLE PROPORTION',False,n)))
 
 def uniform_cdf(x,a,b,n):
     t=c.rdiv(c.rmul(c.radd(x,(-a[0],a[1])),(n,1)),c.radd(b,(-a[0],a[1])))
@@ -155,8 +155,9 @@ def mean_fallback(mean,sigma,n,random,population,normal_known=False):
         probability=left if op=='<' else c.radd((1,1),(-left[0],left[1])) if op=='>' else c.radd(uniform_cdf(high,a,b,n),(-left[0],left[1]))
     else:
         probability=c.call('STCOUNT','table_probability',rows,event)
+    graph=('STGUMEA','show',(c.number(a),c.number(b),n,event,c.number(probability))) if key=='1' else ('STGBARS','show',(('rows',sorted(rows,key=lambda row:c.number(row[0]))),event,'EXACT SAMPLE MEAN'))
     show('EXACT SAMPLE MEAN',probability,event,lines+[
-        'SHADE LEFT / RIGHT / BETWEEN AS REQUESTED.'])
+        'SHADE LEFT / RIGHT / BETWEEN AS REQUESTED.'],graph)
     if key=='2':
         rows=sorted(rows,key=lambda row:c.number(row[0]))
         c.paged_results('EXACT x-bar HEIGHTS',len(rows),lambda i:(c.exact_text(rows[i][0]),rows[i][1]))

@@ -60,7 +60,7 @@ for repeat in range(3):
             sample.show_distribution(200,100,100,True)
         # 101 probabilities plus expected value: 102 rows, at most 7 per page.
         self.assertEqual(len(pages),15)
-        self.assertIn('ROWS 99..102/102',pages[-1])
+        self.assertIn('ROWS 97..102/102',pages[-1])
         self.assertIn('E(X)=50.0000',pages[-1])
 
 

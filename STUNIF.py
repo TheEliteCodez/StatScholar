@@ -65,7 +65,8 @@ def _uniform_axes(low, high, draw=True):
     'CONSTANT HEIGHT=1/(b-a)=%.4f' % (1/(high-low)),
     ]
   if draw: lines.append('DRAW A RECTANGLE FROM a TO b; SHADE REQUESTED AREA.')
-  c.view('UNIFORM > DRAW / LABEL' if draw else 'UNIFORM > MEAN / SD / HEIGHT',lines)
+  if draw: c.call('STGCURV','show','UNIFORM',low,high)
+  else: c.view('UNIFORM > MEAN / SD / HEIGHT',lines)
 
 def uniform_menu():
   low=high=None
