@@ -1,0 +1,18 @@
+# Publish the README and active audit reports; ignore other local notes.
+*.[mM][dD]
+!/README.md
+!/MENU_AUDIT.md
+!/HYPOTHESIS_AUDIT.md
+!/ADVANCED_AUDIT.md
+!/MEMORY_REVIEW.md
+*.txt
+
+# Generated and local Python files.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.zip
+.DS_Store
+Thumbs.db
