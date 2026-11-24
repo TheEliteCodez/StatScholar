@@ -33,6 +33,7 @@ class TrimmedProgram(unittest.TestCase):
         self.assertEqual(items['1'], 'NORMAL DISTRIBUTION')
         self.assertEqual(items['7'], 'UNIFORM DISTRIBUTION')
         self.assertEqual(items['8'], 'STUDENT t DISTRIBUTION')
+        self.assertEqual(items['16'], 'LINEAR REGRESSION / CORRELATION')
 
     def test_remaining_home_menus_open_and_release(self):
         code = """

@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 
 DORMANT={
+    'STHYSH.py:show':'Compatibility result driver for direct STHYP/STHYRES.show calls; Home 15 uses STAT1.hypothesis and STHYFLOW operations.',
     'STBEXTRA.py:shape_tasks':'Older shape menu; no current Home route calls it.',
     'STBINOM2.py:binomial_session':'Older binomial menu; Home and table tools use STBWORD.',
     'STCOUNT6.py:money_session':'Older money menu; Home uses STPROBM.money_tasks.',
@@ -50,6 +51,7 @@ def render(result):
         '| Physical calculator heap | NOT VERIFIED |', '',
         'Run `python -B tests/menu_walk.py` separately from the shared test adapter. The walk uses production menus, result formatting and viewers, deterministic numeric input, and real module cleanup. It explores every choice in each discovered menu variant, including follow-up formatting/method menus. On each path it checks both sys.modules and weak references to loaded topic module objects after returning normally. It does not stub the calculators or disable cleanup.', '',
         'Fixtures cover normal inputs, replacement/no-replacement, seven definition searches, selecting a category before comparing its expected probability, 100 raw values, 25 frequency/probability rows, 10-by-10 tables, 60 categories, 20-trial binomial tables, and full 100-row normal-quantile/observation tables. Existing numerical-oracle, repeat-workflow and physical-key simulation tests remain separate. This is menu-edge coverage for these fixtures, not proof for every possible input or combination of prior selections.', '',
+        'Retention check: '+result.get('retention_scope','Module objects after return; desktop GC only.')+' A module disappearing from sys.modules alone does not establish that its functions or class objects have been released.', '',
         'Fixed during this audit: choosing 0 in the general between-event endpoint menu now returns without creating an event. A regression check covers both ordinary and binomial event selectors.', '',
         '## Memory evidence and its limit', '',
         'The largest observed set of simultaneously loaded runtime sources totaled **'+format(peak['peak_loaded_source_bytes'],',')+' source bytes**. These are file bytes, not bytecode, compiler workspace, object allocations or measured heap usage. No source-byte threshold was used to declare a calculator-memory pass.', '',

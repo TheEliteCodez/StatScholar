@@ -11,10 +11,10 @@ def main():
     ti.recall_list=lambda number:list(range(1,101)) if number=='1' else [2*i+i%2 for i in range(1,101)]
     sys.modules['ti_system']=ti
     walker=Walker();walker.large=True
-    walker.queue=[['15','5'],['15','6'],['15','7'],['15','8'],['11','8'],['4','8'],['5','1']]
+    walker.queue=[['15','5'],['15','6'],['15','7'],['15','8'],['11','8'],['4','8'],['5','1'],['16','1'],['16','2']]
     walker.queue += [[home,'8',source,direction] for home in ('15','11') for source in ('1','2') for direction in ('1','2')]
     choose_original=walker.choose
-    parents=('STAT1','HYPOTHESIS TESTING','DATA / STATISTICS','GRAPHS / DATA SHAPE','CONFIDENCE INTERVAL / MOE')
+    parents=('STAT1','HYPOTHESIS TESTING','DATA / STATISTICS','GRAPHS / DATA SHAPE','CONFIDENCE INTERVAL / MOE','LINEAR REGRESSION')
     def choose(title,items):
         if title in parents and walker.position==len(walker.path): return '0'
         return choose_original(title,items)

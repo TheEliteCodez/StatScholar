@@ -34,6 +34,7 @@ def _uniform_probability(low, high):
   clipped=(max(low,min(high,value))-low) if event=='1' else (high-max(low,min(high,value))) if event=='2' else max(0.0,min(upper,high)-max(lower,low))
   work=['P=SHADED WIDTH/(b-a)', 'P=%g/(%g-%g)=%.6f' % (clipped,high,low,probability)]
   c.view('UNIFORM > PROBABILITY', [
+    'P=%.7g; a=%.5g; b=%.5g' % (probability,low,high),
     'X UNIFORM ON [%.4f, %.4f]' % (low, high),
     label,
     _probability_text(probability)]+work+c.call('STSKETCH','curve','UNIFORM',low,high,event,
@@ -46,7 +47,7 @@ def _uniform_percentile(low, high):
   cutoff = low+probability*(high-low)
   answer='VALUE CUTOFF x=%.4f' % cutoff
   if c.view('UNIFORM > PERCENTILE ANSWER',[
-    answer,'AREA TO LEFT=%.6f' % probability,
+    answer,'a=%.6g; b=%.6g' % (low,high),'AREA TO LEFT=%.6f' % probability,
     'x=a+LEFT AREA*(b-a)']+work) in ('back','exit'): return
   c.view('UNIFORM > PERCENTILE', [
     answer,

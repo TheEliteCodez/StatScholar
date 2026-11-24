@@ -1,28 +1,28 @@
 import STCORE
 RAW_LIMIT = 100  # Desktop tested; physical Evo limit pending.
 def sub(a, b):
-    return STCORE.call('STDMATH1', 'sub', a, b)
+  return STCORE.call('STDMATH1', 'sub', a, b)
 def read_raw(title='DATA > RAW'):
-    return STCORE.call('STDMATH1', 'read_raw', title)
+  return STCORE.call('STDMATH1', 'read_raw', title)
 def median_span(values, start, end):
-    return STCORE.call('STDMATH1', 'median_span', values, start, end)
+  return STCORE.call('STDMATH1', 'median_span', values, start, end)
 def quartiles(values):
-    return STCORE.call('STDMATH1', 'quartiles', values)
+  return STCORE.call('STDMATH1', 'quartiles', values)
 def descriptive(values):
-    return STCORE.call('STDMATH1', 'descriptive', values)
+  return STCORE.call('STDMATH1', 'descriptive', values)
 def weighted_stats(rows):
-    return STCORE.call('STDMATH2', 'weighted_stats', rows)
+  return STCORE.call('STDMATH2', 'weighted_stats', rows)
 def edit_raw(values):
-    return STCORE.call('STDMATH1', 'edit_raw', values)
+  return STCORE.call('STDMATH1', 'edit_raw', values)
 def edit_frequency(rows):
-    return STCORE.call('STDMATH1', 'edit_frequency', rows)
+  return STCORE.call('STDMATH1', 'edit_frequency', rows)
 def min_exact(a,b):
-    return STCORE.call('STDMATH1', 'min_exact', a, b)
+  return STCORE.call('STDMATH1', 'min_exact', a, b)
 def max_exact(a,b):
-    return STCORE.call('STDMATH1', 'max_exact', a, b)
+  return STCORE.call('STDMATH1', 'max_exact', a, b)
 def value_counts(values):
-    return STCORE.call('STDMATH1', 'value_counts', values)
+  return STCORE.call('STDMATH1', 'value_counts', values)
 def read_frequency_rows():
-    return STCORE.call('STDMATH1', 'read_frequency_rows')
+  return STCORE.call('STDMATH1', 'read_frequency_rows')
 def probe_summary(size):
-    return STCORE.call('STDMATH1', 'probe_summary', size)
+  return STCORE.call('STDMATH1', 'probe_summary', size)

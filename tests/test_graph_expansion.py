@@ -60,7 +60,7 @@ class ExpandedGraphs(unittest.TestCase):
                 with self.subTest(kind=kind,event=event):self.render('STGCURV','show',kind,center,spread,event,bounds)
 
     def test_close_curve_labels_use_leaders_instead_of_overlapping(self):
-        import STGPEN as pen
+        import STGINK as pen
         with patch.object(curve,'ink',wraps=curve.ink) as direct,patch.object(pen,'ink',wraps=pen.ink) as leaders:
             self.render('STGCURV','show','NORMAL',.4,.05,'3',(.3999,.4001),'p-hat')
         self.assertTrue(leaders.call_count)

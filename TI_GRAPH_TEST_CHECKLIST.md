@@ -15,6 +15,24 @@ Device model: __________  OS: __________  Python version: __________  Test date:
 
 Use Enter for every explicitly blank context/population/reference prompt. Random/independent and normal-shape checks below are supplied test conditions, not findings about an unknown dataset.
 
+For B10/B11, after the automatic graphs, check the TI-84 button steps before the
+worked solution. Reproduce the test in the native calculator using the displayed
+lists/matrix, df and commands. Verify Calculate/Draw, the CDF p-value and the
+Numeric Solver CV. These native-menu checks remain pending on hardware.
+Retest B10/B11 after transferring the complete current runtime and restarting
+Python: the reported 368-byte allocation failure occurred during the automatic
+graph import. Verify both automatic graphs and reopening graphs from both the
+answer and worked result, then repeat each test without restarting Python.
+The subsequent 373-byte failure at `STGCHI.py` line 2 was the shared drawing
+module import. Include the current `STGCHI.py` and new `STGKEY.py` on transfer;
+verify native red CV and green TS labels, both right-tail shaded regions, held-key release,
+and Back/Next without the shared font module. Device result remains pending.
+The next device failure was `STCHITI.steps` importing `STWORK` after the
+graphs. Transfer current `STCHITI`, `STCHRES`, `STCHROW` and `STCHISH` together.
+Continue through the entire TI instruction screen and worked cell sums; reopen
+both graphs afterward, and repeat with probabilities and given expected counts.
+These text stages no longer import `STWORK`. Hardware acceptance remains pending.
+
 ## A ? Continuous distributions and sampling
 
 | ID | Exact route and inputs | Expected result and picture | Device |
@@ -49,8 +67,8 @@ Use Enter for every explicitly blank context/population/reference prompt. Random
 | B07 | **14 ? 1**; C=95%; df source **1**, df=9; graph; skip estimate work with 0. | t*=2.262157; central .95, df=9. | Pending |
 | B08 | **13 ? 5**; one-sided C=95%; cutoff **1 LOWER**; view critical graph; continue to estimate source **1 PE+SE**, PE=100,SE=2; graph 6 on resulting work. | Critical=-1.644854; upper bound=103.289707; confidence region arrow extends left. Repeat cutoff **2 UPPER**: lower bound=96.710293, arrow right. | Pending |
 | B09 | **11 ? 6 ? 1 PROPORTION**; C=95%,x=60,n=100. | E=.0960182; optional critical curve has middle .95 and symmetric cutoffs. | Pending |
-| B10 | **15 ? 5 GOODNESS OF FIT**; context blank,random **1 YES**,alpha=.05,k=4; observed 30,10,20,20; expected **1 EQUAL**; fitted parameters=0. On result graph 6, choose **1 REJECTION**, reopen and choose **2 p-VALUE**. | chi-square=10,df=3,CV=7.8147279,p=.0185661; asymmetric nonnegative curve; right-tail alpha and p views. | Pending |
-| B11 | **15 ? 6 INDEPENDENCE**; context blank,random YES,alpha=.05,rows=2,columns=2; row-major counts 30,10,10,30; graph choices as above. | chi-square=20,df=1,p=.0000077442,CV=3.841459; no negative support; infinite peak is clipped for display, not replaced by a normal bell. | Pending |
+| B10 | **15 ? 5 GOODNESS OF FIT**; context blank,random **1 YES**,alpha=.05,k=4; observed 30,10,20,20; expected **1 EQUAL**; fitted parameters=0. Read the answer, then Right/Enter through the automatic rejection and p-value graphs to the work. Reopen either graph with 6. | First answer shows TS=10,df=3,CV=7.8147279,p=.0185661,REJECT H0 and p <= alpha. Both graphs draw automatically; asymmetric nonnegative curve; right-tail alpha and p views. Work does not show HOW TO DRAW after successful graphics. | Pending |
+| B11 | **15 ? 6 INDEPENDENCE**; context blank,random YES,alpha=.05,rows=2,columns=2; row-major counts 30,10,10,30; continue through automatic graphs as above. | Answer shows TS=20,df=1,p=.0000077442,CV=3.841459 and REJECT H0; both graphs draw. No negative support; infinite peak is clipped for display, not replaced by a normal bell. Repeat B10 with four counts of 20: TS=0,p=1,FAIL TO REJECT H0; test Left/Clear on the answer and first graph. | Pending |
 | B12 | **11 ? 8 PAIRED**; input **1 ENTER PAIRS**,n=4; pairs (5,4),(7,5),(8,6),(10,7); labels BEFORE,AFTER; difference **1 FIRST-SECOND**; random YES,normal differences YES,C=95%. Continue summary/work to interval; use graph 6. | d-bar=2,sd=.8164966; interval about (.7008,3.2992); difference axis includes zero. Review **5 SUMMARY AGAIN** or **3 DIFFERENCE BOXPLOT** as labeled. | Pending |
 | B13 | **15 ? 1 ONE PROPORTION**; context APPROVAL,random YES,claim **2 GREATER**,null=.5,alpha=.05,x=60,n=100,population N blank. Repeat with x=51. | z=2,p=.0227501,REJECT/TISE support claim; x=51 gives z=.2,p=.4207403,FAIL/TINSE support wording. Existing rejection/p graphs still work. | Pending |
 | B14 | Same as B13 but claim **6 EQUAL**; test x=60 then x=51. | Two-tail p=.0455001 then .8414806; final wording warrants rejection / does not warrant rejection of original equality claim. | Pending |
@@ -104,6 +122,30 @@ Use Enter for every explicitly blank context/population/reference prompt. Random
 
 ## Device result log
 
+Regression menu and rounding check (pending): open **Home 16 > 2**, read a
+definition, and return without entering data. Then choose **16 > 1**, enter the
+nine textbook page/cost pairs from the regression test, labels pages/dollars and
+alpha .05. Check that the equation appears first. After the initial work, choose
+**9**, significant digits **4**, decimal places **2**, x **451**: expect
+`yhat=0.06896*x + 3.029` and `PREDICTED y=34.13`. Open **10** for definitions,
+return, then **3** to predict another x without re-entering pairs. Check Study
+**6 > 7 > 7** and definition search for slope. Verify display, keys and memory
+on the physical calculator; desktop replay does not complete this check.
+The initial regression work import failed with an 80-byte allocation error;
+menu input failed importing `STVIN` with a 768-byte error. Select all current
+root `ST*.py` files manually, including `STREGIN`, `STREGWK`, `STREGPR`,
+`STREGDEF`, `STREGTXT` and `STGRT`. Restart Python and confirm the Home heading
+**STAT1 261124-R11**. Previous instructions to replace only one or two files do
+not cover this refactor.
+
+For regression, exercise options **1..10**, both choices under **8**, all 15
+terms under **10**, and repeated predictions without re-entering data. Repeat
+with 100 list pairs, constant y and a perfect fit, then return to Home and
+revisit the other working topics without restarting. Check shared menu digits,
+Enter, arrows, delete and Clear. The new code releases each regression stage
+before the next and uses native graph labels instead of the font renderer.
+Physical acceptance remains pending until these paths complete on the Evo.
+
 Copy a row for each case tested. Use PASS, FAIL or BLOCKED; leave untested cases PENDING.
 
 | Case | Status | Observed result / label issue / delay | Full traceback or startup message | Model / OS |
@@ -111,3 +153,63 @@ Copy a row for each case tested. Use PASS, FAIL or BLOCKED; leave untested cases
 | | PENDING | | | |
 
 All roadmap device checkboxes remain unchecked until these results are supplied.
+
+
+Manual R6 checks: Home 16 > 3, enter the tire-pressure example from README;
+verify first-page answer 16.7 mpg, method mean, range 30..45, r=.65,
+critical r=.70673, n=8, alpha=.05 and p=.0810204. Reuse x=46 and expect DNE.
+Repeat with r=.95 and x=36.5 and expect equation prediction 16.1 mpg.
+Check the first screens of CI, hypothesis, sample-size, raw stats, probability
+and regression solvers before paging into work. On the hypothesis answer,
+Clear should go to review; review options still open the existing nine steps.
+Include new STREGSUM.py when selecting the current root modules manually.
+
+For supplied regression output, choose the matching equation form before
+copying a and b. Check y=ax+b with a=.3858,b=2.02 and y=a+bx with a=2.02,b=.3858
+give the same prediction. For the CO2 example choose y=a+bx, a=35.417,
+b=-.016024,r=-.69,n=9,alpha=.05,range1980..2018,x=2008,3 places: expect3.241.
+The solver should say r^2 is not needed and prompt for r.
+
+
+R9 physical hypothesis check remains pending. R8 failed again at the import
+in STAT1.hypothesis. The fixed-heap native replay now reproduces R8 failures
+at 40,000 and 42,000, while R9 passes at 42,000 and still fails at 40,000.
+Before another installation is treated as sufficient, record the last visible
+page and the output of import gc; print(gc.mem_free(),gc.mem_alloc()).
+Native 32-bit fixed-heap evidence is in artifacts/native_heap.json; it is not
+a physical TI pass. See MEMORY_REVIEW.md for exact changed files, calibration
+limits and the manual sequence still required.
+
+R10 graph/import and source-reduction check: select all 154 current root ST*.py
+files (358,615 source bytes), including STHTHEAD, STSEWORK and STTBETA. Restart
+Python and verify STAT1 261124-R11. Repeat the failed hypothesis problem and
+enter step 6, advance through rejection then p-value graphs, and repeat via
+review choices 6, 11 and 12. Test Clear/Left from each graph and another problem
+in the same session. Graph labels and both aligned axes must remain present.
+The flat graph entry releases curve/label/heading/key code in sequence. Native
+heap and command-equivalence evidence does not check TI PlotLib allocations;
+record physical results and retain pending status until they pass.
+
+R11 error identifier (manual acceptance pending): Home 15 > 9 > 1, select p,
+context adults who smoke, sign >, boundary 40%. Verify H0 p <= .4, H1 p > .4,
+Type I supporting a false claim and Type II missing a true claim. Repeat an
+equality claim about mu=150 and verify the claim is in H0. In mode 3 exercise
+all four decision/truth pairs and unknown truth, then mode 4 definitions.
+Verify the first page shows errors, hypotheses and claim side before work.
+Exit and solve another problem without restarting. Confirm 261124-R11.
+
+R12 chi-square final conclusion (pending physical acceptance): for Home 15 > 5
+and > 6, solve one rejecting and one non-rejecting example. Advance through
+TI steps and all cell work to CHI-SQUARE FINAL CONCLUSION. Verify the decision,
+actual p/alpha comparison, context and correct GOF/model versus independence/
+association wording. Back/Clear on earlier pages should exit as before.
+Include STCHEND.py and updated STCHISH.py/STCORE.py; confirm 261124-R12.
+
+R13 regression graph (pending physical acceptance): Home 16 > 1, enter the
+textbook pages/cost pairs, then use 2 for points+line and 6 for line only.
+Check that both show yhat=0.0689596*x + 3.02855 with pages/dollars axes and
+numeric ticks. Check 11 retains scatter only and 7 retains residuals. Repeat
+with negative and zero slope, calendar-year x values and 100 pairs. Check the
+equation does not overlap the top y tick, and Left/Clear/Right/Enter still work.
+Use rounding option 9 for required homework coefficient precision. The update
+set is STREGIO, STGSCAT, STREGTXT, STREG and STCORE; confirm 261124-R13.

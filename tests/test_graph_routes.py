@@ -47,6 +47,58 @@ CASES=[
  ('exact-discrete-mean','STCLTF','mean_fallback',(.5,.5,2,'PASS',None),['2','0','.5','1','.5','0','.5'],['2','3'])]
 
 class GraphRoutes(unittest.TestCase):
+    def test_chi_answer_then_automatic_graphs_through_real_viewer(self):
+        import sys,types,itertools
+        for table,inputs,menus,statistic in [
+            (False,['counts','.05','4','30','10','20','20','0'],['1','1'],10),
+            (True,['counts','.05','2','2','30','10','10','30'],['1'],20)]:
+            with self.subTest(table=table):
+                plot=expansion.Plot();keys=types.ModuleType('ti_system')
+                events=itertools.cycle((0,105,0));keys.get_key=lambda mode:next(events)
+                pages=[];viewer=c.view
+                def view(title,lines):
+                    pages.append((title,list(lines),len(plot.frames)))
+                    return viewer(title,lines)
+                with patch.dict(sys.modules,ti_plotlib=plot,ti_system=keys),patch.object(c,'ON_TI',True),patch.object(c,'KEY_STYLE','scan'),patch.object(c,'wait_key',return_value='right'),patch.object(c,'menu',side_effect=menus),patch.object(c,'view',side_effect=view),patch('builtins.input',side_effect=inputs),contextlib.redirect_stdout(io.StringIO()):
+                    c.call('STCHI','session',table)
+                title,summary,frames=pages[0]
+                self.assertTrue(title.endswith('ANSWER'))
+                self.assertEqual(summary[0],'TS (chi-square)=%d'%statistic)
+                self.assertTrue(summary[1].startswith('CV (right tail)='))
+                self.assertTrue(summary[2].startswith('p-VALUE='))
+                self.assertIn('REJECT H0',summary)
+                self.assertIn('<= alpha 0.05',summary[-1])
+                self.assertLessEqual(len(list(c.wrapped_lines(summary))),c.VIEW_LINES)
+                self.assertEqual(frames,0)
+                self.assertEqual(len(plot.frames),2)
+                self.assertEqual(pages[1][2],2)
+                self.assertEqual(pages[1][0],'TI-84 CHI-SQUARE STEPS')
+                self.assertFalse(any('HOW TO DRAW' in line for line in pages[2][1]))
+                labels=[[item[1] for item in frame[1]] for frame in plot.frames]
+                self.assertTrue(any('alpha=' in label for label in labels[0]))
+                self.assertTrue(any('p-VALUE=' in label for label in labels[1]))
+
+    def test_chi_answer_back_and_graphics_fallback(self):
+        for action in ('back','exit',None):
+            pages=[]
+            def view(title,lines):
+                pages.append(list(lines));return action
+            with patch.object(c,'ON_TI',True),patch.object(c,'menu',side_effect=['1','1']),patch.object(c,'view',side_effect=view),patch('builtins.input',side_effect=['','.05','3','20','20','20','0']),patch('STGCHI.show',return_value=False) as screens:
+                c.call('STCHI','session')
+            self.assertEqual(pages[0][0],'TS (chi-square)=0')
+            self.assertIn('FAIL TO REJECT H0',pages[0])
+            self.assertIn('p 1 > alpha 0.05',pages[0])
+            self.assertEqual(screens.call_count,int(action is None))
+            if action is None:
+                self.assertTrue(any('HOW TO DRAW' in line for line in pages[2]))
+            else:self.assertEqual(len(pages),1)
+
+    def test_chi_graph_back_stops_before_second_screen(self):
+        import STGINFER as infer
+        with patch.object(infer,'chi_region',return_value='back') as region:
+            self.assertEqual(infer.chi_screens(10,3,.05,.018566,7.8147),'back')
+        self.assertEqual(region.call_count,1)
+
     def test_real_entry_functions_build_renderable_descriptors(self):
         helper=expansion.ExpandedGraphs()
         for name,module,function,args,inputs,menus in CASES:

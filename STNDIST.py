@@ -39,7 +39,9 @@ def _normal_probability(mean, sd):
   lower,upper=('-1E99',str(value)) if event=='1' else (str(value),'1E99') if event=='2' else (str(low),str(high))
   work=['z=(x-mu)/sigma']+['z=(%g-%g)/%g=%.6f' % (x,mean,sd,(x-mean)/sd) for x in bounds]
   work+=['normalcdf('+lower+','+upper+','+str(mean)+','+str(sd)+')']
-  c.view('NORMAL > INDIVIDUAL PROBABILITY', [
+  c.view('NORMAL > INDIVIDUAL PROBABILITY', c.summary([
+    'P=%.7g' % probability,'mu=%.6g' % mean,'SD=%.6g' % sd]+
+    ['z=%.6g' % ((x-mean)/sd) for x in bounds])+[label,
     'X: INDIVIDUAL MEASUREMENT',
     'MEAN mu=%.4f; SD sigma=%.4f' % (mean, sd),
     label,
@@ -72,7 +74,7 @@ def _normal_percentile(mean, sd):
   answer='VALUE CUTOFF x='+('%.4f' % cutoff if 0 < probability < 1 else cutoff)
   zanswer='z CUTOFF='+('%.4f' % z if 0 < probability < 1 else cutoff)
   if c.view('NORMAL > PERCENTILE ANSWER',[
-    answer,zanswer,'AREA TO LEFT=%.6f' % probability,
+    answer,zanswer,'mu=%.6g; SD=%.6g' % (mean,sd),'AREA TO LEFT=%.6f' % probability,
     'x=mu+z*sigma']+work) in ('back','exit'): return
   c.view('NORMAL > DRAW CUTOFF', [answer,
     'X: INDIVIDUAL MEASUREMENT',

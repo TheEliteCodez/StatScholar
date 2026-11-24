@@ -12,7 +12,8 @@ def main():
     ti.recall_list=lambda number:[1,2,3,4,5] if number=='1' else [3,5,8,9,12]
     sys.modules['ti_system']=ti
     walker=Walker()
-    walker.queue=[['15',str(i)] for i in range(1,9)]
+    walker.queue += [['15','9',mode,parameter] for mode in ('1','2') for parameter in ('1','2','3','4')]
+    walker.queue += [['15',str(i)] for i in range(1,10)]
     walker.queue += [['15','8',source,direction] for source in ('1','2') for direction in ('1','2')]
     choosing=walker.choose
     parents=('STAT1','HYPOTHESIS TESTING')

@@ -10,6 +10,8 @@ import STCORE as c
 import STHYRES as output
 import STHTPLOT as graph
 import STGPEN as pen
+import STHTLAB as labeler
+import STGINK as glyphs
 
 
 class Plot(types.ModuleType):
@@ -31,6 +33,11 @@ class Plot(types.ModuleType):
 
 
 class HypothesisGraph(unittest.TestCase):
+    def setUp(self):
+        # Keep patched renderer owners stable for semantic drawing assertions.
+        # Fresh-process tests separately exercise real stage unloading.
+        self.enterContext(patch.object(c,'release_topics',lambda *args:None))
+
     def setup_values(self,alternative='>',degrees=None):
         setup={'alternative':alternative,'alpha':.05,'parameter':'p' if degrees is None else 'mu',
                'null':.5 if degrees is None else 65,'context':'scores','claim':alternative,'random':'PASS'}
@@ -59,7 +66,7 @@ class HypothesisGraph(unittest.TestCase):
             p,cv,reject=output.inference(statistic,.05,alt,9)
             for region in ('p','alpha'):
                 plt=Plot()
-                with patch.dict(sys.modules,ti_plotlib=plt),patch.object(graph,'tag',wraps=graph.tag) as tags:
+                with patch.dict(sys.modules,ti_plotlib=plt,STHTLAB=labeler,STGPEN=pen,STGINK=glyphs),patch.object(labeler,'tag',wraps=labeler.tag) as tags:
                     graph.show(setup,result,p,cv,region)
                 boxes=tags.call_args_list[0].args[-1]
                 for i,(left,right,top,bottom) in enumerate(boxes):
@@ -78,10 +85,10 @@ class HypothesisGraph(unittest.TestCase):
                 setup,result=self.setup_values(alt,df)
                 p,cv,reject=output.inference(2,.05,alt,df)
                 plt=Plot()
-                with patch.dict(sys.modules,ti_plotlib=plt),patch.object(pen,'ink',wraps=pen.ink) as shared_ink,patch.object(graph,'ink',wraps=graph.ink) as ink,patch.object(graph,'tag',wraps=graph.tag) as tags:
+                with patch.dict(sys.modules,ti_plotlib=plt,STHTLAB=labeler,STGPEN=pen,STGINK=glyphs),patch.object(glyphs,'ink',wraps=glyphs.ink) as shared_ink,patch.object(labeler,'ink',wraps=labeler.ink) as ink,patch.object(labeler,'tag',wraps=labeler.tag) as tags:
                     self.assertTrue(graph.show(setup,result,p,cv))
                 extent=max(3.5,2.7,max(abs(v) for v in cv)+.7)
-                blue=[points for rgb,points in plt.fills if rgb==graph.BLUE]
+                blue=[points for rgb,points in plt.fills if rgb==pen.BLUE]
                 self.assertTrue(blue)
                 for points in blue:
                     score=(points[0]-8)*2*extent/303-extent
@@ -94,7 +101,7 @@ class HypothesisGraph(unittest.TestCase):
                 for value in cv:
                     self.assertIn('CV=%.4g' % value,labels)
                     tag=next(call for call in tags.call_args_list if call.args[1]=='CV=%.4g' % value)
-                    self.assertAlmostEqual(tag.args[2],graph.position(value,extent))
+                    self.assertAlmostEqual(tag.args[2],pen.position(value,extent))
                 native=' '.join(args[1] for args in plt.text)
                 self.assertIn('p-VALUE REGION',native)
                 self.assertIn('p-VALUE=%.6g' % p,native)
@@ -105,13 +112,13 @@ class HypothesisGraph(unittest.TestCase):
         for alt in ('<','>','!='):
             setup,result=self.setup_values(alt,9);result['ts']=.3
             p,cv,reject=output.inference(.3,.05,alt,9);plt=Plot()
-            with patch.dict(sys.modules,ti_plotlib=plt),patch.object(pen,'ink',wraps=pen.ink) as shared_ink,patch.object(graph,'ink',wraps=graph.ink) as ink:
+            with patch.dict(sys.modules,ti_plotlib=plt,STHTLAB=labeler,STGPEN=pen,STGINK=glyphs),patch.object(glyphs,'ink',wraps=glyphs.ink) as shared_ink,patch.object(labeler,'ink',wraps=labeler.ink) as ink:
                 graph.show(setup,result,p,cv,'alpha')
             extent=max(3.5,max(abs(v) for v in cv)+.7)
             boundary=cv[0] if alt=='<' else cv[-1]
             self.assertTrue(plt.fills)
             for rgb,points in plt.fills:
-                self.assertEqual(rgb,graph.RED)
+                self.assertEqual(rgb,pen.RED)
                 score=(points[0]-8)*2*extent/303-extent
                 self.assertTrue(graph.shaded(score+(-1e-9 if alt=='<' else 1e-9 if alt=='>' else 0),boundary-1e-9 if alt=='!=' else boundary,alt))
             labels=[call.args[1] for call in ink.call_args_list+shared_ink.call_args_list]
@@ -123,8 +130,8 @@ class HypothesisGraph(unittest.TestCase):
             setup={'parameter':parameter,'null':null,'alpha':.05,'alternative':'>'}
             result={'ts':ts,'df':9 if parameter.startswith('mu') else None,'se':se,'estimate':null+ts*se}
             cv=(1.833113,);plt=Plot()
-            self.assertAlmostEqual(graph.original(setup,result,ts),result['estimate'])
-            with patch.dict(sys.modules,ti_plotlib=plt),patch.object(pen,'ink',wraps=pen.ink) as shared_ink,patch.object(graph,'ink',wraps=graph.ink) as ink:
+            self.assertAlmostEqual(labeler.original(setup,result,ts),result['estimate'])
+            with patch.dict(sys.modules,ti_plotlib=plt,STHTLAB=labeler,STGPEN=pen,STGINK=glyphs),patch.object(glyphs,'ink',wraps=glyphs.ink) as shared_ink,patch.object(labeler,'ink',wraps=labeler.ink) as ink:
                 graph.show(setup,result,.068177,cv)
             extent=max(3.5,abs(ts)+.7,cv[0]+.7)
             labels=[call.args[1] for call in ink.call_args_list+shared_ink.call_args_list]
@@ -132,9 +139,9 @@ class HypothesisGraph(unittest.TestCase):
             self.assertIn('H0=%.5g' % null,labels)
             self.assertIn('%.5g' % (null+cv[0]*se),labels)
             original_mark=next(call for call in ink.call_args_list if call.args[1]=='%.5g' % result['estimate'] and call.args[3]==149)
-            self.assertAlmostEqual(original_mark.args[2]+3*len(original_mark.args[1]),graph.position(ts,extent))
-            self.assertIn((graph.BLACK,(8,77,311,77)),plt.lines)
-            self.assertIn((graph.BLACK,(8,109,311,109)),plt.lines)
+            self.assertAlmostEqual(original_mark.args[2]+3*len(original_mark.args[1]),pen.position(ts,extent))
+            self.assertIn((pen.BLACK,(8,77,311,77)),plt.lines)
+            self.assertIn((pen.BLACK,(8,109,311,109)),plt.lines)
 
     def test_graph_keys_bypass_native_pause_and_consume_key_release(self):
         for raw,expected in [(45,'back'),(24,'back'),(102,'back'),
@@ -145,7 +152,7 @@ class HypothesisGraph(unittest.TestCase):
             keys.get_key=lambda mode:next(events)
             with patch.dict(sys.modules,ti_system=keys),patch.object(c,'KEY_STYLE','scan'), \
                  patch.object(plt,'show_plot',side_effect=AssertionError('Do not enter native graph pause')):
-                self.assertEqual(graph.wait(plt),expected)
+                self.assertEqual(pen.wait(plt),expected)
             self.assertEqual(list(events),[])
             self.assertIsNone(c._LAST_RAW)
 
@@ -157,13 +164,13 @@ class HypothesisGraph(unittest.TestCase):
             keys.wait_key=lambda:next(events)
             with patch.dict(sys.modules,ti_system=keys),patch.object(c,'KEY_STYLE','ce'), \
                  patch.object(plt,'show_plot',side_effect=AssertionError('Do not enter native graph pause')):
-                self.assertEqual(graph.wait(plt),expected)
+                self.assertEqual(pen.wait(plt),expected)
             self.assertEqual(list(events),[])
 
     def test_graph_step_and_both_review_graph_options(self):
         setup,result=self.setup_values()
         plt=Plot()
-        with patch.dict(sys.modules,ti_plotlib=plt),patch.object(c,'ON_TI',True), \
+        with patch.dict(sys.modules,ti_plotlib=plt,STHTLAB=labeler,STGPEN=pen,STGINK=glyphs),patch.object(c,'ON_TI',True), \
              patch.object(c,'view',return_value=None) as view, \
              patch.object(c,'menu',side_effect=['11','12','0']):
             output.show(setup,result)

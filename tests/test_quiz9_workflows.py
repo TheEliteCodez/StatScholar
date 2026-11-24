@@ -35,7 +35,7 @@ for answers,pe,ts,p,cv,reject in cases:
  with contextlib.redirect_stdout(io.StringIO()):STAT1.main()
  assert list(pending)==[]
  assert not c.topic_modules() and all(ref() is None for ref in refs)
- assert len(pages)==9,pages
+ assert len(pages)==10,pages
  def lines(step):return next(value for title,value in pages.items() if title.startswith('HT '+str(step)+':'))
  actual_pe=float(next(line.split('=')[1] for line in lines(3) if line.startswith('POINT ESTIMATE PE=')))
  actual_ts=float(next(line.rsplit('=',1)[1] for line in lines(5) if line.startswith('TS=')))

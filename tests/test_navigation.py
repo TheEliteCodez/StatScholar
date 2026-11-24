@@ -19,6 +19,50 @@ import STPAGE
 class Navigation(unittest.TestCase):
     def setUp(self): c._menu_pages.clear()
 
+    def test_numeric_aliases_and_added_shortcuts_preserve_caller_entries(self):
+        items=[('1','FIRST'),('T','SHOW ALL'),('E','EDIT')]
+        original=list(items)
+        for keys,expected in ((['2'],'T'),(['4'],'C'),(['5'],'S'),(['3'],'E')):
+            with patch.object(c,'HAS_KEYS',False),patch('builtins.input',side_effect=keys),contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(c.menu('ALIASES',items,('C','S')),expected)
+            self.assertEqual(items,original)
+        with patch.object(c,'HAS_KEYS',False),patch('builtins.input',return_value='2'),contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(c.menu('ITERATOR',iter(items)),'T')
+
+    def test_home_regression_reads_choices_without_importing_input_helper(self):
+        code=r'''
+import builtins,contextlib,io,sys,types
+import STAT1,STCORE as c
+original=builtins.__import__
+def guarded(name,*args,**kwargs):
+    if name in ('STVIN','STWORK'):raise AssertionError('Unexpected menu/regression helper: '+name)
+    return original(name,*args,**kwargs)
+builtins.__import__=guarded
+# Text entry and two-digit Home choice use no input-module import.
+pending=iter(['16','0','0']);builtins.input=lambda prompt='':next(pending)
+with contextlib.redirect_stdout(io.StringIO()):STAT1.main()
+assert not list(pending)
+# Physical Evo digits, Enter and releases through actual menus.
+digits={'0':102,'1':92,'2':93,'3':94,'4':82,'5':83,'6':84,'7':72,'8':73,'9':74}
+keys=[digits[ch] if ch!='E' else 105 for ch in '16E1E1E9E3E0E0E0E']
+events=iter(v for key in keys for v in (0,key,key,0))
+c.get_key=lambda mode:next(events);c.HAS_KEYS=True;c.KEY_STYLE='scan';c._LAST_RAW=None
+c.wait_key=lambda:'right'
+for repeat in range(2):
+    events=iter(v for key in keys for v in (0,key,key,0))
+    pending=iter(['9','248','25.36','680','47.6','286','29.02','906','70.42','453','35.71','907','69.49','838','54.66','301','18.07','434','25.38','pages','dollars','.05','4','2','451','451'])
+    builtins.input=lambda prompt='':next(pending)
+    with contextlib.redirect_stdout(io.StringIO()) as output:STAT1.main()
+    assert not list(pending)
+    assert 'PREDICTED y=34.13' in output.getvalue()
+    assert not c.topic_modules(),c.topic_modules()
+    assert 'STVIN' not in sys.modules
+print('CHOICES_WITHOUT_IMPORT_PASS')
+'''
+        result=subprocess.run([sys.executable,'-B','-c',code],capture_output=True,text=True,timeout=15)
+        self.assertEqual(result.returncode,0,result.stdout[-2000:]+result.stderr)
+        self.assertIn('CHOICES_WITHOUT_IMPORT_PASS',result.stdout)
+
     def test_evo_prefers_polling_when_both_apis_exist(self):
         code="""
 import builtins,sys,types

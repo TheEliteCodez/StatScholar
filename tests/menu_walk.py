@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import sys
 import traceback
+import types
 import weakref
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -43,10 +44,17 @@ class Walker:
         self.small_clt=False
 
     def profile(self, frame, event, arg):
+        name=frame.f_globals.get('__name__')
+        if event=='return' and name in self.sizes and name not in ('STCORE','STAT1') and frame.f_code.co_name=='<module>':
+            # Removing sys.modules is insufficient when a returned object keeps
+            # a function's globals (and the rest of its module code) alive.
+            for value in frame.f_globals.values():
+                if isinstance(value,(type,types.FunctionType)) and value.__module__==name:
+                    self.references[id(value)]=weakref.ref(value)
         if event != 'call' or frame.f_globals.get('__name__') not in self.sizes:
             return
         # Observe helper imports, not every scalar operation while paging work.
-        if (frame.f_globals.get('__name__') in ('STWORK','STDWK','STEFMT','STEXACT')
+        if (frame.f_globals.get('__name__') in ('STWORK','STDWK','STEFMT','STEXACT','STREGWK')
                 and frame.f_code.co_name!='<module>'):
             return
         names = tuple(n for n in sys.modules if n in self.sizes)
@@ -134,6 +142,7 @@ class Walker:
         if self.reads > 600:
             raise AssertionError(('Input did not progress',prompt))
         p=prompt.upper()
+        if p=='CORRELATION R (NOT R^2): ':return '.65'
         if 'PARAMETERS ESTIMATED' in p: return '0'
         if 'NUMBER OF PAIRS' in p: return '100' if self.large else '5'
         if p.startswith('X LIST NUMBER'): return '1'
@@ -149,7 +158,7 @@ class Walker:
         if self.small_clt and p=='SAMPLE SIZE N: ': return '2'
         if p in ('RIGHT-TAIL AREA: ','LEFT-TAIL AREA: ','AREA FROM 0 TO CUTOFF: '): return '.25'
         if 'COUNT IN GIVEN GROUP' in p: return '50'
-        if p=='VALUE IN H0: ': return '.4'
+        if p in ('VALUE IN H0: ','VALUE IN H0 / CLAIM: '): return '.4'
         if 'SUCCESSES X' in p: return '40'
         if 'CONFIDENCE' in p: return '95%'
         if 'SEARCH TERM' in p: return self.search
@@ -239,6 +248,7 @@ class Walker:
         for identity,entry in self.menus.items():
             entry['passed']=sorted(key for name,key in self.passed if name==identity)
         return {'menus':self.menus,'runs':self.runs,'failures':self.failures,
+                'retention_scope':'Module objects, module-defined functions and classes after return; desktop GC only.',
                 'scope':'Deterministic numeric fixtures; real renderers and calculations; desktop only. Loaded source bytes are not heap bytes.'}
 
 
@@ -249,6 +259,7 @@ if __name__=='__main__':
     ti.recall_list=lambda number:[1,2,3,4,5] if number=='1' else [3,5,8,9,12]
     sys.modules['ti_system']=ti
     walker=Walker()
+    walker.queue += [['15','9',mode,parameter] for mode in ('1','2') for parameter in ('1','2','3','4')]
     walker.queue += [[home,'8',source,direction] for home in ('15','11') for source in ('1','2') for direction in ('1','2')]
     result=walker.run()
     walker.replacement='N'

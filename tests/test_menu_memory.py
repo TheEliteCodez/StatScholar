@@ -14,6 +14,44 @@ class MenuMemory(unittest.TestCase):
                              capture_output=True, text=True, timeout=60)
         self.assertEqual(run.returncode, 0, run.stdout[-2000:] + run.stderr)
 
+    def test_all_sixteen_home_routes_use_shared_reader_and_release_after_cancel(self):
+        self.run_fresh(r'''
+import builtins,contextlib,gc,io,sys,types,weakref
+import STAT1,STCORE as c
+original=builtins.__import__;refs=[]
+def guarded(name,*args,**kwargs):
+    assert name!='STVIN','A menu imported the obsolete input helper'
+    module=original(name,*args,**kwargs)
+    if name.startswith('ST') and name not in ('STCORE','STAT1'):
+        refs.append(weakref.ref(module))
+        refs.extend(weakref.ref(v) for v in vars(module).values()
+                    if isinstance(v,(types.FunctionType,type)) and v.__module__==name)
+    return module
+builtins.__import__=guarded
+for style in ('text','scan','ce'):
+    c.HAS_KEYS=style!='text';c.KEY_STYLE=style
+    for option in range(1,17):
+        refs.clear();c._LAST_RAW=None
+        if style=='text':
+            pending=iter([str(option),'0','0'])
+            builtins.input=lambda prompt='':next(pending)
+        else:
+            scan=(102,92,93,94,82,83,84,72,73,74)
+            commands=str(option)+'E0E0E'
+            codes=[(105 if style=='scan' else 5) if v=='E' else scan[int(v)] if style=='scan' else 142+int(v) for v in commands]
+            pending=iter(v for key in codes for v in (0,key,key,0)) if style=='scan' else iter(codes)
+            c.get_key=lambda mode:next(pending);c.ti_wait_key=lambda:next(pending)
+            def no_text(prompt=''):raise AssertionError(('Unexpected text input',style,option,prompt))
+            builtins.input=no_text
+        with contextlib.redirect_stdout(io.StringIO()):STAT1.main()
+        gc.collect()
+        assert not c.topic_modules() and not c._call_depth,(style,option,c.topic_modules())
+        assert all(ref() is None for ref in refs),('Retained module code',style,option)
+        assert 'STVIN' not in sys.modules
+        if style!='scan':assert not list(pending),(style,option)
+print('48_HOME_CANCEL_PATHS_PASS')
+''')
+
     def test_all_literal_dispatch_targets_exist(self):
         # Includes route dictionaries, positional route tuples and lazy calls.
         self.run_fresh('''

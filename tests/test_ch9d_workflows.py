@@ -45,7 +45,7 @@ for question,answers,expected in cases:
  if question=='12':
   assert 'INTERVAL=(0.2750, 0.3250)' in pages['INTERVAL FROM ESTIMATE +/- E']
   continue
- assert len(pages)==9,(question,pages)
+ assert len(pages)==10,(question,pages)
  def lines(step):return next(value for title,value in pages.items() if title.startswith('HT '+str(step)+':'))
  pe,ts,cv,p,reject,df=expected
  actual_pe=float(next(line.split('=')[1] for line in lines(3) if line.startswith('POINT ESTIMATE PE=')))

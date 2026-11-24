@@ -1,0 +1,1223 @@
+{
+  "scope": "Whitespace and line-ending compaction only; every file has identical parsed AST, including string constants. No heap savings inferred from disk-byte savings.",
+  "before_bytes": 384772,
+  "after_bytes": 358158,
+  "files": [
+    {
+      "file": "STAT1.py",
+      "before_bytes": 905,
+      "after_bytes": 788,
+      "before_sha256": "f840c34da74c0d14b098f84c46039d968963d1922a8393284f0a2f42eb43d87d",
+      "after_sha256": "6e5dae056b442e498a01f0cbfdeccd896dc47c19a1e6a9fa7b2737701f825ee9",
+      "ast_identical": true
+    },
+    {
+      "file": "STBEXTRA.py",
+      "before_bytes": 3826,
+      "after_bytes": 3628,
+      "before_sha256": "b49604a84387da913f2cf67a8f08749ace70db351fcacd1288c10db462b96e24",
+      "after_sha256": "de1b3e646e6b61a54c78a0c445c8bb502fd94670fe382e470451247bb31ef4db",
+      "ast_identical": true
+    },
+    {
+      "file": "STBHELP.py",
+      "before_bytes": 3051,
+      "after_bytes": 2896,
+      "before_sha256": "6441390f54ba55742e46ad7a38dc9619021151b863e1e3fdab69d94133e4ef87",
+      "after_sha256": "6fd3dc147efa024fc4685d4b0623a818f667c8107330463ce9120760e0a2c374",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINFO.py",
+      "before_bytes": 931,
+      "after_bytes": 818,
+      "before_sha256": "82ffafe14d9e5db009160e32cd369579b2851b20589d8943116620cea5fb0de2",
+      "after_sha256": "b37225df70b4b4a288c1bc46d77fc2ebbacc9ecf697773c4d547af1a8388ac89",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINFO2.py",
+      "before_bytes": 1373,
+      "after_bytes": 1263,
+      "before_sha256": "620bf9325503c36b1241ee7e6f569088b50fc26958c62a6fcb56eee1af762d68",
+      "after_sha256": "adda00ba7329d6ed17ac1899cae0fcfa48afcf08b17a641200badc24d2ee019e",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINFO5.py",
+      "before_bytes": 1460,
+      "after_bytes": 1390,
+      "before_sha256": "c5873d25bb0cece422c411e9b1306a0149c04c3ab0fec094178b70b22636fbec",
+      "after_sha256": "d00e5334af19ec1d28cf1b7bdaecf9843b743cb9d8cd2d5379de6e4ed9936d89",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINFO7.py",
+      "before_bytes": 1490,
+      "after_bytes": 1424,
+      "before_sha256": "7a1dcf040085fbf2a1ef5f0185e9870c522936106b3999ece4d216725a1a0ee0",
+      "after_sha256": "6b987d1070bed95643c346bcfdbe210d42cad3c89b1b8c338ec4746cb7e94250",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINFO9.py",
+      "before_bytes": 210,
+      "after_bytes": 208,
+      "before_sha256": "d14c09c131d5d6007b1a0917398c5348618b370e27ab797c0ecb2c30d47315e1",
+      "after_sha256": "8438bfea4232a49a63ee8489dae793cff7a0bdd845e0ab45a9c27433d2c42d5b",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINOM.py",
+      "before_bytes": 848,
+      "after_bytes": 830,
+      "before_sha256": "6a290c96a127f46dc892a7a03e2109c4bc2b46177b221573fa040bddd018d34d",
+      "after_sha256": "ada5bf1bbaa79b530a33af2f434de0ebaa3ca80e75823d847dff309233f430c2",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINOM1.py",
+      "before_bytes": 2284,
+      "after_bytes": 2222,
+      "before_sha256": "890208854735e601883b670d1e0e3281fd253ef2932b6e136038daeb1a1f2360",
+      "after_sha256": "62d8167c492aed9e77f126aa5beb54dca6c081d665336f6c47adedd08e50ced4",
+      "ast_identical": true
+    },
+    {
+      "file": "STBINOM2.py",
+      "before_bytes": 4587,
+      "after_bytes": 4247,
+      "before_sha256": "d4c3df093fe1700da818c80864e4d9bf60e1b2607c4da23d0ad8e8c933fd3deb",
+      "after_sha256": "ecd9bf1cc4c538f57d0451c0735f139290638f20ffadca27d760057209bac39b",
+      "ast_identical": true
+    },
+    {
+      "file": "STBMATH.py",
+      "before_bytes": 1904,
+      "after_bytes": 1766,
+      "before_sha256": "2a1c510c715b99f706a436fac5fe8bca738336f93e8526d87d8f731c2646753a",
+      "after_sha256": "4d752dfcbe793cd61b9b311a391efcfced56c1d2b4a556a691daa580718ab3c5",
+      "ast_identical": true
+    },
+    {
+      "file": "STBNWK.py",
+      "before_bytes": 1068,
+      "after_bytes": 1014,
+      "before_sha256": "92d26417a51e311d39f30468991d9dfcdf2c1eef707c768247a6a28d8b52a510",
+      "after_sha256": "a013037727e149198008f81b3f2b339e730a4459905428085132dfa22204a065",
+      "ast_identical": true
+    },
+    {
+      "file": "STBW2.py",
+      "before_bytes": 2370,
+      "after_bytes": 2250,
+      "before_sha256": "e3f4dffcc65b73d892e9b17a675ae147875a3938b5909e4aa9f1c2e8c5bad8ea",
+      "after_sha256": "c150900fa6dc5e8973f400149fc8d7a143f4a328221b9fdcc30e3b064c4aa4eb",
+      "ast_identical": true
+    },
+    {
+      "file": "STBWE.py",
+      "before_bytes": 1079,
+      "after_bytes": 1041,
+      "before_sha256": "f923fb9be1d2a3f5d3db7ce0733c059e4bbfebf0e0f663ef53a3cf72633c1bd2",
+      "after_sha256": "53fa89082c95324b1f1fc4288f51c74b65298333ad6a82f98d37370936a8d64b",
+      "ast_identical": true
+    },
+    {
+      "file": "STBWORD.py",
+      "before_bytes": 3752,
+      "after_bytes": 3412,
+      "before_sha256": "c9077bf5537965442543a0e52d33274e09cf4b1cdd2612ff12633b3e7d8ef2a0",
+      "after_sha256": "720e499cd84650ad112ebe346fb91457555f54971584a3577317f530d281c644",
+      "ast_identical": true
+    },
+    {
+      "file": "STCHI.py",
+      "before_bytes": 1809,
+      "after_bytes": 1670,
+      "before_sha256": "157d39c4199bdc1422050565f1b5021407f2d2aa1f0c703394a85f69c75c9d82",
+      "after_sha256": "fb28132671024d33c09f838662dbdc835cc3aedb1bcf578b2c433ab919ef7495",
+      "ast_identical": true
+    },
+    {
+      "file": "STCHIM.py",
+      "before_bytes": 2522,
+      "after_bytes": 2382,
+      "before_sha256": "3383df14d4f02fdb39d42046b8f60e696289bf0c21de0f47c0d0143ef12a0158",
+      "after_sha256": "62b3553ff27c371563ec45db58287ef5e4ecbbe53384c5a6175d7fa5985a33c4",
+      "ast_identical": true
+    },
+    {
+      "file": "STCHISH.py",
+      "before_bytes": 757,
+      "after_bytes": 715,
+      "before_sha256": "30bf85c2cb29be18d1feaad8b125c9fb1c35910d5ad494b16dc4bd263cdd7d66",
+      "after_sha256": "ea95ea12259d61aeee52542b6e1aaa75786bd561aab6f41a8d114253e6e9b1eb",
+      "ast_identical": true
+    },
+    {
+      "file": "STCHITI.py",
+      "before_bytes": 2842,
+      "after_bytes": 2580,
+      "before_sha256": "41183a25b1696dc6f123d44e24beaad9d519a68a3b9424f28a5ba4f698ad62da",
+      "after_sha256": "3875174fe402d921235e7931484fab1e7a1ca548d5d6a3ead580c1bfc139ae5b",
+      "ast_identical": true
+    },
+    {
+      "file": "STCHRES.py",
+      "before_bytes": 2205,
+      "after_bytes": 2099,
+      "before_sha256": "6e4a72e605416f5cebb8420b15cedced92fd83b5833383b56f087dc642b5ecd1",
+      "after_sha256": "40c2f558e7be30e602069d162bc52fa16580c55cd114667ac5ce777a28b0c9bf",
+      "ast_identical": true
+    },
+    {
+      "file": "STCHROW.py",
+      "before_bytes": 1154,
+      "after_bytes": 1074,
+      "before_sha256": "14e6f95b75ac9cdcee2fea8604144693625d182ed5b02072da1d3169740fc6ae",
+      "after_sha256": "e81a6b5288c978d1347e215abab31e7b16242ad532f2e26abeb93a2ea0109293",
+      "ast_identical": true
+    },
+    {
+      "file": "STCIIO.py",
+      "before_bytes": 8073,
+      "after_bytes": 7374,
+      "before_sha256": "3d2c5598a8ec90bee083a575af09b2d052ae023a6fbf0df7c13d7bed67f7279a",
+      "after_sha256": "9c47fee48460dc446c3e2639edceaa12b70162167449c44efb9dc225a2e443b5",
+      "ast_identical": true
+    },
+    {
+      "file": "STCIMEAN.py",
+      "before_bytes": 3254,
+      "after_bytes": 2931,
+      "before_sha256": "5f0320cfaf7c13910f6af3465a6b288a7356e511e957126ae85c7cd3b17b2080",
+      "after_sha256": "ffb4334368e4184bd6f1e60bfc2542438cdfe8a4a50827378f2b3be6ce0f762d",
+      "ast_identical": true
+    },
+    {
+      "file": "STCIMENU.py",
+      "before_bytes": 721,
+      "after_bytes": 695,
+      "before_sha256": "79b4f7400bd4181252d09f6a83c9c192f94b2f626da972badc2139f23afe80da",
+      "after_sha256": "0e6a3f9be0736da29f8efdd826d1a05d61d397af8c0f325fa5f1ecd33381267b",
+      "ast_identical": true
+    },
+    {
+      "file": "STCIMOE.py",
+      "before_bytes": 3373,
+      "after_bytes": 3086,
+      "before_sha256": "194d5c3ba722132741c5e2a8881bccd0b3859b841a6bf163b473f7fa077bcaa2",
+      "after_sha256": "982cf834a7ce1aa0076ffc3e4a177a955dc18ebf76250e3a1bd4a03e7f34eea4",
+      "ast_identical": true
+    },
+    {
+      "file": "STCINUM.py",
+      "before_bytes": 3584,
+      "after_bytes": 3404,
+      "before_sha256": "53ce631b4c401d7c21a2c2e219b83906fb16abd33249732a4b9be1401df04a3c",
+      "after_sha256": "a919e97cebe7b9c148f64178908826f457aa02701ab915ed1c80ca4ad48c5cd7",
+      "ast_identical": true
+    },
+    {
+      "file": "STCIPROP.py",
+      "before_bytes": 3011,
+      "after_bytes": 2792,
+      "before_sha256": "764acf89cc164dd968962cda16e410ceec24d6360f671792b5158a5ddfdec00a",
+      "after_sha256": "867d1219f4f5030381758043531018e1f1f3d30a3fe884bf9345518e39cba6ea",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLT.py",
+      "before_bytes": 730,
+      "after_bytes": 668,
+      "before_sha256": "8fd53dbd595eccaf518c678da1fba6886a5148017f430752a4ad7ab4e813338b",
+      "after_sha256": "49326d8dd30a631733f81d67e9e732b8346c1afbf17e1c1742071cb9ca07a464",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLT1.py",
+      "before_bytes": 2068,
+      "after_bytes": 1930,
+      "before_sha256": "2a117da3348c2778320b25e09db4fe7eddd48a22fbae83046ec62adb6c73fe8c",
+      "after_sha256": "1b9a23686fdf7d2dedad0cb81934aac50533aa85596e8427a8f43ccfc0aa0711",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLT2.py",
+      "before_bytes": 1687,
+      "after_bytes": 1573,
+      "before_sha256": "ee2d24d055e5588d65a84f51ca3ba4648b09bb62b8052a6b78ad6759c050ff3d",
+      "after_sha256": "e5596b6fa9c4cea8a4168298d8527056ef3a19b1894c4b4df576e33aba20e2ad",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLTC.py",
+      "before_bytes": 1093,
+      "after_bytes": 1027,
+      "before_sha256": "8e48f21253a0a8e090e9ac5ad3322ca74e5eb83ea08dac2a9af8094312ec5cf4",
+      "after_sha256": "2112db000f0776b98cd730283a3e095bf8792789c275b194d1381206e7baf017",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLTF.py",
+      "before_bytes": 8369,
+      "after_bytes": 7525,
+      "before_sha256": "8656a7868b0a7a5731e684b1092d47b08c6ca2352fbbd20c72c03c86b11af631",
+      "after_sha256": "837d80c2d2cd565305550bc7a22d970012cb69a4c15ea8a4d0937a3c492ffde8",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLTM.py",
+      "before_bytes": 941,
+      "after_bytes": 893,
+      "before_sha256": "fd36a47663f629ad300b97cb0a5faa42fed45cf2cc50cf7026013d51de3454d6",
+      "after_sha256": "3ea4f20f14ad7d309d4c9522fb9b8202fe0d95d894973b395b3ee2bd43fe5561",
+      "ast_identical": true
+    },
+    {
+      "file": "STCLTR.py",
+      "before_bytes": 5133,
+      "after_bytes": 4520,
+      "before_sha256": "7dfb01edc119ba95757d3bcc573e32a1e7fac247ed7303749c627541dd55ddcd",
+      "after_sha256": "3fada1817398126c8569a90875c541c09dc1352b7e6de8702f9b92ca88eec948",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOMB.py",
+      "before_bytes": 459,
+      "after_bytes": 403,
+      "before_sha256": "20af5374cd30d2cf4bdce8eb4ad0f7a0ef36a6c5353e79a47ba02ae4c84a9941",
+      "after_sha256": "af793085fe0fcdedee4139071ec9d22b56269fa0ce72484b21e3ffb34cd65661",
+      "ast_identical": true
+    },
+    {
+      "file": "STCORE.py",
+      "before_bytes": 8378,
+      "after_bytes": 7525,
+      "before_sha256": "a1c1d83cb348d29978c64507f5a359ba5e4ded68804cb42f9c9a1c716fddae42",
+      "after_sha256": "6bb65123bff8600bc712b6950502b7b76d9f70a705d86d21c90e9bc00cde6752",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOUNT.py",
+      "before_bytes": 1829,
+      "after_bytes": 1787,
+      "before_sha256": "742e8d29335d85be068f4fde9ff516f625fbc6169e89783a9b0a249fc8bb67eb",
+      "after_sha256": "85919b1e01a9156fda2ebf19eb354253a60a63a897cab413f0d8aa83f273df37",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOUNT2.py",
+      "before_bytes": 1984,
+      "after_bytes": 1842,
+      "before_sha256": "69e7ce054071967817385735372cabede60195ba173f4cea6f7d326ca2c587d7",
+      "after_sha256": "9d390cb9a7d7cff16583ea144ea2b623a20423dd352539c934809e098b76b48f",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOUNT3.py",
+      "before_bytes": 3681,
+      "after_bytes": 3292,
+      "before_sha256": "c07b6104713df9a94bf530c6457e30e0323ad76fee5708f9717f3cd0fba6fdaf",
+      "after_sha256": "3801829bd047da0870ff2297b81ef60d008d6168a2e7f4337b9e55240e2daa17",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOUNT4.py",
+      "before_bytes": 7334,
+      "after_bytes": 6694,
+      "before_sha256": "234c72b96468c7ade0d6be6f0b35b692099e9f8ceec3fe6c19d3e1496b47af6a",
+      "after_sha256": "a7bc79bb50c22674659a959b6de0506715f2a53ad417afbc33a3cde6185c1be3",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOUNT5.py",
+      "before_bytes": 3010,
+      "after_bytes": 2893,
+      "before_sha256": "00cdf33e6214c7e2b43b06c2f6196a32869e6675bb3276a66fb498d9f44e63af",
+      "after_sha256": "aed0695dcec43953063be542ff9b49ef551d8d9a28e3a781b07029ac91545522",
+      "ast_identical": true
+    },
+    {
+      "file": "STCOUNT6.py",
+      "before_bytes": 2545,
+      "after_bytes": 2404,
+      "before_sha256": "e50f42e14eeac79ea0ef70b9427d242ea24fd666befc4cbea21937e0c8ece194",
+      "after_sha256": "ba3b901206370e503789fcc78a1de2355100c30dcbc5c775b95d5dc4a405f593",
+      "ast_identical": true
+    },
+    {
+      "file": "STDATA.py",
+      "before_bytes": 2401,
+      "after_bytes": 2317,
+      "before_sha256": "9f4524e2e868adea66baa49dbbcde43b3786c2d9b8210f3e1974cad6f295084e",
+      "after_sha256": "6f2d357230b21bd97c9706c8ea02257f0ed485f5d1aa0bd58e1d841cae61487a",
+      "ast_identical": true
+    },
+    {
+      "file": "STDATA2.py",
+      "before_bytes": 2250,
+      "after_bytes": 2122,
+      "before_sha256": "f7c33e5c88cbafe345f2ca08f9f26ab5751f9160e5012d2da90d3fce6229ef33",
+      "after_sha256": "868f662463f77571030d75ff92869fd1ed90cdcb4ae370c7725c137af46182de",
+      "ast_identical": true
+    },
+    {
+      "file": "STDATA3.py",
+      "before_bytes": 3711,
+      "after_bytes": 3444,
+      "before_sha256": "257d7b444af635742b1571f31dc51390500174611310b53e5fc5490d239a2d36",
+      "after_sha256": "b2ce664b7927d1afb16d9127fa67ba71160e40460e11713c6a412aaa081ab009",
+      "ast_identical": true
+    },
+    {
+      "file": "STDEFS.py",
+      "before_bytes": 13031,
+      "after_bytes": 12840,
+      "before_sha256": "89de13b0a969cf6240b44f18b2f2898b2feb7f6ebf44f7e13a3f766cc2d7bbe6",
+      "after_sha256": "195ded309dd0d82ed5a9c69ffc57952fe5319efa17ae6fd3dcd2157d16095f70",
+      "ast_identical": true
+    },
+    {
+      "file": "STDESC.py",
+      "before_bytes": 565,
+      "after_bytes": 551,
+      "before_sha256": "75b60d7e0c25ee7e9337e3f33ab2e3178416a78ab9c93a9cba093307706e67f5",
+      "after_sha256": "45822597a4945d1a7307cc9375af5aa815e91bbccc9ad8d17ed801529ccfabaf",
+      "ast_identical": true
+    },
+    {
+      "file": "STDESC1.py",
+      "before_bytes": 4117,
+      "after_bytes": 3925,
+      "before_sha256": "4132ab6a5e91fb6d8beeaddfeb89143455d53d7981258103a01ff4626d23ebe6",
+      "after_sha256": "978f125f1c6860f48ee767cd16c99e95ae596d61eafaeb461fae27369b4d3aa1",
+      "ast_identical": true
+    },
+    {
+      "file": "STDESC2.py",
+      "before_bytes": 2265,
+      "after_bytes": 2103,
+      "before_sha256": "76d47ebbe52b144e0142553765ea94a1d913abd5b6aa024290dad52f10af6dbb",
+      "after_sha256": "3eadfb34b284b0796c0bca40b0195290261c3929d4f8958a7076ea551da6a688",
+      "ast_identical": true
+    },
+    {
+      "file": "STDICE.py",
+      "before_bytes": 1785,
+      "after_bytes": 1727,
+      "before_sha256": "68d8e48c6d94be534fa58c8c4dc5bb9dca85b02ede728700d515206845bd6fb3",
+      "after_sha256": "7c14a18ca4f1e6280aae73e46a7c9daf5e61af7bc57118abac8660442aabeca9",
+      "ast_identical": true
+    },
+    {
+      "file": "STDICE2.py",
+      "before_bytes": 3335,
+      "after_bytes": 3094,
+      "before_sha256": "19853934a775fd41e13324a25bc7f020b673aaecaba0d8d72b6a8db1aae1be48",
+      "after_sha256": "44fd950d6818b2727795fea3fe3b08edad48ec06c5e2765d4ef0fe43da5bfe8a",
+      "ast_identical": true
+    },
+    {
+      "file": "STDIST.py",
+      "before_bytes": 1400,
+      "after_bytes": 1333,
+      "before_sha256": "ed8ecad5e54322023689e7338c4663f136c72edc08a9f27c43c085a9da87454f",
+      "after_sha256": "c1c703a260eaacfaae4560de96133569700008928c67073c6b8b8fcb318bf986",
+      "ast_identical": true
+    },
+    {
+      "file": "STDMATH.py",
+      "before_bytes": 1145,
+      "after_bytes": 1119,
+      "before_sha256": "2ef6928c4e19b879679282eaab312d2132ddf83f3de46d0496b5de2acffe27ad",
+      "after_sha256": "f05ae9380943b464081203c16d66749bf554b6e652b231f9afb2ae7687aa93c9",
+      "ast_identical": true
+    },
+    {
+      "file": "STDMATH1.py",
+      "before_bytes": 3101,
+      "after_bytes": 2933,
+      "before_sha256": "460e48cd7105786b635b0df80a38d2642ca9fbc5499b5b54dbf16121d768a9a6",
+      "after_sha256": "9e852724f02bf33f3fcc40fce1ab314b1e2c54b2109f10e8f741809a28a930c5",
+      "ast_identical": true
+    },
+    {
+      "file": "STDMATH2.py",
+      "before_bytes": 2133,
+      "after_bytes": 2005,
+      "before_sha256": "f454ba5ffcffb8604df5860d3c108e652f1067259ba0923ad0774e68b51bf5cd",
+      "after_sha256": "954c7535177eb8751be9512f0a33db230da9b346522cb63ff32d6bad06a02d18",
+      "ast_identical": true
+    },
+    {
+      "file": "STDWK.py",
+      "before_bytes": 2735,
+      "after_bytes": 2557,
+      "before_sha256": "6a5b0867b0d3de470f52f4a8697c7a6fc840fbe82494c07250e0c28d6b660fda",
+      "after_sha256": "ee1629de1d68ef230bde6c59f1ae2ae6956440a47a2213fe0190b544dde62e15",
+      "ast_identical": true
+    },
+    {
+      "file": "STEFMT.py",
+      "before_bytes": 2108,
+      "after_bytes": 1942,
+      "before_sha256": "3871b632fa0ca5b5c9b0b851b437e4d00eb773524a542bbacd6aa2eec7bf64b0",
+      "after_sha256": "c9ae3d31471561d0e137b5b080b9199bd3957325d1a5e6c82b2d26cf2aa0ae6d",
+      "ast_identical": true
+    },
+    {
+      "file": "STEVENT.py",
+      "before_bytes": 1189,
+      "after_bytes": 1117,
+      "before_sha256": "08ffa0e9efcac4e35b5786d665ea05a9f27d2623fbffce15c66a8aaad759a5db",
+      "after_sha256": "aa2536ac57469d108a64027fe1f7eb18e08943d15e4fa9a413d1b8ae0135aff1",
+      "ast_identical": true
+    },
+    {
+      "file": "STEXACT.py",
+      "before_bytes": 1987,
+      "after_bytes": 1831,
+      "before_sha256": "8db8dc4b5b91a1e5c344181f8b7eb5ac18acc7dcfe8d4b444c52d22a629e505f",
+      "after_sha256": "2f99eb4eeab549bbb7f09870365685c1a33fb38aa5c462741ee76aeb6a4fde67",
+      "ast_identical": true
+    },
+    {
+      "file": "STEXPER.py",
+      "before_bytes": 1563,
+      "after_bytes": 1501,
+      "before_sha256": "9b1ba0bc4c14efb4803aec22bb6578b0a6ab7a924d6c8c3d5f6ec8249f1396ce",
+      "after_sha256": "13728445f148a570d544bfb29acc883a18a64703661158d703037a3e598a65df",
+      "ast_identical": true
+    },
+    {
+      "file": "STEXPER1.py",
+      "before_bytes": 2619,
+      "after_bytes": 2429,
+      "before_sha256": "3d64e5bf0ef9eeb4e9a0644bd6393b4bc3297bc710d29aed62787734a94c116b",
+      "after_sha256": "92251c334221ca77cbe159c52963bc69c75970330e9177e0f845239f0bb1fe11",
+      "ast_identical": true
+    },
+    {
+      "file": "STEXPER2.py",
+      "before_bytes": 2552,
+      "after_bytes": 2416,
+      "before_sha256": "3b962e22c1619e628c0c17a44ef2cf1b2eb1962d9d0f9c43538cc41b3c0df4c1",
+      "after_sha256": "8bfa78c0c631dba8f0c2d5ef41df5e878ceb46f35c4ba11254293e2e2049b000",
+      "ast_identical": true
+    },
+    {
+      "file": "STEXPER4.py",
+      "before_bytes": 1344,
+      "after_bytes": 1238,
+      "before_sha256": "47ae669a2eb2a319f59fe8addb89802bc2d4ac3ee5331c169b4fdf532dc00e2a",
+      "after_sha256": "d83d50583245bd1a41b3086bafdf72444e7d499c32cd363f851b508dfd1d00f9",
+      "ast_identical": true
+    },
+    {
+      "file": "STFINITE.py",
+      "before_bytes": 1080,
+      "after_bytes": 1022,
+      "before_sha256": "7e3e99883c8b97d7ef01b811332fb0e958cc156f6cc038cd4fed398f80696acd",
+      "after_sha256": "69dea053df0f905c24f43ca4465cd6e815f06db24491cdfb35c844e5a74e4bcb",
+      "ast_identical": true
+    },
+    {
+      "file": "STGATT.py",
+      "before_bytes": 859,
+      "after_bytes": 770,
+      "before_sha256": "471d0a55d6c0d4d294a6d79fae9b02f534eb9a4475a57c6a627b0daafaf3c494",
+      "after_sha256": "d218970daf8ffb9584217d890b7a674e7d49d12923c79f8db48df2c1fb96a04a",
+      "ast_identical": true
+    },
+    {
+      "file": "STGBARS.py",
+      "before_bytes": 3925,
+      "after_bytes": 3559,
+      "before_sha256": "c3e83a77ca098817ef106b86da5b8a6ecc77eec15005abe24a6a35fd7a909c30",
+      "after_sha256": "b30fd58287d500b271de0031e18cb1cb7d90468c26bfba77180f62a88a2b7c89",
+      "ast_identical": true
+    },
+    {
+      "file": "STGBOX.py",
+      "before_bytes": 1269,
+      "after_bytes": 1197,
+      "before_sha256": "0085f9b6591a95ce27aa09aba335331e44899df3704b2cef196953eb8fce487b",
+      "after_sha256": "9af08689d33317c2b84529aa3a163fabe4772874d715ccb00ab1e747c9f2b9a4",
+      "ast_identical": true
+    },
+    {
+      "file": "STGCHI.py",
+      "before_bytes": 1578,
+      "after_bytes": 1502,
+      "before_sha256": "e2166fe7ef4c73d37cfca3a4d0fc40e4b538049ad5d59e36a2a68bbfad3276f0",
+      "after_sha256": "8255bbe52e46a8c8f4ef21278211ad83f22475a955749194fed3464fdf108b08",
+      "ast_identical": true
+    },
+    {
+      "file": "STGCURV.py",
+      "before_bytes": 5332,
+      "after_bytes": 4985,
+      "before_sha256": "aead658ee2c114ff44b513271f4e1e9beab9c6112baa4690809391d96c5cba53",
+      "after_sha256": "abe38c7c9707a796b4d4d06b94ba2d7407f83d03b8a955cf8d312cab7c41368d",
+      "ast_identical": true
+    },
+    {
+      "file": "STGDATA.py",
+      "before_bytes": 2306,
+      "after_bytes": 2112,
+      "before_sha256": "7e8b5aa34effd6709e050d0d3cbaa08f3321131d7e7b432a909b17e3091991ec",
+      "after_sha256": "3cf2907d191eb769b770ebe3f83a97f896236107332e53d85bc4adafaab22444",
+      "ast_identical": true
+    },
+    {
+      "file": "STGDIAG.py",
+      "before_bytes": 3002,
+      "after_bytes": 2844,
+      "before_sha256": "d4b1486cde568fa9de97ac9c7a91aad87626cd33f04a2a2b4f46d5a97e4b6c2d",
+      "after_sha256": "11f5636ae37301c3b753ea09b9724b7e82a632114978e984bb1099d524e76598",
+      "ast_identical": true
+    },
+    {
+      "file": "STGINFER.py",
+      "before_bytes": 839,
+      "after_bytes": 785,
+      "before_sha256": "d2350db1393b3a0db0b35a348cb9c13a5f30d2e1fdd1cf5d204a5079cd4c7da7",
+      "after_sha256": "a775a2441f4b20270833af6edf8a4a6a547aee00272ff571a66cf92ce1846a9a",
+      "ast_identical": true
+    },
+    {
+      "file": "STGINK.py",
+      "before_bytes": 2054,
+      "after_bytes": 1878,
+      "before_sha256": "a7eadadf05b9e656647e97c7b0c74c9ba4089a886d9d0fd6f04b0f6175a49604",
+      "after_sha256": "572e7dfd13eb6e3e2f79d621cdeda7524ead8cf4be610bb9cbd86e3bd8903686",
+      "ast_identical": true
+    },
+    {
+      "file": "STGINTR.py",
+      "before_bytes": 1498,
+      "after_bytes": 1413,
+      "before_sha256": "fccd992d39f91a411e9cfbffecb47a00bbb6c967d206098612551e1c66163af8",
+      "after_sha256": "200ef1618ab7757cb7944cdbe03a14ffabf4600e68de41b050e03002eb02f852",
+      "ast_identical": true
+    },
+    {
+      "file": "STGKEY.py",
+      "before_bytes": 753,
+      "after_bytes": 687,
+      "before_sha256": "925cc6a8c18c65519c742a0ad0042e3eba05815aa4ef408c00d4a35f9941a8b2",
+      "after_sha256": "c47fbb794457edd3b734a94f5e1697d2e37f3aa28d6f3a8ec77afbc780089cff",
+      "ast_identical": true
+    },
+    {
+      "file": "STGPEN.py",
+      "before_bytes": 2009,
+      "after_bytes": 1835,
+      "before_sha256": "45d458465ab8057d866a32c03fbe525a350f687262edc937f31047276174f2da",
+      "after_sha256": "73e4604b1e8408ac6302d42f1fb72386963f3c9db2190b9db31bc89b38c56bba",
+      "ast_identical": true
+    },
+    {
+      "file": "STGQQ.py",
+      "before_bytes": 462,
+      "after_bytes": 424,
+      "before_sha256": "aa868d5acdc75da85683b556f4743084bd181b974de0731c2d638b805a7bf6a0",
+      "after_sha256": "4b5df51b8103d75b088c0160cf65263e319104cfed569e31b0db2186882f1b5b",
+      "ast_identical": true
+    },
+    {
+      "file": "STGRAPH.py",
+      "before_bytes": 4552,
+      "after_bytes": 4387,
+      "before_sha256": "d8d91cb4ed6faa1df0174e432fb4962ad0fcc29fbebe66c1c2262204d0450fc8",
+      "after_sha256": "ec6dd3e547fe331957448ccae4ca8a94649f9f1b5ebe81bda519f297b697a406",
+      "ast_identical": true
+    },
+    {
+      "file": "STGRT.py",
+      "before_bytes": 1450,
+      "after_bytes": 1347,
+      "before_sha256": "f0585ac7314fe3ebe8f02e59a94f5d27e1d61a62747e56eaa3612e1c823ce2eb",
+      "after_sha256": "d276308d1dbdcb30dbd11a2df1a5c0fe4829d7de0f3fcf48c08608d85cfcbd64",
+      "ast_identical": true
+    },
+    {
+      "file": "STGSCAT.py",
+      "before_bytes": 3172,
+      "after_bytes": 2943,
+      "before_sha256": "7033dd9f46f0fb76879d0abf3e4507d1fcd42ccfeba458ae17130269a6e49e7f",
+      "after_sha256": "bf9ac4d1e96fce39f73330c50703fce2c198007b7d5b5f1a9d5b765cbf429a13",
+      "ast_identical": true
+    },
+    {
+      "file": "STGUMEA.py",
+      "before_bytes": 1390,
+      "after_bytes": 1288,
+      "before_sha256": "d2f68a37c4e643a63d50bb1d532a569ea9a0a7868ae7a33ba6b1c1e1dc34ba27",
+      "after_sha256": "0048824a131547832ce89453f91f42339182d7855e2cef50753bca144d7531fa",
+      "ast_identical": true
+    },
+    {
+      "file": "STHIST.py",
+      "before_bytes": 1069,
+      "after_bytes": 1015,
+      "before_sha256": "c5cb3ecb1c84e4da5e34ac97656697c565d595f1ac17f123807cda03f54b8b2b",
+      "after_sha256": "2258842d599bea5147916c47a4816f2b4e2ae70697e8b39b2fdcfdbb362131e8",
+      "ast_identical": true
+    },
+    {
+      "file": "STHIST2.py",
+      "before_bytes": 4417,
+      "after_bytes": 4019,
+      "before_sha256": "10976af8d3809ffbe1f399d292630e8ddcb9d67bf84dd1705fceff6be77e401f",
+      "after_sha256": "ef66facd40f9ba56bbed33033f9cc1575b8cb156b09a382c9e71b2bc3711a83a",
+      "ast_identical": true
+    },
+    {
+      "file": "STHOME.py",
+      "before_bytes": 1841,
+      "after_bytes": 1783,
+      "before_sha256": "f8c887f637516ebabb1749cc9a1ac053decafb262f249e2a4e1a422c613b2e1d",
+      "after_sha256": "0264977b1570db23f6496097a9cc3a8e2a56d8474e8688746e719de4ea3ce52f",
+      "ast_identical": true
+    },
+    {
+      "file": "STHTHEAD.py",
+      "before_bytes": 1330,
+      "after_bytes": 1258,
+      "before_sha256": "b2c9ee6752a51f3ef579725dc58351f99e0abf6ba79da184bf1ab10aed696f19",
+      "after_sha256": "c90b3fd18135e10e18bee8202f4ee223acf5f3f8143f783ae2b1626f170c4bf8",
+      "ast_identical": true
+    },
+    {
+      "file": "STHTLAB.py",
+      "before_bytes": 2152,
+      "after_bytes": 2043,
+      "before_sha256": "1cd34394400f548f155cdc02aeeb6183a33f5b63aa933b13c1a6c296072ccc99",
+      "after_sha256": "24c3eedc94f125a8adf4cfb3a2b549dcf920fd7aac6b71adbf36041bf08e4f89",
+      "ast_identical": true
+    },
+    {
+      "file": "STHTPLOT.py",
+      "before_bytes": 2401,
+      "after_bytes": 2243,
+      "before_sha256": "0a38e28cbbdd151342e9eb07378904ed73c17371af2512f737396efdae0042b4",
+      "after_sha256": "a3adecfe2ffd9f3ed5424d46b321c6755dc4fc4b42077c773a807c6bfc884bca",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYANS.py",
+      "before_bytes": 558,
+      "after_bytes": 527,
+      "before_sha256": "0557ef36e1b80eca9762c114cdc5b7354bc64d66f575924f396f033e5d4dbf92",
+      "after_sha256": "cc9cb659366aa191035027a0441ae27601a1ec98bca4dedbc5b5a614bf323ce1",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYDRAW.py",
+      "before_bytes": 1098,
+      "after_bytes": 1036,
+      "before_sha256": "047b43beeb1796350bc25393b1fcf0a32cd1acb3c402a9ebc8fa6fbb0bfe4561",
+      "after_sha256": "8723f8c9f2adb7d7cd86b2087785b15428a85c208aa4191dcc58a84e9b619be6",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYEND.py",
+      "before_bytes": 1884,
+      "after_bytes": 1780,
+      "before_sha256": "b012fddf5e6a20412497ee4bf7abc44dd5feb73f4b94c608171d9a2976c5ff48",
+      "after_sha256": "b95fae343a5a0ea016b26caa70fb7e06b05fd41e738337c0db9534412b54f236",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYFLOW.py",
+      "before_bytes": 3191,
+      "after_bytes": 2861,
+      "before_sha256": "439aa7470326e6d0d090fd5853316f1a51d5ce45d5a86abd290c746a5723413c",
+      "after_sha256": "2b01cd5aa46ae9e2bc5d7ceb14b26fad101e4631a95a2468eaf650ce6b1db845",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYINF.py",
+      "before_bytes": 918,
+      "after_bytes": 862,
+      "before_sha256": "91bfed5353ce97bd65502dd74a3e79ac6004eab16fb6950a08beae97557b6839",
+      "after_sha256": "0abd491b89d7ec4637a46bb82c504ab3ee4f82079f9c42a01655c53fee858c19",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYIO.py",
+      "before_bytes": 1788,
+      "after_bytes": 1714,
+      "before_sha256": "037253172b3495d39d6321c5d694deeb6cedb8c5f6e8113b3332fab7ed7cd7de",
+      "after_sha256": "6c640731415b8421298881f8d055eb332f7d54b68a6d939a42c0655f77a9bee1",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYME.py",
+      "before_bytes": 3094,
+      "after_bytes": 2830,
+      "before_sha256": "863432b90c779545be2687718bcdc411889ae82a43b8ffdc35c76dd02127dcf6",
+      "after_sha256": "562369b4e6ce1ac52a3bfcfbac25d6a4b1584ac381779c3e911b0a6cf4408c2b",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYMNU.py",
+      "before_bytes": 684,
+      "after_bytes": 640,
+      "before_sha256": "dd3765df75f95e20cb8b38cb440b462cff505e42a51d362181273c8f54f42221",
+      "after_sha256": "b2afd1b7c3366b698b5a93e7efdce084d00dab8c3c0d0d86d3b723083cedee2a",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYP.py",
+      "before_bytes": 820,
+      "after_bytes": 743,
+      "before_sha256": "de211de1f2636be4ed4aa9b309befbca3f69c25404b07a400c0ecaf6f6dfbb78",
+      "after_sha256": "80733925276fe31863a139955c68e3a47181a8867a17ddd3846969bcfc5984da",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYPR.py",
+      "before_bytes": 3070,
+      "after_bytes": 2826,
+      "before_sha256": "ee22ce8cccfcabdc495195c5c0b2095665481634c0d85b15d9767fc8b2cec583",
+      "after_sha256": "e8c2eb8603be552f5ae03cede2115a9ec101d6a720841b332e23d9d917ebf2fc",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYPVAL.py",
+      "before_bytes": 1946,
+      "after_bytes": 1754,
+      "before_sha256": "8191969617917930c1d2d0666db44e1622bce60e80a467442c5828e1c8b3a507",
+      "after_sha256": "dd0e301b8c90c2e45a20d4974aba9b3cfc1184b00996a3c5ea0661463c4cf949",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYREQ.py",
+      "before_bytes": 1035,
+      "after_bytes": 955,
+      "before_sha256": "9053d42eb12412037143778fbe8eb0efec52148e522fdcc3be86c24d4b26cd9b",
+      "after_sha256": "c1ea236e80e8f06d943620daa92e3becd0776fafb6e10dd1805107810ea81add",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYRES.py",
+      "before_bytes": 637,
+      "after_bytes": 608,
+      "before_sha256": "a2b9af87ce8d8a3c92bdc44336b6815e4b24110081d97b222cb153b84407a077",
+      "after_sha256": "dd5fcf7524a442873f1d5d457c452ed8ce4f19ee3cf4e094f09db01fdeb5ba99",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYSH.py",
+      "before_bytes": 1733,
+      "after_bytes": 1611,
+      "before_sha256": "c271df5e49a99b371729111b137c2b9dacef8853492cf4bc95fbe362a4021a31",
+      "after_sha256": "54fca3c43abedc17fd4efe4650a99d3d39880f9c74e26b70dad3c9594eba63cf",
+      "ast_identical": true
+    },
+    {
+      "file": "STHYTS.py",
+      "before_bytes": 980,
+      "after_bytes": 901,
+      "before_sha256": "4fc5799a95f7dfe41f52342a88f1dad211789552883478a07054d93551d3cb74",
+      "after_sha256": "9e716dfd396bcbfdbf6834b0bba6ec1821ff6f159942aaf681b84923068d95c1",
+      "ast_identical": true
+    },
+    {
+      "file": "STMDICE.py",
+      "before_bytes": 1353,
+      "after_bytes": 1249,
+      "before_sha256": "4c8b8588c4b1e7a3860fd0bb6e0fff104b54278470659d93ab018f02eb713116",
+      "after_sha256": "f5c1ff1c9ab68fc59842f8eb68b44e53096fba835983092f85f783448074ae6d",
+      "ast_identical": true
+    },
+    {
+      "file": "STMDICE2.py",
+      "before_bytes": 4483,
+      "after_bytes": 4157,
+      "before_sha256": "8dde6679d6bd265008c6390f312cf3978ceb1cf55a2eab92bea3ce0b1e269fe2",
+      "after_sha256": "4809c3bef1691d510bbb1cab28d1fba73b8949bfec4ce99a704c1019e3f6dff1",
+      "ast_identical": true
+    },
+    {
+      "file": "STMEAN.py",
+      "before_bytes": 682,
+      "after_bytes": 632,
+      "before_sha256": "5d02f2da510f3926a1bdc8fe7f2c0ef194cb6b4e1d1f59309c887e3736445805",
+      "after_sha256": "c9a0e2b74a1f80ef0ef7a7cf1329a453c94d60fbdd82e59f4c4ba71247f30e57",
+      "ast_identical": true
+    },
+    {
+      "file": "STNDIST.py",
+      "before_bytes": 6848,
+      "after_bytes": 6682,
+      "before_sha256": "f839a7ba73f0b6d98d731330e591b870590ad7c8154f6048bb081151bd3a6333",
+      "after_sha256": "2ef341d01ff46ee175097eee2aea39ad6efebb49c9148c91ec32fcbcc389bc92",
+      "ast_identical": true
+    },
+    {
+      "file": "STNORM.py",
+      "before_bytes": 2019,
+      "after_bytes": 1973,
+      "before_sha256": "6ad578228ba60107a19db4911cb6488b04adbcc48bf64b6bac8447b18be8048a",
+      "after_sha256": "d6c5705e3c1e1b174a5c4f6d9e23db0be87e74833e040981377ce3b9a686e5a9",
+      "ast_identical": true
+    },
+    {
+      "file": "STNORM1.py",
+      "before_bytes": 2117,
+      "after_bytes": 1993,
+      "before_sha256": "13686120dca0d18a46c85249e9c958d8101e0f33cbfc71a08e2ee27e7bbffd7d",
+      "after_sha256": "78e36db08a5f2215654e2a20ce43aabdc4d899c715fb8303051dc8d864b420dd",
+      "ast_identical": true
+    },
+    {
+      "file": "STNORM2.py",
+      "before_bytes": 2779,
+      "after_bytes": 2581,
+      "before_sha256": "0e62d8963c652ade5383971b08aa79dfb01a1f26a9dbbd95e093c6a7a97548f4",
+      "after_sha256": "9b3ce582408bf1f66c51432f7578cf6fa0425f4510a4442d8f157b8a82f9b5e6",
+      "ast_identical": true
+    },
+    {
+      "file": "STNORM3.py",
+      "before_bytes": 3105,
+      "after_bytes": 2799,
+      "before_sha256": "751659bc50a0037cbb85351f15bb9f816e00a82fbdbb097d3b9be55b8f6b7786",
+      "after_sha256": "eb1ab292634794acce3fc8ff2af069ae2c0e2a7db325a743e0085e999435a006",
+      "ast_identical": true
+    },
+    {
+      "file": "STNORM4.py",
+      "before_bytes": 2219,
+      "after_bytes": 2101,
+      "before_sha256": "99c2f8d55fffbcb6bf0a14ddfee80df49c01fc449ae6ffa1f8f8249b5e8aa23f",
+      "after_sha256": "9e9ad0094df2f598ac62974c7634336a1306debc5a693e94164fa3c34518dc1f",
+      "ast_identical": true
+    },
+    {
+      "file": "STPAGE.py",
+      "before_bytes": 856,
+      "after_bytes": 778,
+      "before_sha256": "6c38bdc56707f556bbd1c285e0949e187f2bf33a45e4c5788b894abf0eae7f31",
+      "after_sha256": "4d54b08c8a616b3ed2acae7160bb056c07d9e2d88a9e5c9655e6684e4367fe29",
+      "ast_identical": true
+    },
+    {
+      "file": "STPAIRED.py",
+      "before_bytes": 6037,
+      "after_bytes": 5567,
+      "before_sha256": "b049ab631c5b32b8a1c8e3396a5f3d09b17c6382a50434ffce8d90c754870530",
+      "after_sha256": "7e6e712521aaced09b030a2ef706660c64c7932a0acc2e39468c82f65facceda",
+      "ast_identical": true
+    },
+    {
+      "file": "STPCT.py",
+      "before_bytes": 2953,
+      "after_bytes": 2731,
+      "before_sha256": "e401699997716f1a084cb5f4340eb98dcdc4cbbca3baae2ea94b7eaac32cf876",
+      "after_sha256": "64ab493fee810723e34c944b873d0e11ea265eb124fa25c6c840843d8c8442a2",
+      "ast_identical": true
+    },
+    {
+      "file": "STPROB.py",
+      "before_bytes": 2384,
+      "after_bytes": 2290,
+      "before_sha256": "74faa1e1c3eea762b082330bb8e83b8d8745b40a6656fe8f541636e76924324d",
+      "after_sha256": "eff1af1099a368c5b56c4f6c08a754d0dca4193cd9d0a283c9da37aa78a04e71",
+      "ast_identical": true
+    },
+    {
+      "file": "STPROB1.py",
+      "before_bytes": 12058,
+      "after_bytes": 10666,
+      "before_sha256": "ad3cbffaa386e3a70387af2a194fb6722482c4c48cb2b4e9a93ad3d4db4b86a2",
+      "after_sha256": "be30b640cb2fc4cef558fba9d96d883fcc894f003f43ac740cba544a7a667e6d",
+      "ast_identical": true
+    },
+    {
+      "file": "STPROB3.py",
+      "before_bytes": 3462,
+      "after_bytes": 3256,
+      "before_sha256": "97a8db29d13ee3a798f1442427fe24f8ad198aa1b3f2ed7e7b4fd60f8813efec",
+      "after_sha256": "71acf3f6f726773cb933a41d6b3add74faa5c7439e10f1ae7577551fad478f60",
+      "ast_identical": true
+    },
+    {
+      "file": "STPROB4.py",
+      "before_bytes": 2406,
+      "after_bytes": 2194,
+      "before_sha256": "13d7653220a9b25cbef1c00c4db3e5178d49de0ae1f62d058320579b41b35bbc",
+      "after_sha256": "0c2a814c1f787cd2ac91571554df2295bd105a648bed893329f8c253c30a1907",
+      "ast_identical": true
+    },
+    {
+      "file": "STPROBM.py",
+      "before_bytes": 1889,
+      "after_bytes": 1747,
+      "before_sha256": "96b6a7c425b00db026e068b28a5e7153e5d098fe2d466389e8116462a7f9fb17",
+      "after_sha256": "0d15bebf88a1a00f1411cb98f6494ba0cff893eaaaf445f6e8157807fc620d86",
+      "ast_identical": true
+    },
+    {
+      "file": "STREG.py",
+      "before_bytes": 1370,
+      "after_bytes": 1282,
+      "before_sha256": "666fa84887385246921b1ea5a941c5f12a14315c5386b6f110dce0bed61524a1",
+      "after_sha256": "ffd04f61ee0d3acd520b1236afe8866c2074b44e0acdf08ad09ed69efed1fd8a",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGDEF.py",
+      "before_bytes": 3215,
+      "after_bytes": 3137,
+      "before_sha256": "b63df5274c01483b8fc9cca8d9191f9632a9068d63fdde12212b153212af1212",
+      "after_sha256": "1a6509f94bb2d96609a84f546e57947c68ad47c1df2c1253379ba885db5add6a",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGIN.py",
+      "before_bytes": 1241,
+      "after_bytes": 1173,
+      "before_sha256": "039e22f9dc33a326f33a700c086d64033624e51645ede0a601f5ab4f0866b816",
+      "after_sha256": "5b0487a04831e25b24020dcb4af12ecb784f6c5b14595c99c4eecf04333add1c",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGIO.py",
+      "before_bytes": 2063,
+      "after_bytes": 1894,
+      "before_sha256": "5e5e8587cde217db8198d641470fc67c8e124868098e207c362334fccb16e8e6",
+      "after_sha256": "5d99a6e0b0c6361d8c8f641fdb830446860060387694a191611838e5c3fd4bdd",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGPR.py",
+      "before_bytes": 1768,
+      "after_bytes": 1641,
+      "before_sha256": "f9e4e991e7cd4124ba9dc5652a14e4def3e64114d92ffeef68c12f572bb4c651",
+      "after_sha256": "abac8701b989db45c2dc2b762cecb5719998cc69a75948ed4065eea4a71a5f94",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGSUM.py",
+      "before_bytes": 4872,
+      "after_bytes": 4570,
+      "before_sha256": "f5e70729b24af64c4550307ac3e0dad39160b353ca62ed5869f184c7a130ef88",
+      "after_sha256": "f52fe9ded3b486c34a0f86488acb7a5203caebccbe167aeaa86c12f4193220e8",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGTXT.py",
+      "before_bytes": 773,
+      "after_bytes": 720,
+      "before_sha256": "26f970fa24d6031d2ec18f69f3ec6fe2ff37194c3887ab17bade1ba67b366424",
+      "after_sha256": "e21cae2ea1eccedfabd916a172c0c18918fdb28be9683c226712af12e6f3e84b",
+      "ast_identical": true
+    },
+    {
+      "file": "STREGWK.py",
+      "before_bytes": 4367,
+      "after_bytes": 4056,
+      "before_sha256": "b7399a74c28a2aa3d00447b6aa06b8ac1c437a5af28b638f4bca391f07d6d2d3",
+      "after_sha256": "0d72347cbd3c20d53aa96024f77b63d593c405ac1c0cba76f187f7c25b00ccc8",
+      "ast_identical": true
+    },
+    {
+      "file": "STRULE.py",
+      "before_bytes": 4603,
+      "after_bytes": 4553,
+      "before_sha256": "0aeda7e7075ac16a2b03a1f003f8439bf1a13b0b898a013944788a12e6cc8216",
+      "after_sha256": "a986156ccaade6b492c87de74130a2ea1f798f0cd8ef09f7921d4d07d3d5b000",
+      "ast_identical": true
+    },
+    {
+      "file": "STSAMP1.py",
+      "before_bytes": 2030,
+      "after_bytes": 1908,
+      "before_sha256": "a12166ebf2b60230403cbc32dcfad45a52b6f6ea3ba347c2df401cbca590e00c",
+      "after_sha256": "d6bc5ebe1b9b329eddedbc71fa6a2e431a407a0f0f27328a0d05c17ad5077f5c",
+      "ast_identical": true
+    },
+    {
+      "file": "STSAMP2.py",
+      "before_bytes": 3682,
+      "after_bytes": 3419,
+      "before_sha256": "5abe021bc51724af87edafca934bf9444f9ee393a56c595b4457d51e9e226199",
+      "after_sha256": "f2e577e8fa98b1c03c3242a6a114cbef1c952f2d52c503d451444810a522f120",
+      "ast_identical": true
+    },
+    {
+      "file": "STSAMPLE.py",
+      "before_bytes": 1080,
+      "after_bytes": 1060,
+      "before_sha256": "c4da789552b04a6424345de7140318d33b89f25715291827a87326edabfe6e60",
+      "after_sha256": "84bbba7c37813fd3769b67a9ad95975bd9189918f4597784e90c4357e56cac9a",
+      "ast_identical": true
+    },
+    {
+      "file": "STSIZE.py",
+      "before_bytes": 2756,
+      "after_bytes": 2572,
+      "before_sha256": "a6b68a65e2f3bb217e76a9b4dfbb96761b2e79e624e9c7dee76100708b4e35e6",
+      "after_sha256": "18ef54d777429595d8965986055bd281e73370e25e5f31002d45206d3f3416b7",
+      "ast_identical": true
+    },
+    {
+      "file": "STSKETCH.py",
+      "before_bytes": 3552,
+      "after_bytes": 3136,
+      "before_sha256": "04c88c2ccce28d507cbd0a3aec6a75a7c09ebd33226564196a1b13191db98795",
+      "after_sha256": "839339fb96ccd622dcc6a243fa44789a98c8758f3f42763062195d1306e79f49",
+      "ast_identical": true
+    },
+    {
+      "file": "STSTU1.py",
+      "before_bytes": 1264,
+      "after_bytes": 1246,
+      "before_sha256": "ff969944f1391cc87c0167f7667c8ce7a3af4121a77733ba9cbb9c26f9f8fb33",
+      "after_sha256": "309b1cce5adf0c7d5b64c527df1d3d55afcfa0d8ca75faac79082f2fd3c25c99",
+      "ast_identical": true
+    },
+    {
+      "file": "STSTU2.py",
+      "before_bytes": 6182,
+      "after_bytes": 5882,
+      "before_sha256": "43d7e6efe8ff918dc09c09068eff95948ace66838d6a64cab77d04bd22be1d6a",
+      "after_sha256": "2f90d2773323afe9cb686c78d266050889ddb3cae0a97fa6a40b9b04ec376e5b",
+      "ast_identical": true
+    },
+    {
+      "file": "STSTUDY.py",
+      "before_bytes": 5167,
+      "after_bytes": 4817,
+      "before_sha256": "6702046d5c1aff0b3c3328cff723a136250d9176f3f92a352e1cf6acdbb5ad38",
+      "after_sha256": "7abf4ee1593e0daf87c544c99011238db02427aea7ec858bee60e7a1650663f0",
+      "ast_identical": true
+    },
+    {
+      "file": "STTASKS.py",
+      "before_bytes": 2150,
+      "after_bytes": 2046,
+      "before_sha256": "fa6151df5827ae60daffd0273e4ec54533e11cee6eff7371c8970dcad9757554",
+      "after_sha256": "23a1ac8357c91b243c267c23f6e02565cc38cbf44508a2a031ebd05b9f0a6aaf",
+      "ast_identical": true
+    },
+    {
+      "file": "STTCRIT.py",
+      "before_bytes": 3660,
+      "after_bytes": 3230,
+      "before_sha256": "15536426eff2b07435828253e13efd6072e566ad5ca5cf0d7abbbe0b9ab42040",
+      "after_sha256": "381dd5e7740139aa82a3b0cae6961bc6599b61129a9cb7dd0bb363ef829f1fe0",
+      "ast_identical": true
+    },
+    {
+      "file": "STTDIST.py",
+      "before_bytes": 2036,
+      "after_bytes": 1733,
+      "before_sha256": "927e80ef68102ba0e07e9b98f09a586a52d90f596e608a0f091aa0bf1358a4ac",
+      "after_sha256": "a2b8982d63bb04c561da68d837009289c4fb9da43348010e4e9e577a5c09d1d4",
+      "ast_identical": true
+    },
+    {
+      "file": "STTPROB.py",
+      "before_bytes": 1436,
+      "after_bytes": 1320,
+      "before_sha256": "1a687a8e33b2d7f1833e89d4bf2cc5b46be9add04fc47ba104aef15b4788887e",
+      "after_sha256": "0ec54754df99042421e77718ecdfce87a04306d595df8580928d9d6fa0d33549",
+      "ast_identical": true
+    },
+    {
+      "file": "STUNIF.py",
+      "before_bytes": 3573,
+      "after_bytes": 3482,
+      "before_sha256": "a11b8a694640fa273ced441e687bc2d40dbbb23ea3c6b09cfd654ec397bdc2d6",
+      "after_sha256": "71d75c5d49a6f2dbea408f05be323f3334ec3626fc6eca1308f315b8d0bbaafe",
+      "ast_identical": true
+    },
+    {
+      "file": "STVCP.py",
+      "before_bytes": 1144,
+      "after_bytes": 1034,
+      "before_sha256": "a850d25de460bf68e6aca86009b770fb9c2399abf02cce43d3b82fdf2facecae",
+      "after_sha256": "5262b21fa7846515f601a8a933641efe2db4c455c0590f283f7c36791c92908d",
+      "ast_identical": true
+    },
+    {
+      "file": "STVDISP.py",
+      "before_bytes": 1343,
+      "after_bytes": 1129,
+      "before_sha256": "c6bf43c7eb563f6c250c417ec5bc9688b409433b0fd5f552ff715096fefadd68",
+      "after_sha256": "c9452bb4e28e331f8b8f37c6bd3ab5aed1f1ab1d45f10c937e948177dd202d72",
+      "ast_identical": true
+    },
+    {
+      "file": "STVENN.py",
+      "before_bytes": 2038,
+      "after_bytes": 1922,
+      "before_sha256": "269e15ea38517bc8352ee345dca1e7bd8ed68126b53b86eb4fb85f98ec5e51fd",
+      "after_sha256": "5a4afa2a0696f05c7cccd8ad6ffc698ad39fbcfce0f8815657ff866e4ef40df9",
+      "ast_identical": true
+    },
+    {
+      "file": "STVENN2.py",
+      "before_bytes": 2203,
+      "after_bytes": 2127,
+      "before_sha256": "6bf97e99447245296117cd50a36c9c9d55c821e7242ee2fb11c71cf2fb74895f",
+      "after_sha256": "1e18134da4979ee678e4a7894a8bed7d828218950c233b036d439a740ad80b5e",
+      "ast_identical": true
+    },
+    {
+      "file": "STVIN.py",
+      "before_bytes": 32,
+      "after_bytes": 31,
+      "before_sha256": "b1e7df2ec536859012f0ac664292c4764e3f0b7c344fb496efc30fb69936046d",
+      "after_sha256": "90561470545d4707013bdb8d392162dc758f9282d74171a57f6bd5cb73a2c0aa",
+      "ast_identical": true
+    },
+    {
+      "file": "STVMENU.py",
+      "before_bytes": 2451,
+      "after_bytes": 2143,
+      "before_sha256": "f201a9963af6654593a03eadffb39b51e819f67170a28e33ac4ca7482ea185ae",
+      "after_sha256": "b0a669650067d9445d9779678cc9bff9b4a31b8ce40afbfea842987f149d44bf",
+      "ast_identical": true
+    },
+    {
+      "file": "STVRES.py",
+      "before_bytes": 3946,
+      "after_bytes": 3465,
+      "before_sha256": "c567ac972f6bad592397265b14e21bd2228ba77688d7dd2d3ae5c5ad7bf5a485",
+      "after_sha256": "b3dd89cb2fff21425437af51336eb50c91544ea13079069b9f34c1fd66468b6d",
+      "ast_identical": true
+    },
+    {
+      "file": "STWORK.py",
+      "before_bytes": 2835,
+      "after_bytes": 2604,
+      "before_sha256": "31d264df05ee32d18a47b1492a6a2eebe881ebc700b9563cb52c83883d86524e",
+      "after_sha256": "424295c75aa71cf0dda52c94389eb2ded3a0437263b5993b35d319da33688414",
+      "ast_identical": true
+    },
+    {
+      "file": "STZCRIT.py",
+      "before_bytes": 1414,
+      "after_bytes": 1342,
+      "before_sha256": "4bdd7929a9ba26853062da97ddaedd008458aece2d32d2a8d76754195721ad00",
+      "after_sha256": "de90c547a99508e4d7133cef65b189a381b0662813d1b8a970dc32a2ed1e222c",
+      "ast_identical": true
+    },
+    {
+      "file": "STZLIST.py",
+      "before_bytes": 1680,
+      "after_bytes": 1582,
+      "before_sha256": "b08207cb5c25a5061cdede141c58f4869acbd09b249b96756212df274edd055e",
+      "after_sha256": "2dbac1bebfdb9cf3ede87bdf282826ec85959107b734503121032ca997c749cb",
+      "ast_identical": true
+    }
+  ]
+}

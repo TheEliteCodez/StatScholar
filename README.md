@@ -5,16 +5,24 @@ A general-purpose introductory college statistics calculator for the TI-84 Evo P
 worked substitutions where supported, with optional full-screen graphs and
 paper-drawing guidance for relevant results.
 
-There is one program: **130 root `ST*.py` files, totaling 352,352 source bytes**
-(as checked November 2, 2026). No separate build folder or build step is required.
+There is one program: **156 root `ST*.py` files, totaling 366,485 source bytes**
+(as checked November 24, 2026). No separate build folder or build step is required.
 
 ## Install and run
 
 1. Remove the previous StatScholar modules from the calculator. Overwriting
    matching names leaves obsolete modules taking up space.
-2. Transfer all 130 current root `ST*.py` files together, preserving their names.
+2. Transfer all 156 current root `ST*.py` files together, preserving their names.
    Do not transfer tests, helper scripts, documentation or backups.
-3. Restart Python and run **STAT1**.
+3. Restart Python and run **STAT1**. Confirm the heading **STAT1 261124-R14**.
+   Select files directly from this project; no package or build folder is used.
+
+R10 reduced the source inventory by 25,029 bytes relative to R9 (383,644 to
+358,615 bytes) using two-space indentation and LF line endings. Solver features,
+displayed strings, graph labels and license comments are preserved. The
+hypothesis graph now releases curve code before labels, labels before the
+heading, and heading code before waiting for a key. New helpers STHTHEAD,
+STSEWORK and STTBETA are included in the root module set.
 
 Python app-start RAM and the interpreter heap available after startup are
 separate constraints. Source-byte totals do not establish either capacity.
@@ -46,11 +54,22 @@ Existing shortcut numbers are preserved; Home 1, 7 and 8 are distribution menus.
 | 13 | Z* critical value | Confidence, alpha or area inputs |
 | 14 | T* critical value | Confidence, alpha or area inputs with df |
 | 15 | Hypothesis testing | One/two proportions; one/two independent means; paired test plus interval; chi-square goodness of fit/independence; correlation/regression |
+| 16 | Linear regression / correlation | Fit a line; predict y; round answers; residuals; scatter/fitted/residual graphs; definitions |
 
 Use 0 to return/exit menus. In paged text menus, empty Enter advances and minus
 returns to the previous page. Physical-key navigation uses Right/Left and Clear
 where supported. See [MENU_AUDIT.md](MENU_AUDIT.md) for the detailed menu matrix
 and the scope of its replay evidence.
+
+Menu choice reading lives in `STCORE` with key normalization and polling. Menus
+do not import `STVIN` to read an answer: that import previously exhausted
+calculator memory while allocating 768 bytes from `STVMENU.menu`.
+`STVIN` forwards to the shared reader for existing callers. After updating
+the complete root module set, restart calculator Python before retesting Home
+and regression menus. The shared renderer also avoids duplicate item/alias
+containers, and key decoding avoids temporary dictionaries. Desktop tests cover
+all 16 Home routes with text, Evo and CE keys; physical heap acceptance remains
+pending. See [MEMORY_REVIEW.md](MEMORY_REVIEW.md) for the complete audit scope.
 
 Worked quizzes, practice tests, numbered homework banks, guide-page libraries,
 guide/search indexes and the question wizard were removed. Definitions search,
@@ -110,23 +129,150 @@ Home 4: DATA / STATS
   8 Correlation / regression
 Home 5: GRAPHS / DATA SHAPE
   1 Scatter / regression
+Home 16: LINEAR REGRESSION / CORRELATION
+  1 Enter data / fit / predict
+  2 Regression definitions (no data entry needed)
+  3 Given equation / r / n: equation, mean or DNE
 ```
 
-Chi-square tests show hypotheses, requirements, expected counts, every cell's
+Chi-square tests first show an answer screen with TS (chi-square), the right-tail
+CV, p-value, df, alpha and the decision with its p-versus-alpha comparison.
+Continue with Right/Enter to open the rejection-region graph, then the p-value
+graph automatically on the calculator. Press 6 on either text result to reopen
+either graph. The statistic is chi-square, not a t-score.
+The Home 15 routes release chi-square input/calculation code before opening
+results. A small `STCHISH` coordinator loads the answer, dedicated `STGCHI`
+graphs, TI steps and worked results in separate stages. TI instructions are a
+separate text screen, so they are released before graphs can be reopened from
+the worked result. The general distribution renderer is not loaded for these
+graphs. `python -B tests/render_chi_graph.py` generates desktop previews;
+physical calculator RAM and graph acceptance remain pending.
+`STGCHI` uses native plot text for CV/TS labels and a small `STGKEY` key reader.
+It does not import the shared `STGPEN` font/drawing module: a device traceback
+showed that import exhausting memory while allocating 373 bytes. Fresh-process
+Home 15 tests block both `STGPEN` and the general renderer during chi-square
+graphs; the updated import still requires a physical calculator retest.
+The chi-square TI instructions and worked-result rows also avoid `STWORK`:
+the calculator reached `STCHITI.steps` but exhausted memory importing that
+shared formatting module. They now use their own small iterable objects,
+preserve row-by-row generation and retain the graph shortcut on worked results.
+Fresh-process tests block `STWORK` throughout these Home 15 routes, including
+the blood-type example with probabilities and rounded expected counts.
+The worked results show hypotheses, requirements, expected counts, every cell's
 substituted contribution, the expanded statistic sum, degrees of freedom,
-critical value, right-tail p-value, conclusions and drawing instructions.
+critical value, right-tail p-value and conclusions. Drawing instructions appear
+as a fallback when graphics are unavailable.
+Before the worked results, TI-84 steps show the native test menu, your L1/L2
+entries (GOF) or matrix [A] entries (independence), adjusted df, Calculate/Draw,
+the substituted chi-square CDF command for p, and Numeric Solver inputs for CV.
+Evo List Editor/DISTR/Numeric Solver paths and Plus/CE alternatives are labeled.
+Native workflow references: TI's [GOF test instructions](https://education.ti.com/en/customer-support/knowledge-base/ti-83-84-plus-family/product-usage/34844),
+[independence test instructions](https://education.ti.com/en/customer-support/knowledge-base/ti-83-84-plus-family/troubleshooting-messages-unexpected-results/34872),
+and [Evo Numeric Solver guide](https://education.ti.com/en/product-resources/eguides/eguide-84-evo/numeric-solver).
 Goodness of fit accepts 2..60 categories and an estimated-parameter df adjustment;
 independence accepts 2..10 rows and columns, using uncorrected Pearson chi-square.
 Low expected counts leave the asymptotic result conditional.
 
-Regression accepts 3..100 manually entered pairs or paired TI lists L1-L6 without
-sorting them independently. Enter variable/unit labels and alpha. Work appears
-automatically, followed by: **1 results, 2 scatterplot, 3 prediction, 4 residual,
-5 paired work table**. Outputs include centered sums, slope/intercept, r, r^2,
-two-sided correlation t test and critical r, plus units and interpretation.
-The scatterplot is a small text plot with numeric axis ranges; overlapping
-display cells are marked #. Predictions use the centered line for precision.
-These four modules load on demand; source totals are not peak-heap estimates.
+Regression is directly available at **Home 16 > 1**. It accepts 3..100 manually
+entered pairs or paired TI lists L1-L6 without sorting them independently.
+Enter variable/unit labels and correlation-test alpha (use .05 if no test level
+is specified; alpha does not affect the fitted equation or predictions).
+The initial results show the fitted equation, slope and intercept first, then
+worked calculations. Press Back/Clear to leave the work pages, or continue to
+the end, to reach the regression results menu:
+**1 results, 2 scatterplot, 3 prediction, 4 residual, 5 paired work table,
+6 fitted-line graph, 7 residual graph, 8 test-distribution graph,
+9 round equation / prediction, 10 regression definitions**.
+Option 9 asks for equation significant digits, prediction decimal places and x.
+It retains full coefficient precision for prediction and rounds only the output.
+For example, enter the nine textbook (pages,cost) pairs, labels pages/dollars,
+alpha .05, then choose **9**, enter **4**, **2**, **451**: the equation is
+`yhat=0.06896*x + 3.029` and predicted cost is **34.13 dollars**.
+Option 3 accepts further x values using the same data.
+
+Outputs include centered sums, slope/intercept, r, r^2, a two-sided correlation
+t test and critical r, plus units and interpretation. Graph options use
+full-screen plots where available, with a text scatterplot fallback whose
+overlapping cells are marked #. Predictions use the centered line for precision.
+**Home 16 > 2** opens regression definitions without requiring data; the same
+definitions are at **Home 6 > 7 > 7** and included in **Search all definitions**.
+They explain the equation, least squares, x/y variables, slope, intercept,
+prediction, residuals, r, r^2, scatterplots, interpolation/extrapolation,
+influential points and correlation versus causation. Modules load on demand;
+source totals are not peak-heap estimates.
+
+Regression runs in separate lazy stages: `STREGIN` input, `STREG` fit,
+`STREGWK` streamed work, `STREGPR` prediction/rounding and `STREGDEF` definitions.
+The small `STREGIO` coordinator retains only numeric data and labels between
+choices. Work does not import `STWORK`; regression definitions do not import the
+general study/definition bank. Critical t and p are calculated in one inference
+call, with critical t cached for graphs. Predictions use the cached centered
+coefficients. Text scatter fallback uses nine short strings rather than a grid
+of character-reference lists.
+
+Scatter and correlation graphs use native plot labels and the small `STGKEY`
+reader. They do not load `STGPEN` or the general curve renderer. The correlation
+graph shows both critical marks, signed TS and two-tailed rejection/p shading;
+scatter and residual plots place variable/unit labels beside their axes and
+show numbered ticks at readable intervals, plus the residual zero reference. QQ plots share the smaller scatter renderer.
+
+`python -B tests/regression_walk.py` exercises 117 repeated/maximum-data cases
+through all four regression routes, including all choices and definitions, with
+six unnecessary imports blocked. It checks module, function and class release
+between stages. `artifacts/regression_memory.json` records exact source hashes
+and observations; source-byte observations are not physical heap measurements.
+The calculator previously failed on `STWORK` (80-byte allocation) and `STVIN`
+(768-byte allocation) imports. Both import paths have been removed from these
+workflows. The current source still requires manual physical acceptance after
+transfer and a Python restart; see [MEMORY_REVIEW.md](MEMORY_REVIEW.md).
+
+**Home 16 > 3: GIVEN EQUATION / r / n** handles supplied regression output
+without reconstructing raw pairs. First choose **1 y=ax+b** or **2 y=a+bx**,
+matching the printed equation. Enter **a** and **b** exactly as supplied. The
+prompts show both the role and letter, such as `SLOPE (a=) (x COEFFICIENT)`
+and `INTERCEPT (b=) (CONSTANT)`. The program maps their roles: in y=ax+b, a is slope and b is intercept; in y=a+bx,
+a is intercept and b is slope. Enter r (not r^2), n, alpha (Enter defaults to
+.05), mean y if known, observed x
+minimum/maximum, and y units. Then enter x and answer decimal places.
+For textbook equation/mean/DNE questions, an unknown/outside x range gives DNE;
+within the range, significant two-sided correlation uses the equation,
+otherwise the mean y is used (DNE if that mean is missing). The screen states
+this rule and shows the statistical comparison. Ordinary raw-data prediction
+at option 1 retains direct fitted-line prediction.
+
+For the tire-pressure example, choose **1 y=ax+b**, then enter `a=.3858`,
+`b=2.02`, `r=.65`, `n=8`, Enter for alpha, `16.7`,
+`30`, `45`, `mpg`, `36.5`, `1`. The first page shows **ANSWER=16.7 mpg**,
+**USE MEAN y**, x/range, r/critical r, n/alpha, p, mean y and the supplied
+line in the supplied form. r^2=.4225 is not needed for this choice; the input
+screen explicitly says to skip r^2 and use r=.65. p=.08102035 > .05, so there is insufficient evidence of linear correlation.
+Choose **1 ANOTHER x / SAME MODEL** to reuse the entered statistics.
+
+Result pages now put compact answers and available key inputs before worked
+substitutions. This covers the shared answer renderer, descriptive summaries,
+confidence intervals, hypothesis tests, regression/prediction, binomial,
+normal/uniform/t probabilities, CLT and sample-size planning. Hypothesis tests
+open on an answer page before the existing nine steps; Clear returns to the
+review menu. Detailed calculations, precision controls and graphs remain
+available. Values wrap rather than being discarded when they exceed a screen.
+
+Hypothesis page loading is staged separately from the Home 15 menu.
+STHYMNU chooses a task and unloads before input; STHYFLOW returns operation
+and state data to STAT1 and unloads before each operation. STHYANS supplies
+the initial answer, STHYREQ formats steps 1-3, and STHYTS formats steps 4-5.
+Other worked pages retain their dedicated helpers. Text formatters return
+plain rows and unload before the viewer. The operational graph path uses
+STCORE.ht_plot to release curve, label, heading and key code in sequence.
+STHYP/STHYSH/STHYRES remain compatibility APIs; Home 15 uses the flat driver.
+The previous result payload is cleared before another problem is entered.
+The latest physical label-import failure is documented in MEMORY_REVIEW.md;
+R10 still requires the user's manual Evo retest.
+
+`python -B tests/hypothesis_memory_walk.py` exercises 20 continuous problems,
+all nine steps and review choices 1-12, with real math and viewers and stubbed
+plot/key APIs. Weak-reference checks cover modules, functions, classes and old
+problem data. `artifacts/hypothesis_memory.json` records the current source
+hashes. Injected import failures also check cleanup before a fresh Home route.
 
 ### Conditional events
 
@@ -265,6 +411,8 @@ python -B -m unittest discover -s tests
 python -B tests/distribution_walk.py
 python -B tests/hypothesis_walk.py
 python -B tests/advanced_walk.py
+python -B tests/regression_walk.py
+python -B tests/hypothesis_memory_walk.py
 python -B tests/menu_walk.py
 ```
 
@@ -391,3 +539,105 @@ one vertical scale; category bars page 12 at a time with separate name keys.
 `python -B tests/render_graph_gallery.py` creates desktop previews from the real
 calculator drawing calls. These are not device screenshots. All physical TI
 startup, heap, visual and key acceptance remains pending the checklist run.
+
+## Type I / Type II error identifier
+
+Home 15 > 9 opens the error identifier. Choose one of four modes:
+
+- FROM A CLAIM: choose p, mu, p1-p2 or mu1-mu2; optionally enter context/units;
+  choose the claim sign and enter its boundary value. Percentages and decimals
+  are accepted. H0/H1 and both errors appear together before the detailed wording.
+- FROM GIVEN H0 AND H1: enter the null sign/value and alternative direction
+  when needed, then identify whether the original claim is H0, H1 or unspecified.
+- IDENTIFY DECISION + TRUTH: choose reject/fail to reject H0 and the actual truth.
+  The answer is Type I, Type II, correct decision or cannot determine.
+- DEFINITIONS: Type I/alpha, Type II/beta, power=1-beta, and fail-to-reject meaning.
+
+Example: claim p > .40 gives H0: p <= .40 and H1: p > .40. Type I means
+concluding p > .40 when actually p <= .40; Type II means failing to find evidence
+for p > .40 when actually p > .40. For a claim in H0, Type I rejects a true
+claim and Type II fails to reject a false claim. The program never treats
+failure to reject as proof of H0. A one-sided null may be written with equality
+at its boundary in class; claim mode shows its full null range.
+
+No sample counts, p-value or alpha entry is needed for identifying the type.
+The tool classifies the decision and truth supplied by the user; it does not
+parse free-form problem prose or calculate beta from a claim alone.
+
+Error definitions are also searchable through Study > Definitions and appear
+under Errors / Significance. The interactive tool uses the direct Home 15
+route so larger Study/definition modules are released before it loads.
+
+Revision 261124-R11 adds STHERR.py and changes STHYMNU.py, STCORE.py, STDEFS.py
+and STSTUDY.py. From a complete R10 installation, manually select those five
+files. Otherwise select the full current root ST*.py set; no package is needed.
+Tests cover all six claim relations, one/two-group parameters, null/alternative
+roles and every decision/truth outcome. Native fixed-heap replay exercises
+24 repeated problems at both 40,000 and 48,000 bytes, including automatic
+STAT1 startup and heavy-import guards. Physical Evo acceptance is pending.
+
+## Chi-square final conclusion
+
+GOF and independence tests now finish with a separate CHI-SQUARE FINAL
+CONCLUSION page after the worked results. It states reject/fail to reject H0,
+compares the numeric p-value with alpha, repeats the entered context and gives
+a complete conclusion at the selected significance level. GOF describes a
+difference from the specified population model; independence describes an
+association between the row and column variables. Failure to reject is not
+presented as proof of the model or independence. Clear/Back from earlier
+results still exits without forcing the last page.
+
+From R11, manually add STCHEND.py and replace STCHISH.py and STCORE.py.
+Restart Python and confirm 261124-R12. The complete inventory is 156 root
+ST*.py files / 364,761 source bytes. The new formatter loads after the worked
+table and TI instruction objects have been released. Tests cover both tests,
+both decisions, p=alpha, navigation and real module/function cleanup. Native
+fixed-heap replay includes 60 categories and a 10x10 table with final pages
+at 40,000, 48,000 and 64,000 bytes. Physical Evo acceptance remains pending.
+
+## Equation and graph of the regression line
+
+Home 16 > 1 accepts the x,y pairs and displays the fitted equation with results.
+After that report, select 2 SCATTER + REGRESSION LINE to see data points and
+the fitted red line together, or 6 REGRESSION LINE ONLY for the line without
+points. Both show yhat=m*x+b, labeled x/y axes, and numeric ticks on the same
+graph. Option 11 SCATTERPLOT ONLY preserves the original data-only view;
+option 7 remains the residual graph. The Data, Graphs and Hypothesis regression
+links use this same menu. Rounded coefficients can still be obtained through
+9 ROUND EQUATION / PREDICTION; graphs use the unrounded fitted coefficients.
+
+For the textbook pages/cost data, the graph displays yhat=0.0689596*x + 3.02855
+and a visible straight line. Select 9 with four significant digits for the
+homework equation yhat=0.06896*x + 3.029. Desktop previews are available in
+artifacts/regression_scatter.png and artifacts/regression_line.png; these are
+not calculator screenshots. The equation row has its own reserved space.
+When plotting is unavailable, the text fallback supplies the equation and
+two calculated points for drawing the line on paper.
+
+R13 updates STREGIO.py, STGSCAT.py, STREGTXT.py, STREG.py and STCORE.py. From a
+complete R12 installation, manually replace those five files; restart Python
+and confirm 261124-R13. The root source set is 156 files / 366,170 bytes.
+Regression inference now runs after fitting code unloads, while the public
+fit() API retains its default complete-result behavior.
+
+Tests verify endpoints against fitted equations for positive, negative and
+zero slopes and calendar-year x values, point visibility, equation signs,
+axis labels, all four graph choices, and text fallback coordinates. The
+native replay completes the textbook, negative, constant and calendar cases
+at 40,000 bytes; its 100-pair case stops during inference at that heap setting,
+before graphing. All five cases / 20 graph frames pass at 48,000 and 64,000.
+See artifacts/regression_native_memory.json. Physical Evo memory, display and
+key acceptance remain pending.
+
+## Plain-language r-squared interpretation
+
+R14 replaces the generic r-squared sentence with the entered variable names
+and a percentage, immediately after the numeric r-squared result. Example:
+"About 80% of the variation in textbook cost is explained by its linear
+relationship with number of pages." It explains variation as how much the y
+values differ from their average, and distinguishes explained variation from
+the percentage of predictions that are correct. The definition includes an
+r-squared=.80 example and the distinction between association and causation.
+Constant-y results remain undefined; calculations and logical row counts are
+unchanged. From R13, replace STREGWK.py, STREGDEF.py and STCORE.py and confirm
+261124-R14. Current inventory: 156 root files / 366,485 source bytes.

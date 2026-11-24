@@ -7,6 +7,36 @@ ROOT=Path(__file__).resolve().parent.parent
 
 
 class HypothesisMemory(unittest.TestCase):
+    def test_failed_page_import_unwinds_loader_and_next_home_route_runs(self):
+        code=r'''
+import builtins,contextlib,gc,io
+import STAT1,STCORE as c
+original=builtins.__import__;target=[''];hits=[];c.wait_key=lambda:'right'
+def guarded(name,*args,**kwargs):
+    if name==target[0]:hits.append(name);raise MemoryError('Injected import failure: '+name)
+    return original(name,*args,**kwargs)
+builtins.__import__=guarded
+data=['15','3','scores','1','2','65','.05','1','68.84','7.424314','10','','1']
+for name in ('STHYMNU','STHYFLOW','STHYANS','STHYREQ','STHYTS','STHYDRAW','STHYPVAL','STHYEND'):
+    target[0]=name;pending=iter(data);builtins.input=lambda prompt='':next(pending)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):STAT1.main()
+    except MemoryError:pass
+    else:raise AssertionError(('Failure not reached',name))
+    gc.collect();assert not c.topic_modules() and not c._call_depth,name
+    target[0]='';pending=iter(['1','0','0']);builtins.input=lambda prompt='':next(pending)
+    with contextlib.redirect_stdout(io.StringIO()):STAT1.main()
+    assert not list(pending) and not c.topic_modules()
+assert len(hits)==8,hits
+'''
+        self.run_fresh(code)
+
+    def test_all_result_stages_and_previous_problem_data_are_released(self):
+        code="import sys;sys.path.insert(0,'tests');from hypothesis_memory_walk import run;r=run();assert not r['failures'];print('HYPOTHESIS_STAGES_PASS')"
+        run=subprocess.run([sys.executable,'-B','-c',code],cwd=ROOT,capture_output=True,text=True,timeout=180)
+        self.assertEqual(run.returncode,0,run.stdout[-2500:]+run.stderr)
+        self.assertIn('HYPOTHESIS_STAGES_PASS',run.stdout)
+
     def run_fresh(self,code):
         run=subprocess.run([sys.executable,'-B','-c',code],cwd=ROOT,
                            capture_output=True,text=True,timeout=20)
@@ -36,10 +66,10 @@ def guarded(name,*args,**kwargs):
   assert 'STHYRES' not in sys.modules,'Result pages resident during t import'
   assert 'STZCRIT' not in sys.modules,'Normal quantile code resident during t import'
   loaded.append('math')
- if name in ('STHYRES','STHYEND','STHYDRAW','STHYPVAL'):
+ if name in ('STHYANS','STHYREQ','STHYTS','STHYEND','STHYDRAW','STHYPVAL'):
   assert 'STTCRIT' not in sys.modules,'t module retained when loading result pages'
   assert 'STHYME' not in sys.modules,'Mean input/calculation module retained during results'
-  assert not any(n in sys.modules for n in ('STHYRES','STHYEND','STHYDRAW','STHYPVAL')),'Text renderers resident together'
+  assert not any(n in sys.modules for n in ('STHYANS','STHYREQ','STHYTS','STHYEND','STHYDRAW','STHYPVAL')),'Text renderers resident together'
   assert 'STHYINF' not in sys.modules,'Inference code resident during text display'
   assert 'math' in loaded,loaded
   loaded.append('results')
@@ -56,7 +86,7 @@ for repeat in range(2):
   STAT1.main()
   assert not list(pending),answers
   assert not c.topic_modules(),c.topic_modules()
-assert loaded.count('results')==54,loaded
+assert loaded.count('results')==60,loaded
 assert any(title=='HT 9: FINAL CONCLUSION' for title,lines in pages)
 assert any('FAIL TO REJECT H0' in lines for title,lines in pages)
 """)
@@ -69,14 +99,14 @@ original=builtins.__import__;refs=[];graphs=[]
 def guarded(name,*args,**kwargs):
  if name=='STHTPLOT':
   gc.collect()
-  assert 'STHYRES' not in sys.modules,'Text renderer still loaded at graph import'
+  assert not any(n in sys.modules for n in ('STHYANS','STHYREQ','STHYTS','STHYRES','STHYMNU')),'Text/menu code still loaded at graph import'
   assert 'STHYEND' not in sys.modules,'Conclusion renderer still loaded at graph import'
   assert 'STHYME' not in sys.modules and 'STHYPR' not in sys.modules,'Calculation module retained at graph import'
   assert 'STVDISP' not in sys.modules,'Text viewer still loaded at graph import'
   assert all(ref() is None for ref in refs),'Text renderer still retained in memory'
   graphs.append(True)
  module=original(name,*args,**kwargs)
- if name in ('STHYRES','STHYEND','STHYDRAW','STHYPVAL'):refs.append(weakref.ref(module))
+ if name in ('STHYANS','STHYREQ','STHYTS','STHYEND','STHYDRAW','STHYPVAL'):refs.append(weakref.ref(module))
  return module
 builtins.__import__=guarded
 plot=types.ModuleType('ti_plotlib')
@@ -95,5 +125,6 @@ for close in (45,105):
   STAT1.main()
   assert not list(answers) and not list(events)
   assert not c.topic_modules(),c.topic_modules()
-assert len(graphs)==4,graphs
+# Enter renders two separate stages; Back renders one, for each test type.
+assert len(graphs)==6,graphs
 """)

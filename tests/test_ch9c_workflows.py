@@ -55,7 +55,7 @@ for question,answers,expected_ts,expected_p,reject,df in cases:
   box=pages['BOXPLOT VALUES / DRAWING']
   assert 'OUTLIERS=NONE' in box
   expected=['MIN=86.3000','Q1=92.1000','MEDIAN=94.3150','Q3=98.2000','MAX=100.0000'] if question=='6' else ['MIN=0.0600','Q1=1.4200','MEDIAN=2.8600','Q3=5.8600','MAX=9.1100']
-  assert all(line in box for line in expected),(question,box)
+  assert all(any(line in row.split('; ') for row in box) for line in expected),(question,box)
 print('CH9C_CALCULATION_WORKFLOWS=PASS')
 '''
         run=subprocess.run([sys.executable,'-B','-c',code],cwd=ROOT,
