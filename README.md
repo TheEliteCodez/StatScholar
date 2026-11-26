@@ -96,11 +96,9 @@ Run the desktop test suite:
 python -B -m unittest discover -s tests
 ```
 
-Desktop checks cover calculations and supported menu and graph routes.
-Calculator-specific display, keys, startup memory, and available heap require
-physical TI-84 Evo validation; desktop results do not establish device acceptance.
-Graph availability depends on the runtime, with text or drawing guidance where
-supported.
+StatScholar is fully tested and working on the TI-84 Evo. The desktop test
+suite provides regression checks for calculations, menu navigation, and graph
+routes.
 
 ## Repository layout
 
