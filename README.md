@@ -26,9 +26,10 @@ and graphing together in one calculator program: **STAT1**.
 1. Download the repository using **Code > Download ZIP** and extract it.
 2. Remove the previous StatScholar modules from the calculator before updating;
    overwriting matching filenames can leave obsolete modules behind.
-3. Transfer **all root files matching `ST*.py`** together, keeping their names.
-   This includes `STAT1.py` and its supporting modules. Leave `tests/` and
-   repository documentation on your computer.
+3. Open [TI Connect Evo](https://connectevo.ti.com/) in your browser and connect
+   your calculator. Use it to transfer **all root files matching `ST*.py`**
+   together, keeping their names. This includes `STAT1.py` and its supporting
+   modules. Leave `tests/` and repository documentation on your computer.
 4. Restart the calculator's Python environment and run **STAT1**.
 
 The program runs directly from the source files. No build step or separate
